@@ -67,6 +67,59 @@ async function loadFonts() {
   return cachedFonts;
 }
 
+/* ---------- Emoji loader (Twemoji) ---------- */
+
+const emojiCache = new Map<string, string>();
+
+function toCodePoint(unicode: string): string {
+  const codes: string[] = [];
+  let i = 0;
+  while (i < unicode.length) {
+    const cp = unicode.codePointAt(i);
+    if (cp === undefined) break;
+    if (cp !== 0xfe0f) codes.push(cp.toString(16));
+    i += cp > 0xffff ? 2 : 1;
+  }
+  return codes.join("-");
+}
+
+async function loadEmojiSvg(emoji: string): Promise<string | undefined> {
+  const cp = toCodePoint(emoji);
+  if (!cp) return undefined;
+  const cached = emojiCache.get(cp);
+  if (cached) return cached;
+
+  // 1) Local bundled cache (.emoji/<cp>.svg) — works offline & in sandboxes
+  try {
+    const localPath = path.join(process.cwd(), ".emoji", `${cp}.svg`);
+    const svgText = await readFile(localPath, "utf8");
+    const dataUrl = `data:image/svg+xml;base64,${Buffer.from(svgText).toString("base64")}`;
+    emojiCache.set(cp, dataUrl);
+    return dataUrl;
+  } catch {
+    /* not bundled, try network */
+  }
+
+  // 2) Twemoji CDN fallback (works on Vercel etc.)
+  const cdns = [
+    `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${cp}.svg`,
+    `https://unpkg.com/twemoji@14.0.2/assets/svg/${cp}.svg`,
+  ];
+  for (const url of cdns) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const svgText = await res.text();
+      const dataUrl = `data:image/svg+xml;base64,${Buffer.from(svgText).toString("base64")}`;
+      emojiCache.set(cp, dataUrl);
+      return dataUrl;
+    } catch {
+      /* try next */
+    }
+  }
+  return undefined;
+}
+
 /* ---------- Decorative scene chrome ---------- */
 
 function stickerStroke(stroke: string, w = 4): React.CSSProperties {
@@ -209,7 +262,7 @@ function Decorations({ themeId, width }: { themeId: Theme["id"]; width: number }
     items.push(<Cloud key="c2" x={width - 130} y={430} size={70} />);
     items.push(<SunRays key="sun" x={right - 110} y={30} size={140} color="#FFE066" />);
   }
-  return <div style={{ position: "absolute", inset: 0, display: "flex", zIndex: 0 }}>{items}</div>;
+  return <div style={{ position: "absolute", inset: 0, display: "flex", zIndex: "0" as any }}>{items}</div>;
 }
 
 /* ---------- Slide chrome pieces ---------- */
@@ -253,7 +306,7 @@ function CharacterPose({
   contrast: string;
   size: number;
 }) {
-  const wrap: React.CSSProperties = { position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, zIndex: 1 };
+  const wrap: React.CSSProperties = { position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, zIndex: "1" as any };
   if (position === "br") Object.assign(wrap, { right: 50, bottom: 56 });
   else if (position === "bl") Object.assign(wrap, { left: 50, bottom: 56 });
   else if (position === "tr") Object.assign(wrap, { right: 50, top: 220 });
@@ -361,7 +414,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
       <Decorations themeId={theme.id} width={fmt.width} />
 
       {/* Logo at top center */}
-      <div style={{ display: "flex", zIndex: 2 }}>
+      <div style={{ display: "flex", zIndex: "2" as any }}>
         <LogoBadge stroke={theme.titleStroke} />
       </div>
 
@@ -379,7 +432,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
           color: theme.title,
           marginTop: 28,
           padding: "0 20px",
-          zIndex: 2,
+          zIndex: "2" as any,
           ...strokeStyle,
         }}
       >
@@ -399,7 +452,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
             marginTop: 30,
             boxShadow: "0 6px 0 rgba(0,0,0,0.08)",
             width: "92%",
-            zIndex: 2,
+            zIndex: "2" as any,
           }}
         >
           {props.slide.kicker && (
@@ -541,11 +594,19 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     ? [...baseFonts, { name: "NotoArabic", data: fonts.arabic, weight: 500, style: "normal" }]
     : baseFonts;
 
+  const loadAdditionalAsset = async (code: string, segment: string) => {
+    if (code === "emoji") {
+      const url = await loadEmojiSvg(segment);
+      return url ?? "";
+    }
+    return "";
+  };
+
   let svg: string;
   try {
-    svg = await satori(node, { width: fmt.width, height: fmt.height, fonts: withArabic });
+    svg = await satori(node, { width: fmt.width, height: fmt.height, fonts: withArabic, loadAdditionalAsset });
   } catch {
-    svg = await satori(node, { width: fmt.width, height: fmt.height, fonts: baseFonts });
+    svg = await satori(node, { width: fmt.width, height: fmt.height, fonts: baseFonts, loadAdditionalAsset });
   }
 
   const resvg = new Resvg(svg, { fitTo: { mode: "width", value: fmt.width } });

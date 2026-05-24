@@ -189,14 +189,401 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Yuk, siap-siap dari sekarang!",
       slides: [
         {
-          heading: "Ramadan Sebentar Lagi!",
-          kicker: "Yuk, Persiapan!",
-          body: "Bulan paling istimewa! Ayo siap-siap puasa, baca Quran, dan banyak sedekah ya, Sahabat Mo.",
+          heading: "Ramadan Sebentar Lagi! 🌙",
+          kicker: "Tahukah Kamu?",
+          body: "Bulan paling istimewa setahun sekali — bulan di mana pintu surga dibuka & pintu neraka ditutup. Yuk, sambut dengan hati!",
+        },
+        {
+          heading: "Kenapa Ramadan Spesial?",
+          kicker: "Ayat Hari Ini:",
+          body: "“Bulan Ramadan adalah bulan diturunkannya Al-Qur'an sebagai petunjuk bagi manusia.”",
+          arabic: "شَهْرُ رَمَضَانَ ٱلَّذِىٓ أُنزِلَ فِيهِ ٱلْقُرْءَانُ",
+          attribution: "QS. Al-Baqarah: 185",
+        },
+        {
+          heading: "Apa yang Bisa Dilakukan?",
+          kicker: "Misi Sahabat Mo:",
+          body: "1. Puasa (kalau sudah kuat)\n2. Baca Quran 1 ayat/hari\n3. Sedekah, walau kecil\n4. Sholat tarawih bareng",
+        },
+        {
+          heading: "Tips Puasa Pertama!",
+          kicker: "Untuk Sahabat Mo Pemula:",
+          body: "Mulai pelan-pelan: puasa sampai dzuhur dulu. Tahun depan tambah jadi ashar. Tahun depannya lagi, full satu hari. Sabar yaa!",
+        },
+        {
+          heading: "Yuk, Persiapkan Hati!",
+          kicker: "Save & Bagikan:",
+          body: "Save slide ini. Bagikan ke keluarga. Bareng-bareng siapin Ramadan: hati senang, badan sehat, niat tulus!",
         },
       ],
-      caption: "Marhaban ya Ramadan! 🌙 Yuk sambut bareng Baby Mo!",
+      caption: "Marhaban ya Ramadan! 🌙 Yuk sambut bareng Baby Mo! Save & bagikan ke keluarga 💚",
       cta: "Save buat checklist Ramadan!",
-      hashtags: ["#BabyMo", "#Ramadan", "#AnakMuslim"],
+      hashtags: ["#BabyMo", "#Ramadan", "#AnakMuslim", "#PuasaPertama"],
+    },
+  ],
+  "tiny-heart-talks": [
+    {
+      title: "Bicara Sama Hati Kecil",
+      hook: "Kalimat kecil yang bikin hati anak besar.",
+      slides: [
+        {
+          heading: "Bicara Sama Hati Kecil",
+          kicker: "Pesan untuk Mama & Ayah:",
+          body: "Ada kalimat-kalimat sederhana yang kalau diucapkan ke anak, akan tinggal di hatinya seumur hidup. Yuk, kita pelajari.",
+        },
+        {
+          heading: "“Allah Sayang Kamu, Sayang.”",
+          kicker: "Bisikkan ini:",
+          body: "Pas anak rewel, sedih, atau takut — peluk dan bisikkan. Bukan menenangkan badan, tapi menenangkan jiwa.",
+        },
+        {
+          heading: "“Kamu Bisa Cerita ke Mama.”",
+          kicker: "Bisikkan ini juga:",
+          body: "Buat rumah jadi tempat aman cerita. Anak yang merasa didengar di rumah, akan tumbuh berani di luar.",
+        },
+        {
+          heading: "“Maaf, Mama Salah Tadi.”",
+          kicker: "Yang Paling Penting:",
+          body: "Mama juga manusia. Minta maaf ke anak bukan menurunkan wibawa — itu yang Rasulullah ajarkan.",
+          attribution: "HR. Bukhari 6203",
+        },
+        {
+          heading: "Save & Coba Malam Ini!",
+          kicker: "Misi Mama:",
+          body: "Sebelum tidur nanti, peluk anakmu. Bisikkan satu kalimat. Lihat reaksinya. Save slide ini buat besok dan besoknya.",
+        },
+      ],
+      caption: "Kalimat kecil yang bikin hati anak besar 💛 Save buat malam ini.",
+      cta: "Bisikkan ke anakmu malam ini.",
+      hashtags: ["#BabyMo", "#ParentingIslami", "#KalimatAjaib", "#TarbiyahCinta"],
+    },
+  ],
+  "dear-little-muslim": [
+    {
+      title: "Surat untuk Sahabat Mo",
+      hook: "Untuk Muslim cilik yang sedang tumbuh.",
+      slides: [
+        {
+          heading: "Dear Sahabat Mo,",
+          kicker: "Surat Hari Ini:",
+          body: "Ada hal-hal penting yang ingin Mo bilang sama kamu, walau kamu mungkin belum mengerti semuanya sekarang. Yuk dengerin pelan-pelan ya...",
+        },
+        {
+          heading: "Kamu Sudah Cukup.",
+          kicker: "Hal Pertama:",
+          body: "Kamu nggak perlu jadi anak paling pintar, paling cepat, paling juara. Allah ciptakan kamu udah cukup, apa adanya.",
+        },
+        {
+          heading: "Allah Selalu Sayang Kamu.",
+          kicker: "Hal Kedua:",
+          body: "Pas kamu salah, pas kamu lupa, pas kamu sedih — Allah nggak ninggalin kamu. Dia paling sayang sama anak-anak yang berusaha.",
+        },
+        {
+          heading: "Lembut Itu Kekuatan.",
+          kicker: "Hal Ketiga:",
+          body: "Di dunia ini banyak yang keras. Tapi kalau kamu tetap lembut hati, itu yang Rasulullah ajarkan. Kekuatan paling indah.",
+        },
+        {
+          heading: "Salam Sayang, Mo 💚",
+          kicker: "Penutup:",
+          body: "Tumbuh besar dengan hati yang lembut, Sahabat Mo. Mama, ayah, dan seluruh keluarga Baby Mo akan selalu mendoakan.",
+        },
+      ],
+      caption: "Surat-surat yang kami harap setiap Muslim cilik baca seumur hidupnya 💛",
+      cta: "Tag adik / keponakanmu!",
+      hashtags: ["#BabyMo", "#DearSahabatMo", "#MuslimKids", "#SuratUntukAnak"],
+    },
+  ],
+  "muslim-childhood-nostalgia": [
+    {
+      title: "Aroma Dapur Nenek",
+      hook: "Islam belajar dari hal-hal kecil di rumah.",
+      slides: [
+        {
+          heading: "Inget Nggak Sih...",
+          kicker: "Nostalgia Hari Ini:",
+          body: "Sebelum kita gede dan tahu “Islam itu apa” secara teori, ada momen-momen di rumah yang sebenarnya udah ajarin kita Islam diam-diam.",
+        },
+        {
+          heading: "Aroma Dapur Nenek 🍛",
+          kicker: "Memori 1:",
+          body: "Wangi kue lebaran, suara tangan nenek nguleg sambal, dan “Bismillah!” sebelum setiap suapan. Itu Islam pertama yang kita kenal.",
+        },
+        {
+          heading: "Adzan dari Radio",
+          kicker: "Memori 2:",
+          body: "Tiap maghrib, semua kegiatan berhenti. TV dikecilkan. Ayah ngajak ke surau. Seluruh rumah jadi tenang. Itu juga Islam.",
+        },
+        {
+          heading: "Peluk Mama Setelah Sholat",
+          kicker: "Memori 3:",
+          body: "Mama nyium pipi, bilang “anak sholeh.” Kita merasa aman, dicintai, dan tahu rasanya jadi Muslim yang baik. Itu pelajaran paling dalam.",
+        },
+        {
+          heading: "Yuk, Bikin Memori Itu!",
+          kicker: "Untuk Mama & Ayah:",
+          body: "Anak kita sedang menulis “memori Islam-nya” dari hal-hal yang kita lakukan hari ini. Save slide ini, tag pasanganmu.",
+        },
+      ],
+      caption: "Childhood Islam, dalam tekstur rumah 🏡 Tag yang relate!",
+      cta: "Tag pasanganmu / ayah-ibu!",
+      hashtags: ["#BabyMo", "#MuslimChildhood", "#Nostalgia", "#CozyIslam"],
+    },
+  ],
+  "ayah-series": [
+    {
+      title: "Ayah, Pahlawan Diam-Diam",
+      hook: "Cinta Ayah selalu bekerja, tanpa banyak bicara.",
+      slides: [
+        {
+          heading: "Ayah, Pahlawan Diam-Diam.",
+          kicker: "Untuk Ayah:",
+          body: "Ada cinta yang nggak banyak bicara. Yang kerja diam-diam. Yang bangun jam 4 subuh dan tidur paling akhir. Itu cinta Ayah.",
+        },
+        {
+          heading: "Doa Ayah di Sepertiga Malam",
+          kicker: "Tahukah Kamu?",
+          body: "Ayahmu mungkin nggak pernah cerita. Tapi di sepertiga malam, dia sebut namamu di sujud terakhirnya. Setiap malam.",
+        },
+        {
+          heading: "Apa Kata Rasulullah?",
+          kicker: "Sabda Beliau:",
+          body: "“Doa orangtua untuk anaknya adalah doa yang mustajab (terkabul) — tidak terhalang.”",
+          attribution: "HR. Tirmidzi 1905",
+        },
+        {
+          heading: "Bagaimana Berbakti?",
+          kicker: "Untuk Sahabat Mo:",
+          body: "1. Salam & cium tangan saat pulang/pergi\n2. Bantu Ayah tanpa diminta\n3. Doakan Ayah setiap hari\n4. Senyum saat ditegur",
+        },
+        {
+          heading: "Tag Ayahmu!",
+          kicker: "Yuk Bagikan:",
+          body: "Save slide ini. Tag Ayahmu. Ucapkan terima kasih hari ini, jangan nunggu nanti. Cinta diam-diam pantas mendapat terima kasih yang lantang.",
+        },
+      ],
+      caption: "Untuk setiap Ayah yang mencintai dalam diam 💙 Tag Ayahmu sekarang!",
+      cta: "Tag Ayah kebanggaanmu!",
+      hashtags: ["#BabyMo", "#AyahHebat", "#KeluargaSholeh", "#TagAyahmu"],
+    },
+  ],
+  "islamic-fun-facts": [
+    {
+      title: "Fakta Seru: Rasulullah Sayang Kucing!",
+      hook: "Sampai potong jubah biar kucingnya nggak terganggu.",
+      slides: [
+        {
+          heading: "Fakta Seru Hari Ini! 🐈",
+          kicker: "Tahukah Kamu?",
+          body: "Ada satu hewan kecil yang sangat dicintai Rasulullah SAW. Tebak apa? Ini hint-nya: suka mengeong dan suka tidur banyak!",
+        },
+        {
+          heading: "Yes! Kucing! 🐱",
+          kicker: "Cerita Singkat:",
+          body: "Suatu hari Rasulullah hendak sholat. Tapi kucingnya, Muezza, sedang tidur di atas jubahnya. Apa yang beliau lakukan?",
+        },
+        {
+          heading: "Beliau Potong Jubahnya!",
+          kicker: "MasyaAllah:",
+          body: "Daripada membangunkan Muezza, Rasulullah memotong bagian jubahnya yang ditiduri kucing. Sayang banget!",
+        },
+        {
+          heading: "Pelajarannya Apa?",
+          kicker: "Untuk Sahabat Mo:",
+          body: "Sayang sama hewan itu sunnah. Bahkan ke hewan kecil seperti kucing. Allah cinta orang yang lembut hati sama semua makhluk.",
+        },
+        {
+          heading: "Tag Pecinta Kucing!",
+          kicker: "Yuk Bagikan:",
+          body: "Save slide ini & tag teman yang punya kucing. Ingatkan mereka — sayang sama kucing = sunnah Rasulullah!",
+        },
+      ],
+      caption: "Tiny hearts, tiny cats, big Sunnah 🐈 Tag pecinta kucing!",
+      cta: "Tag pecinta kucing!",
+      hashtags: ["#BabyMo", "#FaktaIslam", "#Sunnah", "#KucingRasulullah"],
+    },
+  ],
+  "tiny-sahabah-stories": [
+    {
+      title: "Kisah Anas bin Malik Kecil",
+      hook: "10 tahun melayani Rasulullah, tak sekali pun dimarahi.",
+      slides: [
+        {
+          heading: "Kisah Anas, Sahabat Cilik",
+          kicker: "Cerita Sahabat:",
+          body: "Ada anak kecil bernama Anas bin Malik. Umurnya 10 tahun. Mamanya membawa dia untuk melayani Rasulullah SAW. Coba bayangkan...",
+        },
+        {
+          heading: "10 Tahun Bersama Rasulullah!",
+          kicker: "MasyaAllah:",
+          body: "Anas melayani Rasulullah selama 10 tahun penuh. Setiap hari! Tugas dia: jaga sandal, antar surat, bantu di rumah.",
+        },
+        {
+          heading: "Yang Bikin Kagum...",
+          kicker: "Dengarkan Ini:",
+          body: "Selama 10 tahun itu, Rasulullah tidak SEKALI PUN bilang “kenapa kamu lakukan ini?” atau “kenapa kamu nggak lakukan itu?”",
+          attribution: "HR. Bukhari 6038",
+        },
+        {
+          heading: "Apa Pelajarannya?",
+          kicker: "Pesan untuk Kita:",
+          body: "Lembut itu bukan lemah — itu kepemimpinan tertinggi. Rasulullah memimpin dengan sabar, bukan dengan amarah.",
+        },
+        {
+          heading: "Yuk, Tiru Rasulullah!",
+          kicker: "Untuk Mama & Ayah:",
+          body: "Coba minggu ini: bicara ke anak seperti Rasulullah ke Anas. Tanpa “kenapa kamu...”. Save & coba lihat bedanya.",
+        },
+      ],
+      caption: "Cerita yang bikin anak belajar sabar & lembut 💚 Save buat bedtime story!",
+      cta: "Save buat bedtime story!",
+      hashtags: ["#BabyMo", "#KisahSahabat", "#AnakSholeh", "#AnasBinMalik"],
+    },
+  ],
+  "guess-the-sunnah": [
+    {
+      title: "Tebak Sunnah!",
+      hook: "Yang mana sunnah Rasulullah?",
+      slides: [
+        {
+          heading: "Tebak Sunnah! 🎉",
+          kicker: "Quiz Seru:",
+          body: "Sahabat Mo, siap-siap ya! Ada 3 kebiasaan, dan kamu harus tebak mana yang sunnah Rasulullah. Catat di kepala, jawab di komen!",
+        },
+        {
+          heading: "Pilih Yang Mana?",
+          kicker: "Round 1:",
+          body: "A. Makan pakai tangan kanan ✋\nB. Tidur miring ke kanan 🛏️\nC. Senyum ke saudara 😊\n\nMana yang sunnah?",
+        },
+        {
+          heading: "Jawabannya...",
+          kicker: "Pengumuman:",
+          body: "🥁🥁🥁\n\nSEMUANYA SUNNAH! 🎉\nKetiga-tiganya diajarkan Rasulullah. Dapet 3 pahala sekaligus!",
+        },
+        {
+          heading: "Penjelasan Singkat:",
+          kicker: "Tahu Nggak?",
+          body: "Tangan kanan = adab makan (HR. Bukhari)\nMiring kanan = sunnah tidur\nSenyum = sedekah (HR. Tirmidzi)",
+        },
+        {
+          heading: "Sunnah Favoritmu Apa?",
+          kicker: "Yuk Komen!",
+          body: "Save slide ini & komen sunnah favoritmu di postingan. Mama Mo bakal bales satu-satu loh!",
+        },
+      ],
+      caption: "Mainin quiz ini sama anak pas dinner ya 🤍 Komen sunnah favoritmu!",
+      cta: "Comment sunnah favoritmu!",
+      hashtags: ["#BabyMo", "#TebakSunnah", "#QuizIslami", "#AnakMuslim"],
+    },
+  ],
+  "spot-the-adab": [
+    {
+      title: "Temukan Adabnya!",
+      hook: "Berapa banyak adab yang Sahabat Mo lihat?",
+      slides: [
+        {
+          heading: "Temukan Adabnya! 🔍",
+          kicker: "Misi Sahabat Mo:",
+          body: "Ayo main detektif adab! Ada cerita kecil — tugasmu cari berapa banyak adab Islami yang kamu temukan. Siap?",
+        },
+        {
+          heading: "Ceritanya...",
+          kicker: "Baca Pelan-pelan:",
+          body: "Aisyah datang ke rumah nenek. Dia lepas sepatu di luar. Ketuk pintu dan ucap “Assalamu'alaikum.” Lalu bantu nenek bawa belanjaan.",
+        },
+        {
+          heading: "Hint untukmu...",
+          kicker: "Petunjuk:",
+          body: "Ada 3 adab yang Aisyah lakukan. Coba baca lagi cerita di slide tadi. Jangan buru-buru, perhatikan!",
+        },
+        {
+          heading: "Jawabannya...",
+          kicker: "Tada! 🎉",
+          body: "1. Lepas sepatu (adab masuk rumah)\n2. Salam (adab bertamu)\n3. Bantu nenek (adab hormati orang tua)\n\nKamu temukan semua?",
+        },
+        {
+          heading: "Coba di Rumah!",
+          kicker: "Misi Sahabat Mo:",
+          body: "Hari ini, hitung berapa adab yang kamu praktekkan di rumahmu sendiri. Save slide ini & ajak teman main detektif adab!",
+        },
+      ],
+      caption: "Adab hunting adalah game terbaik buat ngajarin anak 🚗 Save & coba!",
+      cta: "Save & main di rumah!",
+      hashtags: ["#BabyMo", "#TemukanAdab", "#AdabIslami", "#AnakMuslim"],
+    },
+  ],
+  "what-would-prophet-do": [
+    {
+      title: "Kalau Rasulullah Bagaimana? — Saat Sup Tumpah",
+      hook: "Rasulullah dalam moment dapur kita sehari-hari.",
+      slides: [
+        {
+          heading: "Kalau Rasulullah Bagaimana?",
+          kicker: "What Would Rasulullah Do?",
+          body: "Hari ini, mari kita bayangkan satu skenario yang sering terjadi di rumah. Trus, kita bandingkan: kita biasanya gimana vs Rasulullah ﷺ gimana.",
+        },
+        {
+          heading: "Skenario:",
+          kicker: "Adegan Sehari-hari:",
+          body: "Anak kecil tanpa sengaja menumpahkan semangkuk sup hangat di meja makan. Sup mengalir ke baju & lantai. Anak terdiam, takut...",
+        },
+        {
+          heading: "Reaksi Kebanyakan Orang...",
+          kicker: "Sayangnya:",
+          body: "Mendesah, naik nada suara, “Yaaah kamu sih! Mama udah bilang hati-hati!” Anak menangis. Sup terlupa, tinggal trauma.",
+        },
+        {
+          heading: "Rasulullah ﷺ Akan...",
+          kicker: "Sunnah Beliau:",
+          body: "Pertama cek apakah anaknya kepanasan. Senyum dulu. Lalu bilang: “Nggak apa-apa, ayo bersihkan sama-sama.” Tanpa drama, penuh kasih sayang.",
+          attribution: "Sirah Nabawiyah",
+        },
+        {
+          heading: "Coba Minggu Ini!",
+          kicker: "Untuk Mama & Ayah:",
+          body: "Save slide ini. Pas anak tumpah / pecahin sesuatu minggu ini, tarik nafas. Ingat: Rasulullah akan gimana? Save buat pengingat!",
+        },
+      ],
+      caption: "Rasulullah ﷺ dalam moment dapur kita sehari-hari 🤍 Save buat pengingat sabar!",
+      cta: "Save buat pengingat sabar!",
+      hashtags: ["#BabyMo", "#WhatWouldRasulullahDo", "#Sunnah", "#GentleParenting"],
+    },
+  ],
+  "emotional-story-carousel": [
+    {
+      title: "Doa di Lantai Cucian",
+      hook: "Allah hadir di sudut tersembunyi kita.",
+      slides: [
+        {
+          heading: "Doa di Lantai Cucian",
+          kicker: "Cerita untuk Mama:",
+          body: "Cerita ini buat semua mama yang merasa lelah malam ini. Buat semua yang punya momen — yang nggak diceritakan ke siapa-siapa.",
+        },
+        {
+          heading: "Pukul 11 Malam...",
+          kicker: "Adegan:",
+          body: "Bayi akhirnya tertidur. Mama duduk di lantai laundry, sandar tembok. Setumpuk baju kotor. Kepala penuh. Air mata pelan-pelan jatuh.",
+        },
+        {
+          heading: "Ia Cuma Bisa Bisik...",
+          kicker: "Hanya Satu Kalimat:",
+          body: "“Ya Allah.” Itu saja. Nggak ada doa panjang. Nggak ada permintaan rinci. Cuma nama-Nya yang ia ingat.",
+        },
+        {
+          heading: "Dan Itu Cukup. 💚",
+          kicker: "Pesan untuk Mama:",
+          body: "Allah dengar doa yang nggak ada kata-katanya. Dia tahu yang tersembunyi di hati. Mama nggak butuh doa fancy — cukup nama-Nya.",
+          attribution: "QS. Al-Mu'min: 60",
+        },
+        {
+          heading: "Untuk Mama Malam Ini.",
+          kicker: "Save & Bagikan:",
+          body: "Mama yang lagi capek banget malam ini, ini buat kamu. Save slide ini. Atau tag teman mama yang butuh diingat — kamu nggak sendiri.",
+        },
+      ],
+      caption: "Untuk mama yang di lantai cucian malam ini 🤍 Save & kirim ke teman.",
+      cta: "Save & kirim ke teman mama!",
+      hashtags: ["#BabyMo", "#MamaCerita", "#TaqarrubIlallah", "#UntukMama"],
     },
   ],
   "dhikr-reminder": [
@@ -217,39 +604,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
     },
   ],
 
-  /* ---------- EMOTIONAL CHILDHOOD ---------- */
-  "tiny-heart-talks": [
-    {
-      title: "Bicara Sama Hati Kecil",
-      hook: "Pelukan terbaik adalah doa.",
-      slides: [
-        {
-          heading: "Sayang, Allah Sayang Kamu",
-          kicker: "Bisikan Hati:",
-          body: "Walaupun mama nggak selalu di sisi, Allah selalu menjaga. Tenang ya, sayang.",
-        },
-      ],
-      caption: "Kalimat kecil yang bikin hati anak besar 💛",
-      cta: "Bisikkan ke anakmu malam ini.",
-      hashtags: ["#BabyMo", "#ParentingIslami", "#AnakMuslim"],
-    },
-  ],
-  "dear-little-muslim": [
-    {
-      title: "Dear Sahabat Mo,",
-      hook: "Surat kecil untuk Muslim cilik.",
-      slides: [
-        {
-          heading: "Kamu Spesial!",
-          kicker: "Dear Sahabat Mo,",
-          body: "Allah ciptakan kamu dengan sempurna. Senyummu, suaramu, dan hatimu — semua dicintai-Nya.",
-        },
-      ],
-      caption: "Untuk Sahabat Mo yang sedang tumbuh 🌱",
-      cta: "Tag anak / keponakanmu!",
-      hashtags: ["#BabyMo", "#SuratUntukAnak", "#MuslimKids"],
-    },
-  ],
+  /* ---------- EMOTIONAL CHILDHOOD (additional) ---------- */
   "before-sleep-series": [
     {
       title: "5 Sunnah Sebelum Tidur",
@@ -304,23 +659,6 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hashtags: ["#BabyMo", "#Tafakkur", "#KebesaranAllah"],
     },
   ],
-  "muslim-childhood-nostalgia": [
-    {
-      title: "Aroma Dapur Nenek",
-      hook: "Islam belajar dari hal-hal kecil di rumah.",
-      slides: [
-        {
-          heading: "Wangi Dapur Nenek di Hari Raya",
-          kicker: "Kenangan Manis:",
-          body: "Bismillah sebelum makan, doa sebelum tidur, suara adzan dari radio — itu cara kita kenal Islam pertama kali.",
-        },
-      ],
-      caption: "Kenangan kecil yang bikin Islam terasa dekat 💛",
-      cta: "Tag yang relate!",
-      hashtags: ["#BabyMo", "#Nostalgia", "#KenanganIslam"],
-    },
-  ],
-
   /* ---------- PARENTING ---------- */
   "gentle-muslim-parenting": [
     {
@@ -373,22 +711,6 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       caption: "Untuk para mama yang tak pernah berhenti mencintai 💛",
       cta: "Tag mama hebatmu!",
       hashtags: ["#BabyMo", "#MamaHebat", "#ParentingIslami"],
-    },
-  ],
-  "ayah-series": [
-    {
-      title: "Ayah, Pahlawan Diam-Diam",
-      hook: "Cinta Ayah selalu bekerja.",
-      slides: [
-        {
-          heading: "Terima Kasih, Ayah!",
-          kicker: "Pesan untuk Ayah:",
-          body: "Doa Ayah di sepertiga malam, kerja kerasnya, semuanya adalah cinta. Yuk, peluk Ayah hari ini!",
-        },
-      ],
-      caption: "Cinta Ayah itu pelan, tapi dalam 💙",
-      cta: "Tag Ayah kebanggaanmu!",
-      hashtags: ["#BabyMo", "#AyahHebat", "#KeluargaSholeh"],
     },
   ],
   "emotional-parenting-reminder": [
@@ -534,57 +856,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hashtags: ["#BabyMo", "#BelajarArab", "#AnakMuslim"],
     },
   ],
-  "islamic-fun-facts": [
-    {
-      title: "Fakta Seru: Rasulullah Sayang Kucing!",
-      hook: "Sampai potong jubah biar kucingnya nggak terganggu.",
-      slides: [
-        {
-          heading: "Rasulullah Sayang Kucing!",
-          kicker: "Fakta Seru:",
-          body: "Rasulullah SAW pernah memotong jubahnya sendiri agar tidak membangunkan kucing yang tidur di atasnya. MasyaAllah!",
-        },
-      ],
-      caption: "Sayang binatang itu sunnah loh, Sahabat Mo 🐈",
-      cta: "Tag pecinta kucing!",
-      hashtags: ["#BabyMo", "#FaktaIslam", "#Sunnah"],
-    },
-  ],
-  "tiny-sahabah-stories": [
-    {
-      title: "Kisah Anas bin Malik Kecil",
-      hook: "10 tahun melayani Rasulullah, tak pernah dimarahi.",
-      slides: [
-        {
-          heading: "Anas Si Sahabat Cilik!",
-          kicker: "Kisah Sahabat:",
-          body: "Anas bin Malik melayani Rasulullah selama 10 tahun. Tak sekalipun Beliau bertanya, “Kenapa kamu lakukan ini?” MasyaAllah lembutnya!",
-          attribution: "HR. Bukhari 6038",
-        },
-      ],
-      caption: "Cerita yang bikin anak belajar sabar & lembut 💚",
-      cta: "Save buat bedtime story!",
-      hashtags: ["#BabyMo", "#KisahSahabat", "#AnakSholeh"],
-    },
-  ],
-
-  /* ---------- INTERACTIVE ---------- */
-  "guess-the-sunnah": [
-    {
-      title: "Tebak Sunnah!",
-      hook: "Yang mana ya yang sunnah?",
-      slides: [
-        {
-          heading: "Tebak Sunnah!",
-          kicker: "Quiz Seru:",
-          body: "A. Makan pakai tangan kanan\nB. Tidur miring ke kanan\nC. Senyum ke saudara\n\nMenurut Sahabat Mo, yang mana sunnah?",
-        },
-      ],
-      caption: "Jawab di komen ya! 👇 (Jawaban: SEMUANYA SUNNAH! 🎉)",
-      cta: "Comment jawabanmu!",
-      hashtags: ["#BabyMo", "#TebakSunnah", "#QuizIslami"],
-    },
-  ],
+  /* ---------- INTERACTIVE (additional) ---------- */
   "finish-the-dua": [
     {
       title: "Lengkapi Doanya!",
@@ -599,22 +871,6 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       caption: "Cek hafalan kamu yuk! 👇",
       cta: "Comment lanjutannya!",
       hashtags: ["#BabyMo", "#LengkapiDoa", "#AnakMuslim"],
-    },
-  ],
-  "spot-the-adab": [
-    {
-      title: "Temukan Adabnya!",
-      hook: "Berapa banyak adab yang Sahabat Mo lihat?",
-      slides: [
-        {
-          heading: "Temukan Adabnya!",
-          kicker: "Misi Sahabat Mo:",
-          body: "Aisyah masuk ke rumah nenek. Dia lepas sepatu, ucap salam, dan bantu bawa belanjaan.\n\nBerapa adab yang kamu temukan?",
-        },
-      ],
-      caption: "Hitung di komen! (Hint: 3 adab!) 👀",
-      cta: "Comment jawabanmu!",
-      hashtags: ["#BabyMo", "#TemukanAdab", "#AdabIslami"],
     },
   ],
   "tiny-sunnah-missions": [
@@ -688,40 +944,6 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hashtags: ["#BabyMo", "#CeritaIslami", "#BedtimeStory", "#KisahHewan"],
     },
   ],
-  "what-would-prophet-do": [
-    {
-      title: "Kalau Rasulullah Bagaimana?",
-      hook: "Saat sup tumpah di lantai...",
-      slides: [
-        {
-          heading: "Sup Tumpah, Apa yang Rasulullah Lakukan?",
-          kicker: "What Would Rasulullah Do?",
-          body: "Anak tumpah sup di meja. Rasulullah SAW pasti tersenyum, pastikan anak baik-baik saja, lalu bersihkan bersama. Tanpa marah!",
-          attribution: "Sirah Nabawiyah",
-        },
-      ],
-      caption: "Rasulullah dalam moment dapur kita sehari-hari 💛",
-      cta: "Save buat pengingat sabar!",
-      hashtags: ["#BabyMo", "#Sunnah", "#GentleParenting"],
-    },
-  ],
-  "emotional-story-carousel": [
-    {
-      title: "Doa di Lantai Cucian",
-      hook: "Allah hadir di sudut tersembunyi kita.",
-      slides: [
-        {
-          heading: "Doa di Lantai Cucian",
-          kicker: "Cerita untuk Mama:",
-          body: "Pukul 11 malam, mama duduk di lantai cucian. Capek bicara apa-apa, ia hanya bisik: “Ya Allah.” Dan itu cukup. Allah dengar.",
-        },
-      ],
-      caption: "Untuk para mama yang lelah malam ini 💛",
-      cta: "Save & bagikan ke teman mama!",
-      hashtags: ["#BabyMo", "#MamaCerita", "#TaqarrubIlallah"],
-    },
-  ],
-
   /* ---------- REELS ---------- */
   "pov-muslim-childhood": [
     {
