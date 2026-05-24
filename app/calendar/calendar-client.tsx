@@ -25,7 +25,7 @@ const WEEKDAY_FOCUS: Record<(typeof WEEKDAYS)[number], string> = {
 };
 
 export function CalendarClient() {
-  const [theme, setTheme] = useState<ThemeId>("warm-cream");
+  const [theme, setTheme] = useState<ThemeId>("coral-pink");
   const [days, setDays] = useState<GeneratedContent[]>([]);
   const [busy, setBusy] = useState(false);
   const [selected, setSelected] = useState<GeneratedContent | null>(null);
@@ -133,7 +133,7 @@ function DayCard({
   return (
     <button onClick={onOpen} className="text-left group">
       <Card className="overflow-hidden group-hover:shadow-md transition">
-        <SlidePreview content={content} className="rounded-none border-0 border-b" showFooter={false} />
+        <SlidePreview content={content} className="rounded-none border-0 border-b" />
         <CardContent className="p-3">
           <div className="flex items-center justify-between mb-1">
             <Badge variant="soft" className="font-normal">

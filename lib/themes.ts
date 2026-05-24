@@ -1,122 +1,162 @@
+/**
+ * Themes match the actual published @babymo.official aesthetic:
+ * bright, kid-friendly, 3D-scene backgrounds.
+ * Each theme has:
+ *   - gradient: 3-stop background gradient (full-bleed scene placeholder)
+ *   - title:    bold display title color (pink/red/blue/etc — the "sticker" text)
+ *   - titleStroke: white stroke around the title for that 3D sticker look
+ *   - ink:      body text color (on white card)
+ *   - card:     body card background
+ *   - accent:   decorative shapes (stars, sparkles, clouds)
+ *   - sceneHint: a tiny english hint for the designer ("garden", "bedroom", etc)
+ */
+
 export type ThemeId =
-  | "warm-cream"
-  | "sage-green"
-  | "soft-peach"
-  | "ramadan-gold"
-  | "cozy-night"
-  | "earth-tone"
-  | "dusty-blue"
-  | "sand-beige";
+  | "coral-pink"
+  | "sky-blue"
+  | "mint-garden"
+  | "sunny-yellow"
+  | "peach-apricot"
+  | "lavender-night"
+  | "cream-sand"
+  | "cloud-day";
 
 export interface Theme {
   id: ThemeId;
   name: string;
   description: string;
   gradient: [string, string, string];
+  title: string;
+  titleStroke: string;
   ink: string;
   muted: string;
   accent: string;
   card: string;
   footer: string;
   mood: "light" | "dark";
+  sceneHint: string;
 }
 
 export const THEMES: Theme[] = [
   {
-    id: "warm-cream",
-    name: "Warm Cream",
-    description: "Soft cream linen, the Baby Mo default.",
-    gradient: ["#FAF3E7", "#F4E7D4", "#EAD6BA"],
-    ink: "#3D3A4B",
-    muted: "#7A6F5C",
-    accent: "#C8A26B",
-    card: "#FFFFFFAA",
-    footer: "#8B7A60",
+    id: "coral-pink",
+    name: "Coral Pink",
+    description: "Yuk, belajar! Bright pink, sticker-style.",
+    gradient: ["#FFD7E2", "#FFB5C8", "#F87BAB"],
+    title: "#E2447E",
+    titleStroke: "#FFFFFF",
+    ink: "#3A1B2A",
+    muted: "#7A4B61",
+    accent: "#FFD93D",
+    card: "#FFFFFF",
+    footer: "#7A4B61",
     mood: "light",
+    sceneHint: "pink room / soft cloud scene",
   },
   {
-    id: "sage-green",
-    name: "Sage Green",
-    description: "Calming garden, Montessori sage tones.",
-    gradient: ["#EEF2E6", "#D6DEC6", "#B7C4A4"],
-    ink: "#2E3A2A",
-    muted: "#5E6A56",
-    accent: "#7E9569",
-    card: "#FFFFFFAA",
-    footer: "#5E6A56",
+    id: "sky-blue",
+    name: "Sky Blue",
+    description: "Cloud day, classroom morning.",
+    gradient: ["#DCEEFF", "#B6DBFF", "#88C0F2"],
+    title: "#2E7BC4",
+    titleStroke: "#FFFFFF",
+    ink: "#13345A",
+    muted: "#4A6B8C",
+    accent: "#FFE066",
+    card: "#FFFFFF",
+    footer: "#4A6B8C",
     mood: "light",
+    sceneHint: "blue sky + clouds + sun",
   },
   {
-    id: "soft-peach",
-    name: "Soft Peach",
-    description: "Cozy nursery peach + powder.",
-    gradient: ["#FBE7DA", "#F6CFBE", "#EFB29A"],
-    ink: "#4A2E2A",
-    muted: "#7C534A",
-    accent: "#C97A5A",
-    card: "#FFFFFFB0",
-    footer: "#8B5A4D",
+    id: "mint-garden",
+    name: "Mint Garden",
+    description: "Outdoor garden, soft mint grass.",
+    gradient: ["#E6F4D8", "#C4E29A", "#92C76B"],
+    title: "#2E8B57",
+    titleStroke: "#FFFFFF",
+    ink: "#1E3A1E",
+    muted: "#4F7048",
+    accent: "#FFD93D",
+    card: "#FFFFFF",
+    footer: "#4F7048",
     mood: "light",
+    sceneHint: "garden / outdoor / grass + sky",
   },
   {
-    id: "ramadan-gold",
-    name: "Ramadan Gold",
-    description: "Soft gold + warm cream, lantern mood.",
-    gradient: ["#FBF3DE", "#EFD9A2", "#D9B36A"],
-    ink: "#3A2E14",
-    muted: "#7B5E2A",
-    accent: "#B0843A",
-    card: "#FFFFFFB0",
-    footer: "#8B6A2A",
+    id: "sunny-yellow",
+    name: "Sunny Yellow",
+    description: "Sunshine kitchen, warm appetit.",
+    gradient: ["#FFF1B8", "#FFE066", "#FFC83D"],
+    title: "#D9622E",
+    titleStroke: "#FFFFFF",
+    ink: "#3A2310",
+    muted: "#7A532A",
+    accent: "#FF8FB0",
+    card: "#FFFFFF",
+    footer: "#7A532A",
     mood: "light",
+    sceneHint: "kitchen / dining table morning",
   },
   {
-    id: "cozy-night",
-    name: "Cozy Night",
-    description: "Bedtime navy, calm starlit.",
-    gradient: ["#23223A", "#2E2C4A", "#3B3960"],
-    ink: "#F2EBDA",
-    muted: "#C9C1AC",
-    accent: "#E8C98C",
-    card: "#FFFFFF12",
-    footer: "#C9C1AC",
+    id: "peach-apricot",
+    name: "Peach Apricot",
+    description: "Cozy peach, adab learning.",
+    gradient: ["#FFE0CC", "#FFC1A0", "#FF9F76"],
+    title: "#C4592E",
+    titleStroke: "#FFFFFF",
+    ink: "#3A1B0F",
+    muted: "#7A4A2F",
+    accent: "#7AC4D9",
+    card: "#FFFFFF",
+    footer: "#7A4A2F",
+    mood: "light",
+    sceneHint: "warm interior / wooden room",
+  },
+  {
+    id: "lavender-night",
+    name: "Lavender Night",
+    description: "Bedtime, stars, bintang jatuh.",
+    gradient: ["#5B4A8C", "#3E2E6E", "#262050"],
+    title: "#FFD93D",
+    titleStroke: "#3E2E6E",
+    ink: "#26203F",
+    muted: "#7B7AAA",
+    accent: "#FFD93D",
+    card: "#FFFFFF",
+    footer: "#C4C0E0",
     mood: "dark",
+    sceneHint: "bedroom at night / stars",
   },
   {
-    id: "earth-tone",
-    name: "Earth Tone",
-    description: "Clay + terracotta, grounding.",
-    gradient: ["#EFE2D2", "#D9B89A", "#B98968"],
-    ink: "#3A2A20",
-    muted: "#7A5642",
-    accent: "#9A5C3A",
-    card: "#FFFFFFAA",
-    footer: "#7A5642",
+    id: "cream-sand",
+    name: "Cream Sand",
+    description: "Tafakkur, soft beige study.",
+    gradient: ["#FBF3E0", "#F0E0BF", "#DEC58E"],
+    title: "#B8862C",
+    titleStroke: "#FFFFFF",
+    ink: "#3A2E10",
+    muted: "#7A5E2A",
+    accent: "#F87BAB",
+    card: "#FFFFFF",
+    footer: "#7A5E2A",
     mood: "light",
+    sceneHint: "study / library / soft shelves",
   },
   {
-    id: "dusty-blue",
-    name: "Dusty Blue",
-    description: "Quiet sky, gentle morning.",
-    gradient: ["#E7ECF1", "#C8D3DD", "#A2B3C2"],
-    ink: "#26313D",
-    muted: "#52647A",
-    accent: "#6A88A6",
-    card: "#FFFFFFB0",
-    footer: "#52647A",
+    id: "cloud-day",
+    name: "Cloud Day",
+    description: "Bright sky with sun rays.",
+    gradient: ["#E7F4FF", "#C9E6FF", "#FFE9AC"],
+    title: "#5BB3C4",
+    titleStroke: "#FFFFFF",
+    ink: "#14384A",
+    muted: "#4A6B7A",
+    accent: "#F87BAB",
+    card: "#FFFFFF",
+    footer: "#4A6B7A",
     mood: "light",
-  },
-  {
-    id: "sand-beige",
-    name: "Sand Beige",
-    description: "Linen + warm sand minimalism.",
-    gradient: ["#F6EFE2", "#E5D5BC", "#CDB893"],
-    ink: "#3A3024",
-    muted: "#7A6749",
-    accent: "#A98859",
-    card: "#FFFFFFAA",
-    footer: "#7A6749",
-    mood: "light",
+    sceneHint: "sky + grass + sunshine playful",
   },
 ];
 

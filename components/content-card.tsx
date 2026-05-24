@@ -21,7 +21,7 @@ export function ContentCard({ content, onRemove }: Props) {
     <>
       <Card className="overflow-hidden group hover:shadow-md transition">
         <div onClick={() => setOpen(true)} className="cursor-pointer">
-          <SlidePreview content={content} className="rounded-none border-0 border-b" showFooter={false} />
+          <SlidePreview content={content} className="rounded-none border-0 border-b" />
         </div>
         <CardHeader className="pb-2">
           <div className="flex items-center gap-1.5 flex-wrap">
@@ -113,7 +113,7 @@ export function ContentDetailDialog({
               <div className="mt-3 grid grid-cols-6 gap-2">
                 {content.slides.map((_, i) => (
                   <button key={i} onClick={() => setIdx(i)} className={i === idx ? "ring-2 ring-babymo-gold rounded-xl" : "opacity-70 hover:opacity-100 transition"}>
-                    <SlidePreview content={content} slideIndex={i} showFooter={false} />
+                    <SlidePreview content={content} slideIndex={i} />
                   </button>
                 ))}
               </div>

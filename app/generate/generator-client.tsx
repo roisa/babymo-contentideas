@@ -4,14 +4,12 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CATEGORIES, FORMATS, STORY_STYLES, findContentType, type FormatId } from "@/lib/content-types";
 import { THEMES, type ThemeId } from "@/lib/themes";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { Sparkles, Wand2, AlertCircle } from "lucide-react";
+import { Sparkles, AlertCircle, Wand2, Check } from "lucide-react";
 import { ContentCard } from "@/components/content-card";
 import { useLibrary } from "@/lib/store";
 import type { GeneratedContent, GenerationRequest } from "@/lib/types";
@@ -20,18 +18,18 @@ const BATCH_SIZES = [1, 5, 10, 20] as const;
 
 export function GeneratorClient() {
   const search = useSearchParams();
-  const initialTheme = (search.get("theme") as ThemeId) ?? "warm-cream";
+  const initialTheme = (search.get("theme") as ThemeId) ?? "coral-pink";
   const initialType = search.get("type") ?? "daily-dua";
 
   const [contentTypeId, setContentTypeId] = useState<string>(initialType);
   const [theme, setTheme] = useState<ThemeId>(initialTheme);
-  const [format, setFormat] = useState<FormatId>(() => {
-    const m = findContentType(initialType);
-    return m?.type.suggestedFormat ?? "single";
-  });
+  const [format, setFormat] = useState<FormatId>(() => findContentType(initialType)?.type.suggestedFormat ?? "single");
   const [storyStyle, setStoryStyle] = useState<string>("style-a");
   const [batchSize, setBatchSize] = useState<number>(5);
   const [customPrompt, setCustomPrompt] = useState("");
+  const [activeCategoryId, setActiveCategoryId] = useState<string>(() => {
+    return findContentType(initialType)?.category.id ?? "daily-islamic";
+  });
 
   const [busy, setBusy] = useState(false);
   const [warning, setWarning] = useState<string | null>(null);
@@ -39,17 +37,19 @@ export function GeneratorClient() {
   const [error, setError] = useState<string | null>(null);
 
   const addBatch = useLibrary((s) => s.addBatch);
-
-  const activeCategory = useMemo(() => {
-    return CATEGORIES.find((c) => c.types.some((t) => t.id === contentTypeId)) ?? CATEGORIES[0];
-  }, [contentTypeId]);
-
+  const activeCategory = useMemo(
+    () => CATEGORIES.find((c) => c.id === activeCategoryId) ?? CATEGORIES[0],
+    [activeCategoryId]
+  );
   const activeType = findContentType(contentTypeId)?.type;
 
   function pickType(id: string) {
     setContentTypeId(id);
-    const sf = findContentType(id)?.type.suggestedFormat;
-    if (sf) setFormat(sf);
+    const m = findContentType(id);
+    if (m) {
+      setActiveCategoryId(m.category.id);
+      setFormat(m.type.suggestedFormat);
+    }
   }
 
   async function handleGenerate() {
@@ -83,226 +83,246 @@ export function GeneratorClient() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[360px,1fr] gap-6">
-      {/* Left rail */}
-      <div className="space-y-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">1. Content framework</CardTitle>
-            <CardDescription>Pick the category & content type.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Tabs value={activeCategory.id} onValueChange={() => {}}>
-              <TabsList className="flex-wrap h-auto bg-muted/60 p-1 gap-1">
-                {CATEGORIES.map((c) => (
-                  <TabsTrigger
-                    key={c.id}
-                    value={c.id}
-                    onClick={() => pickType(c.types[0].id)}
-                    className="text-[11px] px-2.5 py-1 h-auto"
-                  >
-                    {c.name}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {CATEGORIES.map((c) => (
-                <TabsContent key={c.id} value={c.id} className="mt-3">
-                  <div className="grid grid-cols-1 gap-1.5">
-                    {c.types.map((t) => (
-                      <button
-                        key={t.id}
-                        onClick={() => pickType(t.id)}
-                        className={cn(
-                          "w-full text-left rounded-xl border p-2.5 transition",
-                          contentTypeId === t.id
-                            ? "border-babymo-gold bg-babymo-gold/10"
-                            : "border-transparent hover:bg-muted"
-                        )}
-                      >
-                        <div className="text-sm font-medium">{t.label}</div>
-                        <div className="text-xs text-muted-foreground line-clamp-1">{t.hint}</div>
-                      </button>
-                    ))}
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">2. Format</CardTitle>
-            <CardDescription>Single, carousel, or reels.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-3 gap-2">
-            {FORMATS.map((f) => (
+    <div className="space-y-6">
+      {/* Step 1: Pilih konten */}
+      <StepCard step={1} label="Pilih konten" subtitle="Kategori dan tipe konten yang ingin dibuat">
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {CATEGORIES.map((c) => {
+            const active = activeCategoryId === c.id;
+            return (
               <button
-                key={f.id}
-                onClick={() => setFormat(f.id)}
+                key={c.id}
+                onClick={() => {
+                  setActiveCategoryId(c.id);
+                  pickType(c.types[0].id);
+                }}
+                className={cn("pill-tab", active ? "pill-tab-active" : "pill-tab-inactive")}
+              >
+                {c.name}
+              </button>
+            );
+          })}
+        </div>
+        {/* Content type tiles */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {activeCategory.types.map((t) => {
+            const active = contentTypeId === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => pickType(t.id)}
                 className={cn(
-                  "rounded-xl border p-3 text-left transition",
-                  format === f.id ? "border-babymo-gold bg-babymo-gold/10" : "border-input hover:bg-muted"
+                  "text-left rounded-2xl border p-3 transition-all active:scale-[0.98]",
+                  active
+                    ? "border-babymo-green bg-babymo-green-soft shadow-ios-soft"
+                    : "border-transparent bg-white hover:border-babymo-green/30 hover:bg-secondary/40"
                 )}
               >
-                <div className="text-sm font-medium">{f.name}</div>
-                <div className="text-[11px] text-muted-foreground mt-1">
-                  {f.width}×{f.height}
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className="text-[14px] font-semibold leading-tight">{t.label}</div>
+                  {active && (
+                    <div className="h-5 w-5 rounded-full bg-babymo-green text-white flex items-center justify-center shrink-0">
+                      <Check className="h-3 w-3" strokeWidth={3} />
+                    </div>
+                  )}
                 </div>
+                <div className="text-[11px] text-muted-foreground leading-snug">{t.hint}</div>
               </button>
-            ))}
-          </CardContent>
-        </Card>
+            );
+          })}
+        </div>
+      </StepCard>
 
-        {format === "carousel" && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">3. Storytelling structure</CardTitle>
-              <CardDescription>How the carousel flows.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 gap-2">
-              {STORY_STYLES.map((s) => (
+      {/* Step 2: Format + Theme + Batch */}
+      <StepCard step={2} label="Atur format" subtitle="Bentuk, palet, dan jumlah">
+        <div className="space-y-5">
+          <Field label="Format">
+            <div className="grid grid-cols-3 gap-2">
+              {FORMATS.map((f) => (
                 <button
-                  key={s.id}
-                  onClick={() => setStoryStyle(s.id)}
+                  key={f.id}
+                  onClick={() => setFormat(f.id)}
                   className={cn(
-                    "w-full text-left rounded-xl border p-2.5 transition",
-                    storyStyle === s.id ? "border-babymo-gold bg-babymo-gold/10" : "border-input hover:bg-muted"
+                    "text-left rounded-2xl border p-3 transition-all active:scale-[0.98]",
+                    format === f.id
+                      ? "border-babymo-green bg-babymo-green-soft shadow-ios-soft"
+                      : "border-transparent bg-white hover:bg-secondary/40"
                   )}
                 >
-                  <div className="text-sm font-medium">{s.name}</div>
-                  <div className="text-[11px] text-muted-foreground">{s.description}</div>
+                  <div className="text-[13px] font-semibold">{f.name}</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">
+                    {f.width}×{f.height}
+                  </div>
                 </button>
               ))}
-            </CardContent>
-          </Card>
-        )}
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Theme</CardTitle>
-            <CardDescription>Soft palettes, Baby Mo-tuned.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-4 gap-2">
-            {THEMES.map((t) => (
-              <button key={t.id} onClick={() => setTheme(t.id)} className="text-left group">
-                <div
-                  className={cn(
-                    "aspect-square rounded-xl border-2 shadow-sm overflow-hidden relative transition",
-                    theme === t.id ? "border-babymo-gold ring-2 ring-babymo-gold/30" : "border-transparent"
-                  )}
-                  style={{
-                    background: `linear-gradient(140deg, ${t.gradient[0]} 0%, ${t.gradient[1]} 55%, ${t.gradient[2]} 100%)`,
-                  }}
-                />
-                <div className="text-[10px] mt-1 text-center text-muted-foreground truncate">{t.name}</div>
-              </button>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Batch size</CardTitle>
-            <CardDescription>How many to generate.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-4 gap-2">
-            {BATCH_SIZES.map((n) => (
-              <button
-                key={n}
-                onClick={() => setBatchSize(n)}
-                className={cn(
-                  "rounded-xl border py-3 text-sm font-medium transition",
-                  batchSize === n ? "border-babymo-gold bg-babymo-gold/10" : "border-input hover:bg-muted"
-                )}
-              >
-                {n}
-              </button>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Optional · custom direction</CardTitle>
-            <CardDescription>Add a creative brief.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Label htmlFor="prompt" className="sr-only">Custom direction</Label>
-            <Textarea
-              id="prompt"
-              placeholder="e.g. tone like a soft letter, mention bedtime, end with a Quran ayah…"
-              value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
-              className="min-h-[80px]"
-            />
-          </CardContent>
-        </Card>
-
-        <Button onClick={handleGenerate} disabled={busy} size="lg" className="w-full">
-          {busy ? (
-            <span className="inline-flex items-center gap-2">
-              <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-              Generating {batchSize} pieces…
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-2">
-              <Sparkles className="h-4 w-4" /> Generate {batchSize} pieces
-            </span>
-          )}
-        </Button>
-        {activeType && (
-          <div className="text-xs text-muted-foreground text-center">
-            <Wand2 className="inline h-3 w-3 mr-1 -mt-0.5" />
-            {activeType.label} · {format} · {batchSize}×
-          </div>
-        )}
-      </div>
-
-      {/* Right side: results */}
-      <div className="space-y-4 min-w-0">
-        {warning && (
-          <div className="rounded-xl border border-babymo-gold/40 bg-babymo-gold/10 p-3 text-xs flex items-start gap-2">
-            <AlertCircle className="h-4 w-4 text-babymo-ink mt-0.5 shrink-0" />
-            <div className="leading-relaxed">{warning}</div>
-          </div>
-        )}
-        {error && (
-          <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-xs text-destructive">
-            {error}
-          </div>
-        )}
-
-        {busy && results.length === 0 && <SkeletonGrid count={batchSize} format={format} />}
-
-        {results.length > 0 ? (
-          <>
-            <div className="flex items-center justify-between">
-              <div className="text-sm font-medium">Latest batch — {results.length} pieces</div>
-              <Badge variant="soft" className="font-normal">Saved to library</Badge>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-              {results.map((r) => (
-                <ContentCard key={r.id} content={r} />
+          </Field>
+
+          {format === "carousel" && (
+            <Field label="Storytelling structure">
+              <div className="grid grid-cols-1 gap-1.5">
+                {STORY_STYLES.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => setStoryStyle(s.id)}
+                    className={cn(
+                      "w-full text-left rounded-2xl border p-2.5 transition active:scale-[0.99]",
+                      storyStyle === s.id
+                        ? "border-babymo-green bg-babymo-green-soft"
+                        : "border-transparent bg-white hover:bg-secondary/40"
+                    )}
+                  >
+                    <div className="text-[13px] font-semibold">{s.name}</div>
+                    <div className="text-[11px] text-muted-foreground">{s.description}</div>
+                  </button>
+                ))}
+              </div>
+            </Field>
+          )}
+
+          <Field label="Theme & scene">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+              {THEMES.map((t) => (
+                <button key={t.id} onClick={() => setTheme(t.id)} className="text-left group">
+                  <div
+                    className={cn(
+                      "aspect-square rounded-2xl border-[3px] shadow-ios-soft overflow-hidden relative transition group-active:scale-[0.95]",
+                      theme === t.id ? "border-babymo-green ring-2 ring-babymo-green/30" : "border-white"
+                    )}
+                    style={{
+                      background: `linear-gradient(170deg, ${t.gradient[0]} 0%, ${t.gradient[1]} 55%, ${t.gradient[2]} 100%)`,
+                    }}
+                  />
+                  <div className="text-[10px] mt-1 text-center text-muted-foreground truncate font-medium">{t.name}</div>
+                </button>
               ))}
             </div>
-          </>
-        ) : (
-          !busy && (
-            <Card className="border-dashed">
-              <CardContent className="p-10 text-center">
-                <div className="mx-auto h-12 w-12 rounded-full bg-babymo-gold/15 flex items-center justify-center mb-3">
-                  <Sparkles className="h-5 w-5 text-babymo-ink" />
-                </div>
-                <div className="font-medium">No batch yet</div>
-                <div className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                  Pick a content type on the left, choose a format and theme, then hit generate. Your library will keep everything you make.
-                </div>
-              </CardContent>
-            </Card>
-          )
-        )}
+          </Field>
+
+          <Field label={`Batch size — ${batchSize} ${batchSize === 1 ? "piece" : "pieces"}`}>
+            <div className="grid grid-cols-4 gap-2">
+              {BATCH_SIZES.map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setBatchSize(n)}
+                  className={cn(
+                    "rounded-2xl border py-3 text-[15px] font-bold transition active:scale-[0.97]",
+                    batchSize === n
+                      ? "border-babymo-green bg-babymo-green text-white"
+                      : "border-transparent bg-white text-foreground hover:bg-secondary/40"
+                  )}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+          </Field>
+        </div>
+      </StepCard>
+
+      {/* Step 3: Optional direction */}
+      <StepCard step={3} label="Tambah arahan (opsional)" subtitle="Brief tambahan untuk AI / variasi tone">
+        <Textarea
+          placeholder="cth: tone bedtime story, akhiri dengan ayat, tambahkan Sahabat Mo POV…"
+          value={customPrompt}
+          onChange={(e) => setCustomPrompt(e.target.value)}
+          className="min-h-[80px] bg-white rounded-2xl border-white shadow-ios-soft"
+        />
+      </StepCard>
+
+      {/* Sticky generate bar */}
+      <div className="sticky bottom-24 md:bottom-6 z-20 px-1">
+        <div className="rounded-full bg-white/80 backdrop-blur-ios border border-white shadow-ios-card p-2 flex items-center gap-3">
+          <div className="flex items-center gap-2 pl-3">
+            <Wand2 className="h-4 w-4 text-babymo-green" />
+            <span className="text-[13px] font-semibold truncate">
+              {activeType?.label} · {format} · {batchSize}×
+            </span>
+          </div>
+          <Button onClick={handleGenerate} disabled={busy} size="lg" className="ml-auto">
+            {busy ? (
+              <span className="inline-flex items-center gap-2">
+                <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                Generating {batchSize}…
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2">
+                <Sparkles className="h-4 w-4" /> Generate {batchSize}
+              </span>
+            )}
+          </Button>
+        </div>
       </div>
+
+      {warning && (
+        <div className="rounded-2xl border border-babymo-yellow/50 bg-babymo-yellow/20 p-3 text-[12px] flex items-start gap-2">
+          <AlertCircle className="h-4 w-4 text-babymo-ink mt-0.5 shrink-0" />
+          <div className="leading-relaxed">{warning}</div>
+        </div>
+      )}
+      {error && (
+        <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-[12px] text-destructive">
+          {error}
+        </div>
+      )}
+
+      {/* Results */}
+      {busy && results.length === 0 && <SkeletonGrid count={batchSize} format={format} />}
+      {results.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold">Hasil — {results.length} pieces</div>
+            <Badge variant="green">Tersimpan di library</Badge>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {results.map((r) => (
+              <ContentCard key={r.id} content={r} />
+            ))}
+          </div>
+        </div>
+      )}
+      {!busy && results.length === 0 && (
+        <Card className="border-dashed border-2 bg-transparent shadow-none">
+          <CardContent className="p-10 text-center">
+            <div className="mx-auto h-12 w-12 rounded-2xl bg-babymo-green/15 flex items-center justify-center mb-3">
+              <Sparkles className="h-5 w-5 text-babymo-green" />
+            </div>
+            <div className="font-semibold">Belum ada batch</div>
+            <div className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+              Pilih tipe konten di atas, lalu tekan <b>Generate</b>. Hasil otomatis tersimpan di Library.
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+function StepCard({ step, label, subtitle, children }: { step: number; label: string; subtitle: string; children: React.ReactNode }) {
+  return (
+    <Card className="bg-white/70 backdrop-blur-ios">
+      <CardContent className="p-5 md:p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-8 w-8 rounded-full bg-babymo-green text-white text-[13px] font-bold flex items-center justify-center shadow-ios-sticker">
+            {step}
+          </div>
+          <div>
+            <div className="font-bold text-[15px] leading-tight">{label}</div>
+            <div className="text-[12px] text-muted-foreground">{subtitle}</div>
+          </div>
+        </div>
+        {children}
+      </CardContent>
+    </Card>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="text-[11px] uppercase tracking-[0.16em] font-semibold text-muted-foreground mb-2">{label}</div>
+      {children}
     </div>
   );
 }
@@ -310,17 +330,17 @@ export function GeneratorClient() {
 function SkeletonGrid({ count, format }: { count: number; format: FormatId }) {
   const aspect = format === "reels" ? "1080 / 1920" : "1 / 1";
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {Array.from({ length: count }).map((_, i) => (
         <Card key={i} className="overflow-hidden">
-          <div className="bg-muted/60 relative" style={{ aspectRatio: aspect }}>
+          <div className="bg-secondary relative" style={{ aspectRatio: aspect }}>
             <div className="absolute inset-0 shimmer" />
           </div>
           <CardContent className="p-4">
-            <div className="h-3 w-2/3 rounded-full bg-muted relative overflow-hidden mb-2">
+            <div className="h-3 w-2/3 rounded-full bg-secondary relative overflow-hidden mb-2">
               <div className="absolute inset-0 shimmer" />
             </div>
-            <div className="h-3 w-1/2 rounded-full bg-muted relative overflow-hidden">
+            <div className="h-3 w-1/2 rounded-full bg-secondary relative overflow-hidden">
               <div className="absolute inset-0 shimmer" />
             </div>
           </CardContent>

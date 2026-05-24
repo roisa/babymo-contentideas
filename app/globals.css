@@ -4,26 +4,27 @@
 
 @layer base {
   :root {
-    --background: 35 50% 97%;
-    --foreground: 250 14% 18%;
+    /* iOS-light Baby Mo palette */
+    --background: 50 45% 97%;         /* warm cream */
+    --foreground: 130 14% 12%;        /* deep green-ink */
     --card: 0 0% 100%;
-    --card-foreground: 250 14% 18%;
+    --card-foreground: 130 14% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 250 14% 18%;
-    --primary: 250 14% 22%;
-    --primary-foreground: 35 50% 97%;
-    --secondary: 35 35% 92%;
-    --secondary-foreground: 250 14% 22%;
-    --muted: 35 25% 94%;
-    --muted-foreground: 250 8% 45%;
-    --accent: 18 50% 88%;
-    --accent-foreground: 250 14% 22%;
-    --destructive: 0 70% 55%;
+    --popover-foreground: 130 14% 12%;
+    --primary: 138 58% 42%;           /* Baby Mo green #2EA84F */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 138 40% 92%;         /* soft green wash */
+    --secondary-foreground: 130 22% 18%;
+    --muted: 50 30% 95%;
+    --muted-foreground: 130 8% 38%;
+    --accent: 48 100% 70%;            /* Baby Mo yellow #FFE066 */
+    --accent-foreground: 130 22% 18%;
+    --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 100%;
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
-    --ring: 250 14% 22%;
-    --radius: 0.85rem;
+    --border: 50 20% 88%;
+    --input: 50 20% 88%;
+    --ring: 138 58% 42%;
+    --radius: 1.25rem;                /* iOS feel */
   }
 }
 
@@ -31,25 +32,47 @@
   * { @apply border-border; }
   html, body { @apply bg-background text-foreground antialiased; }
   body {
-    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1, "cv11" 1;
     background-image:
-      radial-gradient(1200px 600px at 10% -10%, rgba(230,187,168,0.18), transparent 60%),
-      radial-gradient(900px 500px at 100% 10%, rgba(199,212,190,0.18), transparent 60%);
+      radial-gradient(1200px 600px at 0% -5%, rgba(46,168,79,0.08), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, rgba(255,224,102,0.18), transparent 55%),
+      radial-gradient(800px 500px at 50% 110%, rgba(248,123,171,0.10), transparent 55%);
     background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
   }
+
+  /* iOS-style scrollbar */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-thumb { background: rgba(46,168,79,0.18); border-radius: 9999px; border: 3px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(46,168,79,0.28); border: 3px solid transparent; background-clip: padding-box; }
 }
 
 @layer components {
+  .ios-card {
+    @apply rounded-ios-lg bg-white shadow-ios-card border border-white/60;
+  }
   .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_2px_30px_rgba(60,40,30,0.06)];
+    @apply rounded-ios-lg bg-white/70 backdrop-blur-ios border border-white/60 shadow-ios-soft;
+  }
+  .sticker-tile {
+    @apply rounded-ios bg-white border border-white/80 shadow-ios-sticker;
   }
   .shimmer {
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%);
     background-size: 1000px 100%;
     @apply animate-shimmer;
   }
   .soft-divider {
-    background: linear-gradient(90deg, transparent, rgba(60,40,30,0.12), transparent);
+    background: linear-gradient(90deg, transparent, rgba(20,30,20,0.10), transparent);
     height: 1px;
+  }
+  .pill-tab {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition;
+  }
+  .pill-tab-active {
+    @apply bg-babymo-green text-white shadow-ios-sticker;
+  }
+  .pill-tab-inactive {
+    @apply bg-white/70 text-foreground hover:bg-white;
   }
 }

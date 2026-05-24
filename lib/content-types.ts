@@ -66,6 +66,8 @@ export interface Category {
   name: string;
   description: string;
   icon: string;
+  /** Suggested character pose + placement hint, shown in the slide as a dashed reservation zone for the design team. */
+  pose: { hint: string; position: "br" | "bl" | "tr" | "tl" | "right" | "bottom" };
   types: ContentType[];
 }
 
@@ -75,6 +77,7 @@ export const CATEGORIES: Category[] = [
     name: "Daily Islamic",
     description: "Soft daily touches of faith.",
     icon: "moon",
+    pose: { hint: "baby mo · hands raised in dua", position: "br" },
     types: [
       { id: "daily-dua", label: "Daily Dua", hint: "A short bedtime or morning dua.", suggestedFormat: "single", tone: "calm, intimate" },
       { id: "quran-ayah", label: "Quran Ayah", hint: "A gentle ayah with reflection.", suggestedFormat: "carousel", tone: "reverent, soft" },
@@ -89,6 +92,7 @@ export const CATEGORIES: Category[] = [
     name: "Emotional Childhood",
     description: "Tender, nostalgic, child-centered.",
     icon: "heart",
+    pose: { hint: "baby mo · curled up with blanket", position: "br" },
     types: [
       { id: "tiny-heart-talks", label: "Tiny Heart Talks", hint: "A whisper between mama & child.", suggestedFormat: "carousel", tone: "tender, intimate" },
       { id: "dear-little-muslim", label: "Dear Little Muslim", hint: "A letter to the child.", suggestedFormat: "carousel", tone: "letter, hopeful" },
@@ -102,6 +106,7 @@ export const CATEGORIES: Category[] = [
     name: "Parenting",
     description: "For mama & ayah.",
     icon: "home",
+    pose: { hint: "baby mo · being held / cuddled", position: "bl" },
     types: [
       { id: "gentle-muslim-parenting", label: "Gentle Muslim Parenting", hint: "Soft, attuned parenting tips.", suggestedFormat: "carousel", tone: "warm, validating" },
       { id: "mama-reflection", label: "Mama Reflection", hint: "An emotional reflection from a mother.", suggestedFormat: "single", tone: "honest, soft" },
@@ -114,6 +119,7 @@ export const CATEGORIES: Category[] = [
     name: "Kids Educational",
     description: "Wonder + learning.",
     icon: "sparkles",
+    pose: { hint: "baby mo · curious, pointing up", position: "br" },
     types: [
       { id: "did-you-know", label: "Did You Know", hint: "A fascinating Islamic fact.", suggestedFormat: "carousel", tone: "curious, playful" },
       { id: "allahs-creation", label: "Allah's Creation Series", hint: "A wonder of Allah's signs in creation.", suggestedFormat: "carousel", tone: "awe, wonder" },
@@ -127,6 +133,7 @@ export const CATEGORIES: Category[] = [
     name: "Interactive",
     description: "Comment + share prompts.",
     icon: "message",
+    pose: { hint: "baby mo · thinking, finger on chin", position: "br" },
     types: [
       { id: "guess-the-sunnah", label: "Guess The Sunnah", hint: "A guess-the-Sunnah quiz.", suggestedFormat: "carousel", tone: "playful, curious" },
       { id: "finish-the-dua", label: "Finish The Dua", hint: "Fill-in-the-blank dua moment.", suggestedFormat: "single", tone: "interactive" },
@@ -140,6 +147,7 @@ export const CATEGORIES: Category[] = [
     name: "Story Content",
     description: "Mini stories that move hearts.",
     icon: "book",
+    pose: { hint: "baby mo · listening / wide-eyed", position: "br" },
     types: [
       { id: "mini-islamic-story", label: "Mini Islamic Story Slides", hint: "A 4-5 slide gentle story.", suggestedFormat: "carousel", tone: "story, warm" },
       { id: "what-would-prophet-do", label: "What Would Prophet Muhammad ﷺ Do?", hint: "A scenario + prophetic response.", suggestedFormat: "carousel", tone: "respectful, instructive" },
@@ -151,6 +159,7 @@ export const CATEGORIES: Category[] = [
     name: "Reels Content",
     description: "Vertical hook-driven.",
     icon: "film",
+    pose: { hint: "baby mo · POV close-up", position: "bottom" },
     types: [
       { id: "pov-muslim-childhood", label: "POV Muslim Childhood", hint: "POV-style cozy childhood scene.", suggestedFormat: "reels", tone: "nostalgic, intimate" },
       { id: "soft-islamic-affirmations", label: "Soft Islamic Affirmations", hint: "Gentle, calming affirmations.", suggestedFormat: "reels", tone: "affirming" },

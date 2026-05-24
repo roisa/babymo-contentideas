@@ -1,9 +1,14 @@
 import type { Slide } from "./types";
 
 /**
- * Curated Baby Mo-style content seeds.
- * Used by the offline generator and as creative scaffolding for the AI prompt.
- * Each seed maps to a contentTypeId.
+ * Curated Baby Mo seeds.
+ *
+ * Voice matches the published @babymo.official feed:
+ * - Indonesian / Bahasa, kid-friendly
+ * - Bold, playful, attention-grabbing titles ("Tahukah Kamu?", "Yuk, Belajar!", "Wow!")
+ * - Hadith/Quran with attribution
+ * - Arabic + meaning when relevant
+ * - Short body, emoji-ish energy without literal emoji
  */
 
 export interface SampleSeed {
@@ -16,460 +21,587 @@ export interface SampleSeed {
 }
 
 export const SEEDS: Record<string, SampleSeed[]> = {
+  /* ---------- DAILY ISLAMIC ---------- */
   "daily-dua": [
     {
-      title: "A tiny dua before sleep",
-      hook: "Three soft words before the lights go out.",
+      title: "Doa Sebelum Tidur",
+      hook: "Tidur jadi lebih tenang sama Baby Mo.",
       slides: [
-        { heading: "Before sleep", body: "Hold their tiny hand. Whisper this.", footer: "Baby Mo · Daily Dua" },
-        { heading: "Bismika Allahumma", body: "In Your name, O Allah, I die and I live.", arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", footer: "Baby Mo · Daily Dua" },
-        { heading: "Tonight", body: "Let them fall asleep knowing they are remembered by the One who never sleeps.", footer: "Baby Mo · Daily Dua" },
+        {
+          heading: "Doa Sebelum Tidur",
+          kicker: "Yuk, Hafalkan!",
+          body: "Bismika Allahumma amuutu wa ahyaa.\n\n“Dengan nama-Mu ya Allah, aku mati dan aku hidup.”",
+          arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوْتُ وَأَحْيَا",
+          attribution: "HR. Bukhari 6312",
+        },
       ],
-      caption: "A tiny bedtime dua to whisper into your little one's ear tonight 🤍",
-      cta: "Save this for tonight's bedtime routine.",
-      hashtags: ["#babymo", "#dailydua", "#muslimkids", "#bedtimedua", "#gentleparenting"],
+      caption: "Sebelum bobo, jangan lupa doa dulu ya, Sahabat Mo 🌙✨",
+      cta: "Save & ajarkan ke adik!",
+      hashtags: ["#BabyMo", "#DoaHarian", "#AnakMuslim", "#BismillahDulu"],
     },
     {
-      title: "Morning words for a tender heart",
-      hook: "Wake them up with a dua, not a rush.",
+      title: "Doa Bangun Tidur",
+      hook: "Mulai hari dengan rasa syukur.",
       slides: [
-        { heading: "Good morning, little one", body: "Before the day begins, a small remembrance.", footer: "Baby Mo · Daily Dua" },
-        { heading: "Alhamdulillah", body: "All praise is for Allah who gave us life after death.", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا", footer: "Baby Mo · Daily Dua" },
-        { heading: "Try this", body: "Whisper it as you open the curtains. Let mornings feel safe.", footer: "Baby Mo · Daily Dua" },
+        {
+          heading: "Doa Bangun Tidur",
+          kicker: "Pagi yang Cerah!",
+          body: "Alhamdulillahil ladzii ahyaanaa ba'da maa amaatanaa wa ilaihin nusyuur.\n\n“Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami.”",
+          arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا",
+          attribution: "HR. Bukhari 6312",
+        },
       ],
-      caption: "Start the morning with softness, not noise.",
-      cta: "Share with a mama who needs softer mornings.",
-      hashtags: ["#babymo", "#morningdua", "#muslimmama", "#cozyhome", "#islamicparenting"],
+      caption: "Pagi-pagi, langsung Alhamdulillah dulu ya 🌞",
+      cta: "Tag teman Mo-mu!",
+      hashtags: ["#BabyMo", "#DoaPagi", "#AnakSholeh"],
     },
   ],
   "quran-ayah": [
     {
-      title: "He is with you, wherever you are",
-      hook: "A reminder for the tired heart.",
+      title: "Allah Selalu Bersama Kita",
+      hook: "Di manapun kamu, Allah selalu dekat.",
       slides: [
-        { heading: "Quran 57:4", body: "And He is with you wherever you are.", arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", footer: "Baby Mo · Quran Ayah" },
-        { heading: "On the kitchen floor.", body: "On the school run. In the silent 3am.", footer: "Baby Mo · Quran Ayah" },
-        { heading: "He sees you", body: "You are not parenting alone. You never were.", footer: "Baby Mo · Quran Ayah" },
+        {
+          heading: "Allah Selalu Dekat",
+          kicker: "Catatan Hari Ini:",
+          body: "“Dan Dia bersama kamu di manapun kamu berada.”",
+          arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ",
+          attribution: "QS. Al-Hadid: 4",
+        },
       ],
-      caption: "For the mama who feels unseen today 🤍",
-      cta: "Save & send to a friend.",
-      hashtags: ["#babymo", "#quran", "#muslimmama", "#dailyreminder", "#hewithyou"],
+      caption: "Allah selalu dekat sama Sahabat Mo 💚",
+      cta: "Save buat pengingat!",
+      hashtags: ["#BabyMo", "#AyatQuran", "#AnakMuslim"],
     },
   ],
   "hadith-motivation": [
     {
-      title: "Smile, it is sadaqah",
-      hook: "The Prophet ﷺ taught us softness is worship.",
+      title: "Senyum itu Sedekah!",
+      hook: "Senyum kecilmu bisa jadi pahala besar.",
       slides: [
-        { heading: "Hadith", body: "Your smile to your brother is charity.", footer: "— Tirmidhi, Baby Mo · Hadith" },
-        { heading: "What this means", body: "Even when tired, a soft face is a gift.", footer: "Baby Mo · Hadith" },
-        { heading: "Try today", body: "Smile at your child first thing in the morning. Watch their whole body soften.", footer: "Baby Mo · Hadith" },
+        {
+          heading: "Senyum kecilmu bisa jadi pahala besar.",
+          body: "“Senyummu kepada saudaramu adalah sedekah.”",
+          attribution: "HR. Tirmidzi 1956",
+        },
       ],
-      caption: "A reminder that even the smallest softness counts.",
-      cta: "Save for a hard morning.",
-      hashtags: ["#babymo", "#hadith", "#muslimparenting", "#softnessisworship"],
+      caption: "Ayo, senyum dulu hari ini! 😊 Pahala udah nunggu loh.",
+      cta: "Bagikan ke teman Mo-mu!",
+      hashtags: ["#BabyMo", "#SenyumSedekah", "#AnakMuslim", "#Hadits"],
+    },
+    {
+      title: "Mengalah itu Hebat!",
+      hook: "Bukan kalah, tapi pemenang sejati.",
+      slides: [
+        {
+          heading: "Mengalah itu hebat, bukan kalah",
+          body: "Rasulullah SAW bersabda: “Orang kuat adalah yang mampu menahan amarah.”",
+          attribution: "HR. Bukhari 6114 & HR. Muslim 2609",
+        },
+      ],
+      caption: "Pemenang sejati itu yang bisa sabar 💪",
+      cta: "Save & jadi anak sholeh!",
+      hashtags: ["#BabyMo", "#Sabar", "#AnakSholeh"],
     },
   ],
   "friday-reminder": [
     {
-      title: "Jumuah blessings",
-      hook: "Light a candle. Send salawat. Slow down.",
+      title: "Jumat Berkah!",
+      hook: "Hari yang paling Allah cintai.",
       slides: [
-        { heading: "It's Friday", body: "The most beloved day of the week.", footer: "Baby Mo · Jumuah" },
-        { heading: "Tiny ritual", body: "Recite Surah Al-Kahf. Send salawat. Wear something soft.", footer: "Baby Mo · Jumuah" },
+        {
+          heading: "Jumat Penuh Berkah!",
+          kicker: "Yuk, Amalkan!",
+          body: "Hari Jumat adalah hari yang istimewa. Yuk, perbanyak baca shalawat & Surah Al-Kahfi!",
+          attribution: "HR. Hakim 3392",
+        },
       ],
-      caption: "Jumuah Mubarak from our cozy little home to yours 🕊️",
-      cta: "Tag your Jumuah buddy.",
-      hashtags: ["#babymo", "#jumuah", "#fridayreminder", "#salawat"],
+      caption: "Jumat Mubarak, Sahabat Mo! 🌿✨",
+      cta: "Tag sahabatmu, ucapkan Jumat Mubarak!",
+      hashtags: ["#BabyMo", "#JumatBerkah", "#Shalawat"],
     },
   ],
   "ramadan-reminder": [
     {
-      title: "30 small Ramadan moments",
-      hook: "Ramadan is in the texture, not just the timer.",
+      title: "Ramadan Sebentar Lagi!",
+      hook: "Yuk, siap-siap dari sekarang!",
       slides: [
-        { heading: "Tiny Ramadan", body: "It's not about doing more. It's about doing softly.", footer: "Baby Mo · Ramadan" },
-        { heading: "Try tonight", body: "Recite one ayah with your child before iftar. Just one.", footer: "Baby Mo · Ramadan" },
-        { heading: "Remember", body: "Your child will remember the smell of the kitchen, not the productivity.", footer: "Baby Mo · Ramadan" },
+        {
+          heading: "Ramadan Sebentar Lagi!",
+          kicker: "Yuk, Persiapan!",
+          body: "Bulan paling istimewa! Ayo siap-siap puasa, baca Quran, dan banyak sedekah ya, Sahabat Mo.",
+        },
       ],
-      caption: "Ramadan in small, sacred textures 🌙",
-      cta: "Save for Ramadan prep.",
-      hashtags: ["#babymo", "#ramadan", "#cozyramadan", "#muslimkids"],
+      caption: "Marhaban ya Ramadan! 🌙 Yuk sambut bareng Baby Mo!",
+      cta: "Save buat checklist Ramadan!",
+      hashtags: ["#BabyMo", "#Ramadan", "#AnakMuslim"],
     },
   ],
   "dhikr-reminder": [
     {
-      title: "Breathe. Say it once.",
-      hook: "One breath, one dhikr.",
+      title: "SubhanAllah",
+      hook: "Satu kata, banyak pahala.",
       slides: [
-        { heading: "SubhanAllah", body: "Inhale. Exhale. Let your shoulders drop.", arabic: "سُبْحَانَ اللَّهِ", footer: "Baby Mo · Dhikr" },
+        {
+          heading: "SubhanAllah!",
+          kicker: "Dzikir Harian:",
+          body: "Yuk, ucapkan SubhanAllah 33x setiap hari. Hati jadi tenang, pahala terus bertambah!",
+          arabic: "سُبْحَانَ ٱللَّٰهِ",
+        },
       ],
-      caption: "A gentle reset for a noisy day.",
-      cta: "Pin to your home screen.",
-      hashtags: ["#babymo", "#dhikr", "#muslimmama", "#calmislam"],
+      caption: "Dzikir dulu sebentar, hati jadi adem 🌿",
+      cta: "Save & dzikir bareng!",
+      hashtags: ["#BabyMo", "#Dzikir", "#AnakMuslim"],
     },
   ],
+
+  /* ---------- EMOTIONAL CHILDHOOD ---------- */
   "tiny-heart-talks": [
     {
-      title: "When she said she was scared of the dark",
-      hook: "Sometimes the bravest dua is whispered under a blanket.",
+      title: "Bicara Sama Hati Kecil",
+      hook: "Pelukan terbaik adalah doa.",
       slides: [
-        { heading: "Mama, the dark is too big.", body: "She tugged my sleeve. Her whole body was a question.", footer: "Baby Mo · Tiny Heart Talks" },
-        { heading: "I didn't fix it.", body: "I just sat on the floor next to her bed.", footer: "Baby Mo · Tiny Heart Talks" },
-        { heading: "Allah is closer than the dark.", body: "I told her: He hears the smallest whisper. Even softer than this.", footer: "Baby Mo · Tiny Heart Talks" },
-        { heading: "Then I'll whisper.", body: "She held my hand and said it. And the dark felt smaller.", footer: "Baby Mo · Tiny Heart Talks" },
-        { heading: "For the next bedtime fear.", body: "Save this. Sit on the floor. Whisper together.", footer: "Baby Mo · Tiny Heart Talks" },
+        {
+          heading: "Sayang, Allah Sayang Kamu",
+          kicker: "Bisikan Hati:",
+          body: "Walaupun mama nggak selalu di sisi, Allah selalu menjaga. Tenang ya, sayang.",
+        },
       ],
-      caption: "Some dua's are taught with a hand in the dark 🤍",
-      cta: "Save for a brave bedtime.",
-      hashtags: ["#babymo", "#tinyheartalks", "#muslimkids", "#bedtime"],
+      caption: "Kalimat kecil yang bikin hati anak besar 💛",
+      cta: "Bisikkan ke anakmu malam ini.",
+      hashtags: ["#BabyMo", "#ParentingIslami", "#AnakMuslim"],
     },
   ],
   "dear-little-muslim": [
     {
-      title: "Dear little Muslim,",
-      hook: "A letter for the child who is still becoming.",
+      title: "Dear Sahabat Mo,",
+      hook: "Surat kecil untuk Muslim cilik.",
       slides: [
-        { heading: "Dear little Muslim,", body: "You don't need to be perfect to be beloved.", footer: "Baby Mo · Dear Little Muslim" },
-        { heading: "On hard days,", body: "Allah is closer than your shadow. Closer than your breath.", footer: "Baby Mo · Dear Little Muslim" },
-        { heading: "You will grow,", body: "But the softness in you — keep it. It is a sunnah.", footer: "Baby Mo · Dear Little Muslim" },
-        { heading: "Always,", body: "Mama", footer: "Baby Mo · Dear Little Muslim" },
+        {
+          heading: "Kamu Spesial!",
+          kicker: "Dear Sahabat Mo,",
+          body: "Allah ciptakan kamu dengan sempurna. Senyummu, suaramu, dan hatimu — semua dicintai-Nya.",
+        },
       ],
-      caption: "Letters we hope every Muslim child grows up reading.",
-      cta: "Tag a little one you love.",
-      hashtags: ["#babymo", "#dearlittlemuslim", "#muslimchildhood"],
+      caption: "Untuk Sahabat Mo yang sedang tumbuh 🌱",
+      cta: "Tag anak / keponakanmu!",
+      hashtags: ["#BabyMo", "#SuratUntukAnak", "#MuslimKids"],
     },
   ],
   "before-sleep-series": [
     {
-      title: "The before-sleep ritual",
-      hook: "Three minutes of softness before lights out.",
+      title: "Sebelum Tidur, Yuk Lakukan Ini!",
+      hook: "3 sunnah kecil sebelum bobo.",
       slides: [
-        { heading: "Step 1", body: "Dim the lights. Lower your voice. Let the day end.", footer: "Baby Mo · Before Sleep" },
-        { heading: "Step 2", body: "Hold their hand. Recite Surah Al-Falaq + An-Nas together.", footer: "Baby Mo · Before Sleep" },
-        { heading: "Step 3", body: "Blow gently on their forehead. Say: 'Allah is watching over you.'", footer: "Baby Mo · Before Sleep" },
-        { heading: "That's it.", body: "Bedtime doesn't need to be longer. It needs to be softer.", footer: "Baby Mo · Before Sleep" },
+        {
+          heading: "Yuk, Wudhu Dulu!",
+          kicker: "Sunnah Sebelum Tidur:",
+          body: "Wudhu sebelum tidur bikin malam lebih berkah dan mimpi lebih indah.",
+          attribution: "HR. Bukhari 247",
+        },
       ],
-      caption: "A tiny bedtime ritual we love 🌙",
-      cta: "Save for tonight.",
-      hashtags: ["#babymo", "#bedtime", "#muslimkids", "#bedtimeroutine"],
+      caption: "Yuk, mulai kebiasaan baik dari sekarang 🌙",
+      cta: "Save & coba malam ini!",
+      hashtags: ["#BabyMo", "#SunnahTidur", "#AnakMuslim"],
     },
   ],
   "tiny-tafakkur": [
     {
-      title: "A leaf, a sign",
-      hook: "Stop. Look. Allah designed this.",
+      title: "Lihat Daun, Ingat Allah",
+      hook: "Tafakkur kecil setiap hari.",
       slides: [
-        { heading: "Tiny tafakkur", body: "The veins on a leaf. The way light filters through it. Every detail was decided.", footer: "Baby Mo · Tafakkur" },
+        {
+          heading: "MasyaAllah, Indah Banget!",
+          kicker: "Yuk, Tafakkur:",
+          body: "Lihat warna daun, suara angin, bentuk awan — semua tanda kebesaran Allah. Yuk, bilang “MasyaAllah!”",
+        },
       ],
-      caption: "Look up today. Allah is everywhere in the small things.",
-      cta: "Share with someone tired of looking at screens.",
-      hashtags: ["#babymo", "#tafakkur", "#allahssigns"],
+      caption: "Belajar lihat dunia dengan mata syukur 🌿",
+      cta: "Save & ajak anak tafakkur!",
+      hashtags: ["#BabyMo", "#Tafakkur", "#KebesaranAllah"],
     },
   ],
   "muslim-childhood-nostalgia": [
     {
-      title: "The smell of opah's kitchen",
-      hook: "A whole religion learned through warmth.",
+      title: "Aroma Dapur Nenek",
+      hook: "Islam belajar dari hal-hal kecil di rumah.",
       slides: [
-        { heading: "Do you remember", body: "The smell of opah's kitchen on Hari Raya morning?", footer: "Baby Mo · Nostalgia" },
-        { heading: "Bismillah", body: "Said before every bite, even the biscuits she snuck you.", footer: "Baby Mo · Nostalgia" },
-        { heading: "Adhan from the radio", body: "And the whole family slowing down at once.", footer: "Baby Mo · Nostalgia" },
-        { heading: "That was Islam", body: "Not loud. Just woven into every soft moment.", footer: "Baby Mo · Nostalgia" },
-        { heading: "Pass it on", body: "We build the same memory for our little ones today.", footer: "Baby Mo · Nostalgia" },
+        {
+          heading: "Wangi Dapur Nenek di Hari Raya",
+          kicker: "Kenangan Manis:",
+          body: "Bismillah sebelum makan, doa sebelum tidur, suara adzan dari radio — itu cara kita kenal Islam pertama kali.",
+        },
       ],
-      caption: "Childhood Islam, in the texture of home 🏡",
-      cta: "Tag someone who'd cry at this.",
-      hashtags: ["#babymo", "#muslimchildhood", "#nostalgia", "#cozyislam"],
+      caption: "Kenangan kecil yang bikin Islam terasa dekat 💛",
+      cta: "Tag yang relate!",
+      hashtags: ["#BabyMo", "#Nostalgia", "#KenanganIslam"],
     },
   ],
+
+  /* ---------- PARENTING ---------- */
   "gentle-muslim-parenting": [
     {
-      title: "Yelling isn't tarbiyah",
-      hook: "Discipline doesn't have to be loud to be deep.",
+      title: "Marah-Marah Bukan Tarbiyah",
+      hook: "Lembut itu kuat, bukan lemah.",
       slides: [
-        { heading: "The truth", body: "Your child can fear you, or trust you. Rarely both.", footer: "Baby Mo · Gentle Parenting" },
-        { heading: "Sunnah way", body: "The Prophet ﷺ never raised his voice in anger toward a child.", footer: "Baby Mo · Gentle Parenting" },
-        { heading: "Try instead", body: "Kneel to their level. Make eye contact. Lower your voice. Watch what happens.", footer: "Baby Mo · Gentle Parenting" },
-        { heading: "Reminder", body: "Tarbiyah is a long, soft project. Not a single loud moment.", footer: "Baby Mo · Gentle Parenting" },
-        { heading: "Save", body: "For the next hard parenting hour.", footer: "Baby Mo · Gentle Parenting" },
+        {
+          heading: "Lembutlah pada Anakmu!",
+          kicker: "Tahukah Kamu?",
+          body: "Rasulullah SAW tidak pernah membentak anak. Beliau selalu lemah lembut. Yuk, tiru sunnah ini!",
+          attribution: "HR. Muslim 2310",
+        },
       ],
-      caption: "Soft discipline is still discipline 🤍",
-      cta: "Save for the next hard hour.",
-      hashtags: ["#babymo", "#gentleparenting", "#muslimparenting", "#tarbiyah"],
+      caption: "Tarbiyah dengan cinta, bukan dengan amarah 💚",
+      cta: "Save & jadi orangtua sabar!",
+      hashtags: ["#BabyMo", "#ParentingIslami", "#GentleParenting"],
     },
   ],
   "mama-reflection": [
     {
-      title: "I lost my patience today",
-      hook: "And I made tawbah while folding the laundry.",
+      title: "Mama, Kamu Hebat!",
+      hook: "Setiap kelelahanmu dilihat Allah.",
       slides: [
-        { heading: "Mama reflection", body: "I lost my patience today. I said sorry to a tiny face. Then I made tawbah while folding the laundry.", footer: "Baby Mo · Mama Reflection" },
+        {
+          heading: "Mama, Allah Lihat Kamu",
+          kicker: "Pesan Sayang:",
+          body: "Setiap pelukan, setiap usapan kepala, setiap doa diam-diam — semua jadi pahala. Kamu hebat, Ma!",
+        },
       ],
-      caption: "Motherhood is also a long istighfar. And that's okay.",
-      cta: "Share with a mama who needs it.",
-      hashtags: ["#babymo", "#muslimmama", "#mamareflection"],
+      caption: "Untuk para mama yang tak pernah berhenti mencintai 💛",
+      cta: "Tag mama hebatmu!",
+      hashtags: ["#BabyMo", "#MamaHebat", "#ParentingIslami"],
     },
   ],
   "ayah-series": [
     {
-      title: "Ayah, the quiet one",
-      hook: "His love sounds like footsteps coming home.",
+      title: "Ayah, Pahlawan Diam-Diam",
+      hook: "Cinta Ayah selalu bekerja.",
       slides: [
-        { heading: "Ayah Series", body: "Ayah doesn't say 'I love you' often. He says it in shoes lined up by the door.", footer: "Baby Mo · Ayah Series" },
-        { heading: "He says it", body: "In the way he carries you to the car after you fell asleep watching cartoons.", footer: "Baby Mo · Ayah Series" },
-        { heading: "He says it", body: "In waking up for Fajr and asking Allah for your jannah.", footer: "Baby Mo · Ayah Series" },
-        { heading: "Tell him today", body: "Thank him out loud. Quiet love deserves loud gratitude.", footer: "Baby Mo · Ayah Series" },
+        {
+          heading: "Terima Kasih, Ayah!",
+          kicker: "Pesan untuk Ayah:",
+          body: "Doa Ayah di sepertiga malam, kerja kerasnya, semuanya adalah cinta. Yuk, peluk Ayah hari ini!",
+        },
       ],
-      caption: "For every quiet Ayah who loves loudly through actions 🤍",
-      cta: "Tag your Ayah.",
-      hashtags: ["#babymo", "#ayahseries", "#muslimdad"],
+      caption: "Cinta Ayah itu pelan, tapi dalam 💙",
+      cta: "Tag Ayah kebanggaanmu!",
+      hashtags: ["#BabyMo", "#AyahHebat", "#KeluargaSholeh"],
     },
   ],
   "emotional-parenting-reminder": [
     {
-      title: "Your patience is being witnessed",
-      hook: "Even when no one else sees.",
+      title: "Niat Baikmu Dicatat Allah",
+      hook: "Setiap kelelahanmu = pahala.",
       slides: [
-        { heading: "Reminder", body: "Every soft 'come here, sayang' instead of a shout — Allah counts it.", footer: "Baby Mo · Reminder" },
+        {
+          heading: "Niat Baik Membawamu Ke Jalan yang Baik",
+          body: "“Sesungguhnya amal itu tergantung niatnya.”",
+          attribution: "HR. Bukhari 1 & HR. Muslim 1907",
+        },
       ],
-      caption: "Tonight's tiny mama reminder 🤍",
-      cta: "Save to your home screen.",
-      hashtags: ["#babymo", "#muslimmama", "#parentingreminder"],
+      caption: "Niatkan semua untuk Allah, Ma 💚",
+      cta: "Save buat penyemangat harian!",
+      hashtags: ["#BabyMo", "#NiatBaik", "#ParentingIslami"],
     },
   ],
+
+  /* ---------- KIDS EDUCATIONAL ---------- */
   "did-you-know": [
     {
-      title: "Did you know?",
-      hook: "The smallest sunnah, the biggest blessing.",
+      title: "Tahukah Kamu? Bismillah Sebelum Makan",
+      hook: "Satu kalimat, sejuta pahala!",
       slides: [
-        { heading: "Did you know?", body: "Saying Bismillah before eating turns a snack into ibadah.", footer: "Baby Mo · Did You Know" },
-        { heading: "Why", body: "It is the Prophet ﷺ's habit. And habit becomes character.", footer: "Baby Mo · Did You Know" },
-        { heading: "Try with your child", body: "Say it together before every bite this week. Watch it stick.", footer: "Baby Mo · Did You Know" },
+        {
+          heading: "Tahukah Kamu?",
+          kicker: "Fakta Seru:",
+          body: "Saat kita ucap “Bismillah” sebelum makan, setan nggak bisa ikut makan dari makanan kita loh!",
+          attribution: "HR. Muslim 2017",
+        },
       ],
-      caption: "Tiny Sunnah, lifelong habit 🤍",
-      cta: "Save for dinner tonight.",
-      hashtags: ["#babymo", "#didyouknow", "#sunnah", "#muslimkids"],
+      caption: "Bismillah dulu, baru makan ya Sahabat Mo! 🍽️",
+      cta: "Save & ajarkan adik!",
+      hashtags: ["#BabyMo", "#TahukahKamu", "#Bismillah"],
+    },
+    {
+      title: "Tahukah Kamu? Berwudhu Sebelum Tidur",
+      hook: "Sunnah kecil, manfaat besar.",
+      slides: [
+        {
+          heading: "Tahukah Kamu?",
+          kicker: "Fakta Sunnah:",
+          body: "Jika sebelum tidur dianjurkan untuk berwudhu terlebih dulu. Tidur jadi lebih berkah!",
+          attribution: "HR. Imam Bukhari 247",
+        },
+      ],
+      caption: "Yuk wudhu dulu sebelum bobo 💧",
+      cta: "Save buat malam ini!",
+      hashtags: ["#BabyMo", "#Sunnah", "#TahukahKamu"],
     },
   ],
   "allahs-creation": [
     {
-      title: "Look at the moon",
-      hook: "Allah made a nightlight for the whole world.",
+      title: "Subhanallah, Lihat Bulan!",
+      hook: "Allah ciptakan lampu untuk seluruh dunia.",
       slides: [
-        { heading: "Allah's creation", body: "The moon doesn't shine on its own. It reflects the sun's light.", footer: "Baby Mo · Creation" },
-        { heading: "Just like us", body: "We don't shine on our own either. We reflect Allah's mercy.", footer: "Baby Mo · Creation" },
-        { heading: "Show your child", body: "Step outside tonight. Point up. Say: 'Allah made this for us.'", footer: "Baby Mo · Creation" },
+        {
+          heading: "Wow! Lihat Bulan!",
+          kicker: "Ciptaan Allah:",
+          body: "Bulan nggak punya cahaya sendiri. Ia hanya memantulkan cahaya matahari. Sama kita, mantulkan rahmat Allah ke sekitar.",
+        },
       ],
-      caption: "Teach wonder before you teach rules 🌙",
-      cta: "Save for tonight's bedtime walk.",
-      hashtags: ["#babymo", "#allahscreation", "#muslimkids", "#tafakkur"],
+      caption: "Tafakkur malam ini: SubhanAllah! 🌙",
+      cta: "Save & lihat bulan malam ini!",
+      hashtags: ["#BabyMo", "#KebesaranAllah", "#AnakMuslim"],
     },
   ],
   "arabic-word-of-the-day": [
     {
-      title: "Word of the day: Rahmah",
-      hook: "It means more than 'mercy'.",
+      title: "Kata Hari Ini: Rahmah",
+      hook: "Satu kata, banyak makna.",
       slides: [
-        { heading: "Rahmah", body: "Rahmah (رحمة) — a soft, womb-deep mercy. The same root as 'womb' (rahim).", arabic: "رَحْمَة", footer: "Baby Mo · Arabic" },
+        {
+          heading: "Apa Itu Rahmah?",
+          kicker: "Kata Arab Hari Ini:",
+          body: "Rahmah (رحمة) artinya kasih sayang. Akar kata yang sama dengan “rahim”. Cinta Allah itu sedalam pelukan ibu.",
+          arabic: "رَحْمَة",
+        },
       ],
-      caption: "Allah's mercy is womb-deep. Carry your child like that today 🤍",
-      cta: "Save & teach your little one.",
-      hashtags: ["#babymo", "#arabicword", "#rahmah", "#muslimkids"],
+      caption: "Yuk, hafal kata Arab baru hari ini! ✨",
+      cta: "Comment kata Arab favoritmu!",
+      hashtags: ["#BabyMo", "#BelajarArab", "#AnakMuslim"],
     },
   ],
   "islamic-fun-facts": [
     {
-      title: "Cats had a tiny prophet fan club",
-      hook: "Yes, really.",
+      title: "Fakta Seru: Rasulullah Sayang Kucing!",
+      hook: "Sampai potong jubah biar kucingnya nggak terganggu.",
       slides: [
-        { heading: "Fun fact", body: "Prophet Muhammad ﷺ loved cats so much, one once slept on his cloak — and he cut it rather than wake her.", footer: "Baby Mo · Fun Facts" },
-        { heading: "Why it matters", body: "Even the smallest creatures deserve gentleness. That's the Sunnah.", footer: "Baby Mo · Fun Facts" },
+        {
+          heading: "Rasulullah Sayang Kucing!",
+          kicker: "Fakta Seru:",
+          body: "Rasulullah SAW pernah memotong jubahnya sendiri agar tidak membangunkan kucing yang tidur di atasnya. MasyaAllah!",
+        },
       ],
-      caption: "Tiny hearts, tiny cats, big Sunnah 🐈",
-      cta: "Tag a cat-loving kid.",
-      hashtags: ["#babymo", "#islamicfunfacts", "#muslimkids", "#sunnah"],
+      caption: "Sayang binatang itu sunnah loh, Sahabat Mo 🐈",
+      cta: "Tag pecinta kucing!",
+      hashtags: ["#BabyMo", "#FaktaIslam", "#Sunnah"],
     },
   ],
   "tiny-sahabah-stories": [
     {
-      title: "Tiny Anas, big lesson",
-      hook: "He served the Prophet ﷺ for 10 years. He was never scolded once.",
+      title: "Kisah Anas bin Malik Kecil",
+      hook: "10 tahun melayani Rasulullah, tak pernah dimarahi.",
       slides: [
-        { heading: "Meet Anas", body: "He was 10 when his mama brought him to the Prophet ﷺ.", footer: "Baby Mo · Sahabah" },
-        { heading: "For 10 years", body: "Anas served him. The Prophet ﷺ never once said 'why did you do that?' or 'why didn't you do this?'", footer: "Baby Mo · Sahabah" },
-        { heading: "The lesson", body: "Gentleness is leadership. Patience is tarbiyah.", footer: "Baby Mo · Sahabah" },
-        { heading: "For us today", body: "Speak to your child the way the Prophet ﷺ spoke to Anas.", footer: "Baby Mo · Sahabah" },
+        {
+          heading: "Anas Si Sahabat Cilik!",
+          kicker: "Kisah Sahabat:",
+          body: "Anas bin Malik melayani Rasulullah selama 10 tahun. Tak sekalipun Beliau bertanya, “Kenapa kamu lakukan ini?” MasyaAllah lembutnya!",
+          attribution: "HR. Bukhari 6038",
+        },
       ],
-      caption: "Stories that shape little hearts 🤍",
-      cta: "Save & read at bedtime.",
-      hashtags: ["#babymo", "#sahabahstories", "#muslimkids", "#tarbiyah"],
+      caption: "Cerita yang bikin anak belajar sabar & lembut 💚",
+      cta: "Save buat bedtime story!",
+      hashtags: ["#BabyMo", "#KisahSahabat", "#AnakSholeh"],
     },
   ],
+
+  /* ---------- INTERACTIVE ---------- */
   "guess-the-sunnah": [
     {
-      title: "Guess the Sunnah",
-      hook: "Three little habits. One is sunnah. Can you guess?",
+      title: "Tebak Sunnah!",
+      hook: "Yang mana ya yang sunnah?",
       slides: [
-        { heading: "Round 1", body: "A. Eat with your right hand. B. Brush teeth before fajr. C. Smile at your sibling.", footer: "Baby Mo · Guess" },
-        { heading: "Trick answer", body: "All three are sunnah 🎉", footer: "Baby Mo · Guess" },
-        { heading: "Save", body: "Try one this week with your little one.", footer: "Baby Mo · Guess" },
+        {
+          heading: "Tebak Sunnah!",
+          kicker: "Quiz Seru:",
+          body: "A. Makan pakai tangan kanan\nB. Tidur miring ke kanan\nC. Senyum ke saudara\n\nMenurut Sahabat Mo, yang mana sunnah?",
+        },
       ],
-      caption: "Play this with your kids over dinner 🤍",
-      cta: "Comment your favourite sunnah.",
-      hashtags: ["#babymo", "#guessthesunnah", "#muslimkids"],
+      caption: "Jawab di komen ya! 👇 (Jawaban: SEMUANYA SUNNAH! 🎉)",
+      cta: "Comment jawabanmu!",
+      hashtags: ["#BabyMo", "#TebakSunnah", "#QuizIslami"],
     },
   ],
   "finish-the-dua": [
     {
-      title: "Finish the dua",
-      hook: "Test your memory, with love.",
+      title: "Lengkapi Doanya!",
+      hook: "Sahabat Mo masih ingat?",
       slides: [
-        { heading: "Fill in the blank", body: "Allahumma inni as'aluka __________. Comment the rest!", footer: "Baby Mo · Finish The Dua" },
+        {
+          heading: "Lengkapi Doanya!",
+          kicker: "Quiz Hafalan:",
+          body: "“Allahumma inni as'aluka __________”\n\nLanjutkan di komen ya, Sahabat Mo!",
+        },
       ],
-      caption: "Comment the rest of the dua 👇",
-      cta: "Comment your answer.",
-      hashtags: ["#babymo", "#finishthedua", "#muslimkids"],
+      caption: "Cek hafalan kamu yuk! 👇",
+      cta: "Comment lanjutannya!",
+      hashtags: ["#BabyMo", "#LengkapiDoa", "#AnakMuslim"],
     },
   ],
   "spot-the-adab": [
     {
-      title: "Spot the adab",
-      hook: "Can your child find it?",
+      title: "Temukan Adabnya!",
+      hook: "Berapa banyak adab yang Sahabat Mo lihat?",
       slides: [
-        { heading: "The scene", body: "Aisyah enters her grandma's house. She takes off her shoes, says salam, and helps carry the groceries.", footer: "Baby Mo · Spot The Adab" },
-        { heading: "Spot it", body: "How many acts of adab can you count? (Hint: 3)", footer: "Baby Mo · Spot The Adab" },
-        { heading: "Answer", body: "Removing shoes · saying salam · helping. Adab is everywhere.", footer: "Baby Mo · Spot The Adab" },
+        {
+          heading: "Temukan Adabnya!",
+          kicker: "Misi Sahabat Mo:",
+          body: "Aisyah masuk ke rumah nenek. Dia lepas sepatu, ucap salam, dan bantu bawa belanjaan.\n\nBerapa adab yang kamu temukan?",
+        },
       ],
-      caption: "Adab hunting is the best game for car rides 🚗",
-      cta: "Save for your next car ride.",
-      hashtags: ["#babymo", "#spottheadab", "#muslimkids"],
+      caption: "Hitung di komen! (Hint: 3 adab!) 👀",
+      cta: "Comment jawabanmu!",
+      hashtags: ["#BabyMo", "#TemukanAdab", "#AdabIslami"],
     },
   ],
   "tiny-sunnah-missions": [
     {
-      title: "Today's Sunnah mission",
-      hook: "Smile at three people today.",
+      title: "Misi Sunnah Hari Ini!",
+      hook: "Senyum ke 3 orang hari ini!",
       slides: [
-        { heading: "Mission", body: "Smile at three people today. Big toothy ones. It's sadaqah.", footer: "Baby Mo · Sunnah Missions" },
+        {
+          heading: "Misi Sunnah!",
+          kicker: "Misi Hari Ini:",
+          body: "Senyum tulus ke 3 orang hari ini. Senyummu adalah sedekah dan pahala!",
+          attribution: "HR. Tirmidzi 1956",
+        },
       ],
-      caption: "Tag your little Sunnah agent on this mission 🕊️",
-      cta: "Tag your child.",
-      hashtags: ["#babymo", "#sunnahmissions", "#muslimkids"],
+      caption: "Sahabat Mo, terima misi? 🫡 Comment 'SIAP'!",
+      cta: "Comment 'SIAP' jika menerima misi!",
+      hashtags: ["#BabyMo", "#MisiSunnah", "#AnakMuslim"],
     },
   ],
   "this-or-that-muslim-kid": [
     {
-      title: "This or That: Muslim Kid Edition",
-      hook: "Which one is your child?",
+      title: "Pilih Yang Mana?",
+      hook: "Tipe Sahabat Mo kamu yang mana?",
       slides: [
-        { heading: "Pick one", body: "Dates 🌴 or kurma cake 🍰? · Surah Al-Fatiha or Al-Ikhlas? · Adhan from phone or the speaker?", footer: "Baby Mo · This or That" },
+        {
+          heading: "Pilih Yang Mana?",
+          kicker: "Anak Mo Edition:",
+          body: "Kurma 🌴 atau Kurma cake 🍰?\nAl-Fatiha atau Al-Ikhlas?\nAdzan dari HP atau speaker?",
+        },
       ],
-      caption: "Comment your child's combo 👇",
-      cta: "Comment your answer.",
-      hashtags: ["#babymo", "#thisorthat", "#muslimkids"],
+      caption: "Comment pilihanmu! 👇",
+      cta: "Comment pilihanmu!",
+      hashtags: ["#BabyMo", "#PilihYangMana", "#AnakMuslim"],
     },
   ],
+
+  /* ---------- STORY ---------- */
   "mini-islamic-story": [
     {
-      title: "The little ant's dua",
-      hook: "Even the smallest creatures speak to Allah.",
+      title: "Kisah Semut yang Berdoa",
+      hook: "Allah dengar doa yang paling kecil sekalipun.",
       slides: [
-        { heading: "Once upon a time", body: "A tiny ant carried a leaf bigger than herself.", footer: "Baby Mo · Stories" },
-        { heading: "She paused", body: "Looked up at the sky, and whispered: 'Ya Rahman, give me strength.'", footer: "Baby Mo · Stories" },
-        { heading: "And Allah", body: "The One who hears every whisper — answered.", footer: "Baby Mo · Stories" },
-        { heading: "The end", body: "If a tiny ant's dua is heard, so is yours, little one.", footer: "Baby Mo · Stories" },
+        {
+          heading: "Semut Kecil yang Berdoa",
+          kicker: "Cerita Sahabat Mo:",
+          body: "Seekor semut kecil mengangkat daun yang lebih besar dari dirinya. Sambil berdoa, “Ya Rahman, kuatkan aku.” Dan Allah pun menjawab.",
+        },
       ],
-      caption: "A bedtime story to remind little hearts that they're heard 🐜",
-      cta: "Save for storytime.",
-      hashtags: ["#babymo", "#islamicstories", "#muslimkids", "#bedtimestory"],
+      caption: "Doa sekecil apapun, Allah dengar 🐜💚",
+      cta: "Save buat bedtime story!",
+      hashtags: ["#BabyMo", "#CeritaIslami", "#BedtimeStory"],
     },
   ],
   "what-would-prophet-do": [
     {
-      title: "What would Prophet Muhammad ﷺ do?",
-      hook: "When the soup spills on the floor.",
+      title: "Kalau Rasulullah Bagaimana?",
+      hook: "Saat sup tumpah di lantai...",
       slides: [
-        { heading: "The scene", body: "Your child accidentally spills hot soup on the table.", footer: "Baby Mo · What Would" },
-        { heading: "Most parents", body: "Sigh, raise voice, clean up while muttering.", footer: "Baby Mo · What Would" },
-        { heading: "Prophet ﷺ would", body: "Smile. Check if the child is okay first. Clean it together. No shame.", footer: "Baby Mo · What Would" },
-        { heading: "The lesson", body: "His mercy was loudest in the small accidents of daily life.", footer: "Baby Mo · What Would" },
+        {
+          heading: "Sup Tumpah, Apa yang Rasulullah Lakukan?",
+          kicker: "What Would Rasulullah Do?",
+          body: "Anak tumpah sup di meja. Rasulullah SAW pasti tersenyum, pastikan anak baik-baik saja, lalu bersihkan bersama. Tanpa marah!",
+          attribution: "Sirah Nabawiyah",
+        },
       ],
-      caption: "The Prophet ﷺ in our daily kitchen moments 🤍",
-      cta: "Save for the next spill.",
-      hashtags: ["#babymo", "#whatwouldprophetdo", "#sunnah", "#gentleparenting"],
+      caption: "Rasulullah dalam moment dapur kita sehari-hari 💛",
+      cta: "Save buat pengingat sabar!",
+      hashtags: ["#BabyMo", "#Sunnah", "#GentleParenting"],
     },
   ],
   "emotional-story-carousel": [
     {
-      title: "The night I prayed in the laundry room",
-      hook: "Allah meets us in the corners we hide in.",
+      title: "Doa di Lantai Cucian",
+      hook: "Allah hadir di sudut tersembunyi kita.",
       slides: [
-        { heading: "It was 11pm", body: "The baby finally slept. I sat down on the laundry room floor.", footer: "Baby Mo · Stories" },
-        { heading: "I couldn't pray standing", body: "I was too tired. So I sat. And I cried.", footer: "Baby Mo · Stories" },
-        { heading: "Then I whispered", body: "Ya Allah. That's all I had. Just His name.", footer: "Baby Mo · Stories" },
-        { heading: "And it was enough", body: "Because He hears even the prayers that have no words.", footer: "Baby Mo · Stories" },
-        { heading: "For the tired mama tonight", body: "You don't need fancy dua. You need His Name.", footer: "Baby Mo · Stories" },
+        {
+          heading: "Doa di Lantai Cucian",
+          kicker: "Cerita untuk Mama:",
+          body: "Pukul 11 malam, mama duduk di lantai cucian. Capek bicara apa-apa, ia hanya bisik: “Ya Allah.” Dan itu cukup. Allah dengar.",
+        },
       ],
-      caption: "For the mama on the laundry floor tonight 🤍",
-      cta: "Save & send to a friend.",
-      hashtags: ["#babymo", "#muslimmama", "#emotionalstory"],
+      caption: "Untuk para mama yang lelah malam ini 💛",
+      cta: "Save & bagikan ke teman mama!",
+      hashtags: ["#BabyMo", "#MamaCerita", "#TaqarrubIlallah"],
     },
   ],
+
+  /* ---------- REELS ---------- */
   "pov-muslim-childhood": [
     {
-      title: "POV: It's Maghrib and you're 7",
-      hook: "And the whole house slows down.",
+      title: "POV: Maghrib di Rumah Nenek",
+      hook: "Memori paling tenang seumur hidup.",
       slides: [
-        { heading: "POV", body: "It's Maghrib. You're 7. The kitchen smells like rice.", footer: "Baby Mo · POV" },
-        { heading: "Ayah calls", body: "'Mari solat dulu.' You all line up.", footer: "Baby Mo · POV" },
-        { heading: "After salam", body: "Mama hugs you. Says 'good girl'. You feel safe.", footer: "Baby Mo · POV" },
-        { heading: "That's the memory", body: "We're building today, one Maghrib at a time.", footer: "Baby Mo · POV" },
+        {
+          heading: "POV: Maghrib di Rumah Nenek",
+          kicker: "POV:",
+          body: "Adzan berkumandang. Dapur wangi rendang. Semua orang berhenti, ambil wudhu, lalu shalat berjamaah.",
+        },
       ],
-      caption: "Build the maghribs they'll remember 🌅",
-      cta: "Save for tonight's maghrib.",
-      hashtags: ["#babymo", "#povmuslimchildhood", "#cozyislam", "#maghrib"],
+      caption: "Memori yang bikin Islam terasa rumah 🏡",
+      cta: "Tag yang relate!",
+      hashtags: ["#BabyMo", "#POVMuslim", "#Nostalgia"],
     },
   ],
   "soft-islamic-affirmations": [
     {
-      title: "Soft affirmations before bed",
-      hook: "Whisper these into the dark.",
+      title: "Afirmasi Sebelum Tidur",
+      hook: "Bisikkan ke hati malam ini.",
       slides: [
-        { heading: "Tonight,", body: "Allah is with me.", footer: "Baby Mo · Affirmations" },
-        { heading: "Tomorrow,", body: "Allah is enough for me.", footer: "Baby Mo · Affirmations" },
-        { heading: "Always,", body: "Allah is closer than my breath.", footer: "Baby Mo · Affirmations" },
+        {
+          heading: "Allah Bersamamu.",
+          kicker: "Afirmasi Malam Ini:",
+          body: "Hari ini, Allah bersamaku.\nBesok, Allah cukup bagiku.\nSelamanya, Allah lebih dekat dari nadi.",
+        },
       ],
-      caption: "Soft truths for tired hearts 🤍",
-      cta: "Save & whisper tonight.",
-      hashtags: ["#babymo", "#islamicaffirmations", "#muslimmama"],
+      caption: "Untuk hati yang butuh tenang malam ini 🌙",
+      cta: "Save buat malam ini.",
+      hashtags: ["#BabyMo", "#AfirmasiIslami", "#TenangkanHati"],
     },
   ],
   "five-second-habit": [
     {
-      title: "5-second Sunnah",
-      hook: "You can do this in literally one breath.",
+      title: "Sunnah 5 Detik!",
+      hook: "Satu nafas, satu pahala.",
       slides: [
-        { heading: "Step 1", body: "Say Bismillah before you open the door.", footer: "Baby Mo · 5-sec Sunnah" },
-        { heading: "That's it.", body: "A whole habit, in 5 seconds.", footer: "Baby Mo · 5-sec Sunnah" },
+        {
+          heading: "Sunnah 5 Detik!",
+          kicker: "Cepet Banget!",
+          body: "Ucap “Bismillah” sebelum buka pintu. Selesai! Sebuah sunnah dalam 5 detik.",
+        },
       ],
-      caption: "Tiny Sunnah, daily habit 🤍",
-      cta: "Save to your reels.",
-      hashtags: ["#babymo", "#5secondsunnah", "#muslimreels"],
+      caption: "Sunnah gampang, pahala melimpah 💚",
+      cta: "Save & coba hari ini!",
+      hashtags: ["#BabyMo", "#Sunnah5Detik", "#AnakMuslim"],
     },
   ],
   "cozy-islamic-reels": [
     {
-      title: "A cozy Islamic morning",
-      hook: "Slow morning, soft adhan, warm milk.",
+      title: "Pagi Cozy Sahabat Mo",
+      hook: "Adzan pagi, susu hangat, Quran pelan.",
       slides: [
-        { heading: "06:12am", body: "Fajr adhan. Window open. Cold air.", footer: "Baby Mo · Cozy" },
-        { heading: "06:30am", body: "Warm milk. Quran on speaker. Bismillah whispered.", footer: "Baby Mo · Cozy" },
-        { heading: "07:00am", body: "Tiny feet pad in. The day begins, gently.", footer: "Baby Mo · Cozy" },
+        {
+          heading: "Pagi yang Cozy!",
+          kicker: "POV Pagi:",
+          body: "06:12 — adzan subuh. 06:30 — susu hangat. 07:00 — Quran pelan dari speaker. Pagi jadi tenang.",
+        },
       ],
-      caption: "A cozy Muslim morning, in three frames 🤍",
-      cta: "Save for tomorrow.",
-      hashtags: ["#babymo", "#cozyislam", "#muslimreels"],
+      caption: "Pagi yang bikin hati adem 💛",
+      cta: "Save buat besok pagi!",
+      hashtags: ["#BabyMo", "#PagiCozy", "#PagiMuslim"],
     },
   ],
 };

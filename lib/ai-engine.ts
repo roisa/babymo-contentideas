@@ -3,22 +3,26 @@ import { findContentType, FORMATS, STORY_STYLES, type FormatId } from "./content
 import { getSeedsFor, SEEDS, type SampleSeed } from "./samples";
 import type { GeneratedContent, GenerationRequest, Slide } from "./types";
 
-const SYSTEM_PROMPT = `You are the content writer for Baby Mo — a modern Islamic childhood & parenting brand.
+const SYSTEM_PROMPT = `You write Instagram content for Baby Mo (@babymo.official) — a bright, kid-friendly Indonesian Islamic brand for Muslim children & families.
 
-Voice:
-- soft, emotional, calming, intimate
-- modern, minimalist, premium
-- never preachy, never harsh dakwah tone
-- never overly formal religious language
-- focused on Islam in small daily moments
+Voice & style:
+- Bahasa Indonesia (kid-friendly), occasional English/Malay mix
+- BOLD, playful, attention-grabbing titles (e.g. "Tahukah Kamu?", "Yuk, Belajar!", "Wow!", "Senyum kecilmu...", "Mengalah itu hebat")
+- warm, encouraging, never preachy, never harsh dakwah tone
+- speak directly to "Sahabat Mo" (Baby Mo's friends / kids)
+- pair every reminder with practical small action
+
+Format conventions:
+- "heading" = the big bold sticker title (1-3 lines, bold, attention-grabbing). Indonesian.
+- "kicker" = small label inside the body card (e.g. "Catatan Hari Ini:", "Tahukah Kamu?", "Yuk, Hafalkan!", "Quiz Seru:")
+- "body" = the white-card body text, max 3 short lines, with optional Arabic translation/meaning quoted
+- "arabic" = original Arabic text (when relevant, for dua/ayat/hadith)
+- "attribution" = hadith/Quran source with number (e.g. "HR. Bukhari 6312", "QS. Al-Hadid: 4")
+- captions = Indonesian, 1-2 sentences, with 1-2 emojis like 🌙💚✨
 
 Hard rules:
-- write like a tender friend, not a lecturer
-- never include the prophet's name without ﷺ when referenced
-- prefer one image, one feeling per slide
-- one short sentence per slide body when possible
-- never invent hadith or Quran references; only use well-known authentic ones
-- captions should feel like an Instagram caption, not a sermon
+- never invent hadith/Quran references — only use well-known authentic ones
+- when referring to Prophet Muhammad always add SAW or ﷺ
 - output STRICT JSON, no commentary, no markdown fences`;
 
 interface RawSlide {
@@ -26,6 +30,8 @@ interface RawSlide {
   body?: string;
   footer?: string;
   arabic?: string;
+  kicker?: string;
+  attribution?: string;
 }
 
 interface RawContent {
@@ -61,19 +67,26 @@ function userPrompt(req: GenerationRequest, slidesCount: number, seed?: SampleSe
   parts.push(`
 Return JSON in this exact shape:
 {
-  "title": "string, short, evocative",
-  "hook": "one-line emotional hook",
+  "title": "short Indonesian title for the post (internal label)",
+  "hook": "one-line emotional hook in Indonesian",
   "slides": [
-    { "heading": "string", "body": "string (1-2 short sentences)", "footer": "Baby Mo · ${meta.type.label}", "arabic": "OPTIONAL Arabic text if relevant" }
+    {
+      "heading": "BIG bold sticker title (Indonesian, 1-3 lines, attention-grabbing)",
+      "kicker": "small label like 'Tahukah Kamu?' / 'Catatan Hari Ini:' / 'Yuk, Hafalkan!' / 'Quiz Seru:'",
+      "body": "1-3 short Indonesian sentences in the white card",
+      "arabic": "OPTIONAL Arabic text if relevant (dua/ayat/hadith)",
+      "attribution": "OPTIONAL source like 'HR. Bukhari 6312' or 'QS. Al-Hadid: 4'"
+    }
   ],
-  "caption": "an Instagram caption, 1-3 sentences, soft and intimate, may include 1-2 emojis",
-  "cta": "one short save / share / tag call-to-action",
-  "hashtags": ["#babymo", "...", "..."]
+  "caption": "Indonesian Instagram caption, 1-2 sentences, with 1-2 emojis",
+  "cta": "Indonesian CTA, e.g. 'Save & bagikan!', 'Tag Sahabat Mo-mu!', 'Comment jawabanmu!'",
+  "hashtags": ["#BabyMo", "..."]
 }
 - Exactly ${slidesCount} slide(s).
-- Keep slide bodies short. Reels slides especially short (under 12 words).
-- The first slide must be the strongest hook.
-- The last slide must be the CTA/save moment.
+- Heading must be BOLD and punchy (kid-friendly Indonesian).
+- Keep body text short (max 3 lines).
+- For Reels: even shorter, hook-driven.
+- The first slide is the strongest hook; for carousels, the last slide is the CTA/save moment.
 `);
   return parts.join("\n");
 }
@@ -99,16 +112,20 @@ function normalize(raw: RawContent, fallback: SampleSeed | undefined, req: Gener
   const slidesRaw = (raw.slides ?? []).slice(0, slidesCount);
   const slides: Slide[] = slidesRaw.map((s, i) => ({
     heading: (s.heading ?? "").trim() || (fallback?.slides[i]?.heading ?? `Slide ${i + 1}`),
-    body: (s.body ?? "").trim() || (fallback?.slides[i]?.body ?? "A soft moment of remembrance."),
+    body: (s.body ?? "").trim() || (fallback?.slides[i]?.body ?? "Soft Islam in small daily moments."),
     footer: (s.footer ?? "").trim() || labelFooter,
     arabic: s.arabic?.trim() || fallback?.slides[i]?.arabic,
+    kicker: s.kicker?.trim() || fallback?.slides[i]?.kicker,
+    attribution: s.attribution?.trim() || fallback?.slides[i]?.attribution,
   }));
   while (slides.length < slidesCount) {
     const i = slides.length;
     slides.push({
       heading: fallback?.slides[i]?.heading ?? `Slide ${i + 1}`,
-      body: fallback?.slides[i]?.body ?? "A soft moment of remembrance.",
+      body: fallback?.slides[i]?.body ?? "Soft Islam in small daily moments.",
       footer: labelFooter,
+      kicker: fallback?.slides[i]?.kicker,
+      attribution: fallback?.slides[i]?.attribution,
     });
   }
   return {
