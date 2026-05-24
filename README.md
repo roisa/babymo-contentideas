@@ -7,6 +7,13 @@ This is a **content production system**, not a Canva clone. The goal is to
 generate ~20 decent, on-brand Instagram contents in minutes. The design team
 can refine outputs later manually.
 
+## One-click deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Froisa%2Fbabymo-contentideas&project-name=babymo-content-studio&repository-name=babymo-content-studio&env=ANTHROPIC_API_KEY&envDescription=Optional.%20Enables%20live%20Claude%20AI%20generation.%20Leave%20blank%20to%20use%20the%20curated%20Baby%20Mo%20seed%20library.&envLink=https%3A%2F%2Fconsole.anthropic.com%2Fsettings%2Fkeys)
+
+Click the button → Vercel will fork the repo into your account, ask for an
+optional `ANTHROPIC_API_KEY`, and deploy to a `*.vercel.app` URL in ~60s.
+
 ## What it makes
 
 - **Single posts** (1080×1080)
