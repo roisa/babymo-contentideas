@@ -138,6 +138,47 @@ function normalize(raw: RawContent, fallback: SampleSeed | undefined, req: Gener
   };
 }
 
+/**
+ * When a seed has fewer slides than the requested carousel length, synthesize
+ * additional slides that follow the hook → relatable → reflection → takeaway → CTA arc.
+ * The first slide stays the seed's "money slide" with the hadith / Arabic / attribution.
+ * Subsequent slides explore the same topic from different angles in Indonesian.
+ */
+function expandToCarousel(seed: SampleSeed, first: Slide, slidesCount: number, label: string): Slide[] {
+  const topic = (first.heading || seed.title || label).replace(/\.$/, "");
+  const cta = seed.cta || "Save & bagikan!";
+  // 5 extra slide blueprints in Indonesian. We pick the ones we need.
+  const expansions: Slide[] = [
+    {
+      kicker: "Yuk, Renungkan:",
+      heading: `Pernah ngga sih, ${topic.toLowerCase()}?`,
+      body: "Mungkin kelihatan kecil, tapi efeknya besar buat hati. Sahabat Mo pasti sering ngalamin juga, kan?",
+    },
+    {
+      kicker: "Kenapa Penting?",
+      heading: "Allah Cinta Hal-hal Kecil",
+      body: "Hal-hal kecil yang dilakukan terus-menerus, itu yang Allah cintai. Bukan yang besar tapi cuma sekali.",
+      attribution: "HR. Bukhari 6464",
+    },
+    {
+      kicker: "Coba Yuk!",
+      heading: "Mulai dari Sekarang!",
+      body: "Tarik nafas dalam-dalam, niatkan karena Allah, dan lakukan satu langkah kecil hari ini. Sahabat Mo pasti bisa!",
+    },
+    {
+      kicker: "Pesan Mama Mo:",
+      heading: "Kamu Hebat, Sahabat Mo!",
+      body: "Setiap niat baik yang kamu mulai, malaikat udah catat. Allah lihat usahamu, bukan hanya hasilnya.",
+    },
+    {
+      kicker: "Yuk, Bagikan!",
+      heading: cta,
+      body: "Bagikan ke teman & keluargamu. Satu kebaikan, ribuan pahala. Tag #BabyMo kalau kamu coba ya!",
+    },
+  ];
+  return expansions.slice(0, slidesCount - 1);
+}
+
 function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: number): GeneratedContent {
   const meta = findContentType(req.contentTypeId)!;
   const seed = variationSeed(req, index);
@@ -145,15 +186,15 @@ function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: 
   const allSeeds = seeds.length > 0 ? seeds : Object.values(SEEDS).flat();
   const base = seed ?? allSeeds[index % allSeeds.length];
 
-  // Light variation: rotate slide order subtly for batches, append index hint to title for visible variety.
+  // Light variation: append a small variant hint to titles for batches.
   const variantTitle = index === 0 ? base.title : `${base.title} · v${index + 1}`;
   const slides = base.slides.slice(0, slidesCount).map((s) => ({ ...s }));
-  while (slides.length < slidesCount) {
-    slides.push({
-      heading: "Save this",
-      body: "Soft Islam in small daily moments.",
-      footer: `Baby Mo · ${meta.type.label}`,
-    });
+  if (slides.length < slidesCount) {
+    // Seed doesn't have enough slides — expand into a proper multi-slide story.
+    const expansion = expandToCarousel(base, slides[0], slidesCount, meta.type.label);
+    while (slides.length < slidesCount) {
+      slides.push(expansion[slides.length - 1] ?? expansion[expansion.length - 1]);
+    }
   }
   return {
     id: genId(),

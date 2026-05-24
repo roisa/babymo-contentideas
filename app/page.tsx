@@ -24,7 +24,7 @@ export default function HomePage() {
           <Badge variant="green">Internal v1</Badge>
           <Badge variant="accent">iOS Refresh</Badge>
         </div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-[1.02]">
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-[1.02]">
           Konten Baby Mo, <span className="text-babymo-green">dalam menit.</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-base md:text-lg leading-relaxed">

@@ -62,16 +62,36 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Di manapun kamu, Allah selalu dekat.",
       slides: [
         {
-          heading: "Allah Selalu Dekat",
+          heading: "Allah Selalu Dekat!",
           kicker: "Catatan Hari Ini:",
+          body: "Sahabat Mo, mau di rumah, di sekolah, di mana pun — Allah selalu ada bareng kamu.",
+        },
+        {
+          heading: "Apa Kata Al-Qur'an?",
+          kicker: "Ayat Hari Ini:",
           body: "“Dan Dia bersama kamu di manapun kamu berada.”",
           arabic: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ",
           attribution: "QS. Al-Hadid: 4",
         },
+        {
+          heading: "Allah Maha Melihat",
+          kicker: "Tahukah Kamu?",
+          body: "Allah lihat semua niat baikmu — yang besar, yang kecil, bahkan yang cuma di dalam hati.",
+        },
+        {
+          heading: "Jadi, Jangan Takut!",
+          kicker: "Pesan untuk Sahabat Mo:",
+          body: "Kalau sedih, kalau sendirian, kalau takut — ingat: Allah lebih dekat dari nadi sendiri.",
+        },
+        {
+          heading: "Yuk, Save & Bagikan!",
+          kicker: "Pengingat:",
+          body: "Simpan slide ini, baca lagi pas lagi sedih. Atau bagikan ke teman yang butuh penyemangat.",
+        },
       ],
-      caption: "Allah selalu dekat sama Sahabat Mo 💚",
+      caption: "Allah selalu dekat sama Sahabat Mo 💚 Save & bagikan ya!",
       cta: "Save buat pengingat!",
-      hashtags: ["#BabyMo", "#AyatQuran", "#AnakMuslim"],
+      hashtags: ["#BabyMo", "#AyatQuran", "#AnakMuslim", "#AllahMahaMelihat"],
     },
   ],
   "hadith-motivation": [
@@ -81,8 +101,29 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       slides: [
         {
           heading: "Senyum kecilmu bisa jadi pahala besar.",
+          kicker: "Tahukah Kamu?",
+          body: "Sahabat Mo, kamu nggak perlu uang buat sedekah hari ini. Cukup satu hal aja...",
+        },
+        {
+          heading: "Yaitu... Senyum!",
+          kicker: "Sabda Rasulullah:",
           body: "“Senyummu kepada saudaramu adalah sedekah.”",
           attribution: "HR. Tirmidzi 1956",
+        },
+        {
+          heading: "Kenapa Senyum Penting?",
+          kicker: "Manfaatnya:",
+          body: "Senyum bikin hati orang lain hangat, ngusir sedih, dan bikin Sahabat Mo dapat pahala — semua dalam 1 detik!",
+        },
+        {
+          heading: "Misi Hari Ini!",
+          kicker: "Yuk Coba:",
+          body: "Senyum tulus ke 3 orang hari ini. Mama, ayah, adik, teman — siapa aja. Rasakan bedanya!",
+        },
+        {
+          heading: "Bagikan Senyummu!",
+          kicker: "Pesan Mo:",
+          body: "Save slide ini & tag temanmu. Ajak mereka ikut misi senyum hari ini. Pahala bareng-bareng, seru!",
         },
       ],
       caption: "Ayo, senyum dulu hari ini! 😊 Pahala udah nunggu loh.",
@@ -94,14 +135,35 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Bukan kalah, tapi pemenang sejati.",
       slides: [
         {
-          heading: "Mengalah itu hebat, bukan kalah",
-          body: "Rasulullah SAW bersabda: “Orang kuat adalah yang mampu menahan amarah.”",
+          heading: "Mengalah itu Hebat, bukan kalah",
+          kicker: "Pesan untuk Sahabat Mo:",
+          body: "Pernah ngga, lagi rebutan mainan sama adik? Atau berdebat sama teman? Yuk, dengerin satu hadits ini.",
+        },
+        {
+          heading: "Sabda Rasulullah SAW:",
+          kicker: "Hadits Hari Ini:",
+          body: "“Orang kuat adalah yang mampu menahan amarah ketika sedang marah.”",
           attribution: "HR. Bukhari 6114 & HR. Muslim 2609",
         },
+        {
+          heading: "Jadi, Kuat Bukan...",
+          kicker: "Bukan ya:",
+          body: "...orang yang otot-nya gede, atau yang bisa bertarung. Kuat itu yang BISA mengendalikan dirinya pas lagi marah.",
+        },
+        {
+          heading: "Coba Cara Ini!",
+          kicker: "Jurus Sahabat Mo:",
+          body: "Pas lagi marah: 1. Tarik nafas dalam.\n2. Baca ta'awudz.\n3. Diam dulu. Insya Allah marahnya hilang.",
+        },
+        {
+          heading: "Sahabat Mo, Kamu Bisa!",
+          kicker: "Save & Bagikan:",
+          body: "Save slide ini. Coba praktekkan minggu ini. Kalau berhasil, kamu udah jadi orang kuat versi Rasulullah!",
+        },
       ],
-      caption: "Pemenang sejati itu yang bisa sabar 💪",
+      caption: "Pemenang sejati itu yang bisa sabar 💪 Save & bagikan ke teman!",
       cta: "Save & jadi anak sholeh!",
-      hashtags: ["#BabyMo", "#Sabar", "#AnakSholeh"],
+      hashtags: ["#BabyMo", "#Sabar", "#AnakSholeh", "#Hadits"],
     },
   ],
   "friday-reminder": [
@@ -190,19 +252,40 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   ],
   "before-sleep-series": [
     {
-      title: "Sebelum Tidur, Yuk Lakukan Ini!",
-      hook: "3 sunnah kecil sebelum bobo.",
+      title: "5 Sunnah Sebelum Tidur",
+      hook: "Malam lebih berkah, tidur lebih nyenyak.",
       slides: [
         {
-          heading: "Yuk, Wudhu Dulu!",
-          kicker: "Sunnah Sebelum Tidur:",
+          heading: "5 Sunnah Sebelum Tidur 🌙",
+          kicker: "Yuk, Hafalkan!",
+          body: "Ada 5 kebiasaan kecil dari Rasulullah yang bikin tidur Sahabat Mo penuh berkah. Catat ya!",
+        },
+        {
+          heading: "1. Wudhu Dulu!",
+          kicker: "Sunnah Pertama:",
           body: "Wudhu sebelum tidur bikin malam lebih berkah dan mimpi lebih indah.",
           attribution: "HR. Bukhari 247",
         },
+        {
+          heading: "2. Baca Tiga Surah",
+          kicker: "Sunnah Kedua:",
+          body: "Baca Al-Ikhlas, Al-Falaq, An-Nas. Tiup ke kedua tangan, usapkan ke seluruh badan.",
+          attribution: "HR. Bukhari 5017",
+        },
+        {
+          heading: "3. Tidur Miring Kanan",
+          kicker: "Sunnah Ketiga:",
+          body: "Posisi tidur Rasulullah: miring ke kanan, tangan kanan di bawah pipi kanan. Lebih sehat!",
+        },
+        {
+          heading: "Save & Coba Malam Ini!",
+          kicker: "Misi Sahabat Mo:",
+          body: "Save slide ini. Coba 5 sunnah ini malam ini. Tag #BabyMo kalau Sahabat Mo udah ngelakuin!",
+        },
       ],
-      caption: "Yuk, mulai kebiasaan baik dari sekarang 🌙",
+      caption: "Yuk, mulai kebiasaan baik dari sekarang 🌙 Save & coba malam ini!",
       cta: "Save & coba malam ini!",
-      hashtags: ["#BabyMo", "#SunnahTidur", "#AnakMuslim"],
+      hashtags: ["#BabyMo", "#SunnahTidur", "#AnakMuslim", "#5SunnahTidur"],
     },
   ],
   "tiny-tafakkur": [
@@ -245,15 +328,35 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Lembut itu kuat, bukan lemah.",
       slides: [
         {
-          heading: "Lembutlah pada Anakmu!",
-          kicker: "Tahukah Kamu?",
-          body: "Rasulullah SAW tidak pernah membentak anak. Beliau selalu lemah lembut. Yuk, tiru sunnah ini!",
+          heading: "Marah-marah Bukan Tarbiyah",
+          kicker: "Pesan untuk Mama & Ayah:",
+          body: "Anak yang dibentak akan diam karena takut, bukan karena paham. Yuk, kita ubah caranya.",
+        },
+        {
+          heading: "Apa Kata Rasulullah?",
+          kicker: "Sunnah Beliau:",
+          body: "Rasulullah SAW melayani anak Anas selama 10 tahun. Tidak sekali pun beliau membentaknya.",
           attribution: "HR. Muslim 2310",
         },
+        {
+          heading: "Coba Cara Ini!",
+          kicker: "3 Langkah Sabar:",
+          body: "1. Tarik nafas 3x sebelum bicara.\n2. Tunduk ke level mata anak.\n3. Bicara pelan tapi tegas.",
+        },
+        {
+          heading: "Kalau Terlanjur Marah?",
+          kicker: "Nggak Apa-apa:",
+          body: "Tarbiyah itu proses panjang. Minta maaf ke anak adalah teladan paling indah dari Rasulullah.",
+        },
+        {
+          heading: "Mama & Ayah, Kamu Bisa!",
+          kicker: "Reminder Cinta:",
+          body: "Save slide ini untuk hari-hari berat. Setiap kelelahanmu menjadi anak sholeh — Allah catat semua.",
+        },
       ],
-      caption: "Tarbiyah dengan cinta, bukan dengan amarah 💚",
+      caption: "Tarbiyah dengan cinta, bukan dengan amarah 💚 Save & bagikan ke mama lain!",
       cta: "Save & jadi orangtua sabar!",
-      hashtags: ["#BabyMo", "#ParentingIslami", "#GentleParenting"],
+      hashtags: ["#BabyMo", "#ParentingIslami", "#GentleParenting", "#TarbiyahCinta"],
     },
   ],
   "mama-reflection": [
@@ -314,13 +417,33 @@ export const SEEDS: Record<string, SampleSeed[]> = {
         {
           heading: "Tahukah Kamu?",
           kicker: "Fakta Seru:",
+          body: "Ada satu kalimat ajaib yang bikin makananmu jadi penuh berkah. Tebak apa? 🤫",
+        },
+        {
+          heading: "Jawabannya: Bismillah!",
+          kicker: "Yes!",
           body: "Saat kita ucap “Bismillah” sebelum makan, setan nggak bisa ikut makan dari makanan kita loh!",
           attribution: "HR. Muslim 2017",
         },
+        {
+          heading: "Kalau Lupa Bismillah?",
+          kicker: "Eits, Tunggu Dulu:",
+          body: "Tenang Sahabat Mo, kalau lupa di awal, baca aja “Bismillahi awwalahu wa akhirahu” — artinya “Dengan nama Allah di awal dan akhir”.",
+        },
+        {
+          heading: "Latih Setiap Hari!",
+          kicker: "Tantangan Sahabat Mo:",
+          body: "Hari ini, coba ucap Bismillah sebelum SEMUA aktivitas. Sebelum makan, sebelum belajar, sebelum bermain.",
+        },
+        {
+          heading: "Bagikan Ilmunya!",
+          kicker: "Yuk, Save:",
+          body: "Save & ajarkan adik / teman. Satu ilmu yang dibagikan, satu lagi pintu pahala terbuka.",
+        },
       ],
-      caption: "Bismillah dulu, baru makan ya Sahabat Mo! 🍽️",
+      caption: "Bismillah dulu, baru makan ya Sahabat Mo! 🍽️ Tag temanmu yang sering lupa Bismillah 😄",
       cta: "Save & ajarkan adik!",
-      hashtags: ["#BabyMo", "#TahukahKamu", "#Bismillah"],
+      hashtags: ["#BabyMo", "#TahukahKamu", "#Bismillah", "#AdabMakan"],
     },
     {
       title: "Tahukah Kamu? Berwudhu Sebelum Tidur",
@@ -329,13 +452,33 @@ export const SEEDS: Record<string, SampleSeed[]> = {
         {
           heading: "Tahukah Kamu?",
           kicker: "Fakta Sunnah:",
+          body: "Ada satu kebiasaan sebelum tidur yang bikin malam Sahabat Mo dijaga malaikat. Penasaran? 🌙",
+        },
+        {
+          heading: "Yaitu... Berwudhu!",
+          kicker: "Sunnah Rasulullah:",
           body: "Jika sebelum tidur dianjurkan untuk berwudhu terlebih dulu. Tidur jadi lebih berkah!",
           attribution: "HR. Imam Bukhari 247",
         },
+        {
+          heading: "Apa Manfaatnya?",
+          kicker: "Bonus Berkah:",
+          body: "1. Diampuni dosa-dosa kecil\n2. Mimpi lebih indah\n3. Bangun lebih segar untuk Subuh!",
+        },
+        {
+          heading: "Caranya Gampang!",
+          kicker: "Mini Tutorial:",
+          body: "Wudhu seperti biasa. Selesai? Langsung baca doa tidur. Tidur miring ke kanan. Selesai!",
+        },
+        {
+          heading: "Coba Mulai Malam Ini!",
+          kicker: "Misi Sahabat Mo:",
+          body: "Save slide ini. Coba malam ini. Komen di postingan kalau Sahabat Mo udah ngelakuin ya!",
+        },
       ],
-      caption: "Yuk wudhu dulu sebelum bobo 💧",
+      caption: "Yuk wudhu dulu sebelum bobo 💧 Tag yang perlu pengingat ini!",
       cta: "Save buat malam ini!",
-      hashtags: ["#BabyMo", "#Sunnah", "#TahukahKamu"],
+      hashtags: ["#BabyMo", "#Sunnah", "#TahukahKamu", "#WudhuSebelumTidur"],
     },
   ],
   "allahs-creation": [
@@ -344,14 +487,34 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Allah ciptakan lampu untuk seluruh dunia.",
       slides: [
         {
-          heading: "Wow! Lihat Bulan!",
+          heading: "Wow! Lihat Bulan! 🌙",
           kicker: "Ciptaan Allah:",
-          body: "Bulan nggak punya cahaya sendiri. Ia hanya memantulkan cahaya matahari. Sama kita, mantulkan rahmat Allah ke sekitar.",
+          body: "Coba tengok ke langit malam ini, Sahabat Mo. Ada satu benda yang sangat menakjubkan...",
+        },
+        {
+          heading: "Fakta Seru!",
+          kicker: "Tahukah Kamu?",
+          body: "Bulan nggak punya cahaya sendiri loh! Cahaya bulan sebenarnya pantulan dari matahari.",
+        },
+        {
+          heading: "Pelajaran Buat Kita",
+          kicker: "MasyaAllah:",
+          body: "Sama seperti bulan, kita juga sebenarnya nggak punya cahaya sendiri. Kita pantulkan kasih sayang Allah ke sekitar.",
+        },
+        {
+          heading: "Allah Maha Hebat!",
+          kicker: "Tafakkur Yuk:",
+          body: "Allah ciptakan bulan tepat ukuran & jaraknya. Kalau terlalu dekat, kita gosong. Terlalu jauh, kita beku. Pas banget!",
+        },
+        {
+          heading: "Misi Tafakkur Malam Ini",
+          kicker: "Yuk Coba:",
+          body: "Ajak mama / ayah keluar rumah. Lihat bulan bareng. Bilang “SubhanAllah!” bareng. Foto & tag #BabyMo!",
         },
       ],
-      caption: "Tafakkur malam ini: SubhanAllah! 🌙",
+      caption: "Tafakkur malam ini: SubhanAllah! 🌙 Save & ajak keluarga lihat bulan!",
       cta: "Save & lihat bulan malam ini!",
-      hashtags: ["#BabyMo", "#KebesaranAllah", "#AnakMuslim"],
+      hashtags: ["#BabyMo", "#KebesaranAllah", "#AnakMuslim", "#TafakkurMalam"],
     },
   ],
   "arabic-word-of-the-day": [
@@ -495,14 +658,34 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       hook: "Allah dengar doa yang paling kecil sekalipun.",
       slides: [
         {
-          heading: "Semut Kecil yang Berdoa",
-          kicker: "Cerita Sahabat Mo:",
-          body: "Seekor semut kecil mengangkat daun yang lebih besar dari dirinya. Sambil berdoa, “Ya Rahman, kuatkan aku.” Dan Allah pun menjawab.",
+          heading: "Kisah Semut Kecil 🐜",
+          kicker: "Cerita untuk Sahabat Mo:",
+          body: "Di taman yang sejuk, ada seekor semut kecil yang sedang berusaha mengangkat sehelai daun. Daunnya sangat besar...",
+        },
+        {
+          heading: "Si Semut Lelah",
+          kicker: "Slide 2:",
+          body: "Semut mencoba berkali-kali. Daun itu jatuh terus. Akhirnya semut berhenti sebentar, menengadah ke langit.",
+        },
+        {
+          heading: "Doa Semut Kecil",
+          kicker: "Slide 3:",
+          body: "Semut berbisik pelan: “Ya Rahman, Engkau Maha Pengasih. Kuatkan tubuh kecilku ini.”",
+        },
+        {
+          heading: "Allah Mendengar 💚",
+          kicker: "Slide 4:",
+          body: "Ajaibnya, tiba-tiba semut merasa kuat. Ia angkat daun itu dengan mudah. Allah Maha Mendengar semua doa, sekecil apapun.",
+        },
+        {
+          heading: "Pesan dari Sahabat Mo",
+          kicker: "Slide 5:",
+          body: "Doamu, Sahabat Mo, juga selalu didengar Allah. Yuk, jangan malu berdoa untuk hal kecil sekalipun!",
         },
       ],
-      caption: "Doa sekecil apapun, Allah dengar 🐜💚",
+      caption: "Doa sekecil apapun, Allah dengar 🐜💚 Save & ceritakan ke adik sebelum bobo!",
       cta: "Save buat bedtime story!",
-      hashtags: ["#BabyMo", "#CeritaIslami", "#BedtimeStory"],
+      hashtags: ["#BabyMo", "#CeritaIslami", "#BedtimeStory", "#KisahHewan"],
     },
   ],
   "what-would-prophet-do": [

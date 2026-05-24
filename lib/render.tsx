@@ -34,7 +34,14 @@ async function loadFonts() {
       readFile(path.join(dir, "fraunces.ttf")), // Inter SemiBold legacy
       readFile(path.join(dir, "fredoka-medium.ttf")),
       readFile(path.join(dir, "fredoka-bold.ttf")),
-      readFile(path.join(dir, "noto-arabic.ttf")).catch(() => null),
+      // Arabic font: try Cairo Bold (proven to render with shaping in satori),
+      // then Reem Kufi (geometric independent glyphs, also reliable),
+      // then Noto Sans Arabic as last fallback.
+      readFile(path.join(dir, "arabic-cairo-bold.ttf"))
+        .catch(() => readFile(path.join(dir, "arabic-reemkufi.ttf")))
+        .catch(() => readFile(path.join(dir, "arabic-noto-sans.ttf")))
+        .catch(() => readFile(path.join(dir, "noto-arabic.ttf")))
+        .catch(() => null),
     ]);
     cachedFonts = {
       sans: toAB(sans),
@@ -52,7 +59,9 @@ async function loadFonts() {
     fetchFont("https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYMZg.ttf"),
     fetchFont("https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3OwyLMFg.ttf"),
     fetchFont("https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3OFiXMFg.ttf"),
-    fetchFont("https://fonts.gstatic.com/s/cairo/v31/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hNI-W1Q.ttf").catch(() => undefined),
+    fetchFont("https://fonts.gstatic.com/s/scheherazadenew/v21/4UaerFhTvxVnHDvUkUiHg8jprP4DM79DHlY.ttf").catch(() =>
+      fetchFont("https://fonts.gstatic.com/s/notosansarabic/v33/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfL2uvuw.ttf")
+    ).catch(() => undefined),
   ]);
   cachedFonts = { sans, sansBold, display, displayBold, arabic };
   return cachedFonts;
@@ -416,12 +425,14 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                 justifyContent: "center",
                 width: "100%",
                 fontFamily: "NotoArabic, Inter, sans-serif",
-                fontSize: 42,
-                lineHeight: 1.7,
+                fontSize: 56,
+                lineHeight: 1.65,
                 color: theme.ink,
-                marginBottom: 14,
-                fontWeight: 500,
+                marginBottom: 18,
+                marginTop: 4,
+                fontWeight: 700,
                 textAlign: "center",
+                letterSpacing: -0.5,
               }}
             >
               {props.slide.arabic}
