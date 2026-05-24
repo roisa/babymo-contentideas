@@ -34,9 +34,8 @@ async function loadFonts() {
       readFile(path.join(dir, "fraunces.ttf")), // Inter SemiBold legacy
       readFile(path.join(dir, "fredoka-medium.ttf")),
       readFile(path.join(dir, "fredoka-bold.ttf")),
-      // Arabic font: try Cairo Bold (proven to render with shaping in satori),
-      // then Reem Kufi (geometric independent glyphs, also reliable),
-      // then Noto Sans Arabic as last fallback.
+      // Arabic font: Cairo Bold renders shaped Arabic in Satori; Reem Kufi
+      // and Noto Sans Arabic are kept as fallbacks if Cairo is missing.
       readFile(path.join(dir, "arabic-cairo-bold.ttf"))
         .catch(() => readFile(path.join(dir, "arabic-reemkufi.ttf")))
         .catch(() => readFile(path.join(dir, "arabic-noto-sans.ttf")))
@@ -267,27 +266,107 @@ function Decorations({ themeId, width }: { themeId: Theme["id"]; width: number }
 
 /* ---------- Slide chrome pieces ---------- */
 
-function LogoBadge({ stroke }: { stroke: string }) {
+function ChibiHead({ size }: { size: number }) {
+  // Simplified Baby Mo character head (SVG paths only — no text).
+  const w = size;
+  const h = size;
+  return (
+    <div style={{ display: "flex", width: w, height: h }}>
+      <svg width={w} height={h} viewBox="-40 -40 80 80" xmlns="http://www.w3.org/2000/svg">
+        {/* Face base */}
+        <ellipse cx="0" cy="2" rx="26" ry="24" fill="#FAD2B6" />
+        {/* Hair (spiky tuft) */}
+        <path
+          d="M -28 -6 C -30 -30, -10 -38, -2 -30 C 4 -34, 16 -34, 22 -22 C 30 -14, 30 -6, 26 -2 L 22 -10 L 16 -2 L 10 -14 L 2 -4 L -6 -16 L -12 -4 L -18 -16 L -22 -4 L -28 -2 Z"
+          fill="#171411"
+        />
+        {/* Cheeks blush */}
+        <ellipse cx="-16" cy="10" rx="6" ry="3.5" fill="#F87BAB" opacity="0.55" />
+        <ellipse cx="16" cy="10" rx="6" ry="3.5" fill="#F87BAB" opacity="0.55" />
+        {/* Eyes — big shiny */}
+        <ellipse cx="-9" cy="2" rx="5.5" ry="7" fill="#171411" />
+        <ellipse cx="9" cy="2" rx="5.5" ry="7" fill="#171411" />
+        <circle cx="-7" cy="0" r="2" fill="#FFFFFF" />
+        <circle cx="11" cy="0" r="2" fill="#FFFFFF" />
+        {/* Smile open mouth */}
+        <path d="M -7 14 Q 0 22 7 14 Q 4 19 0 19 Q -4 19 -7 14 Z" fill="#7A2A2A" />
+        <ellipse cx="0" cy="18" rx="3.5" ry="1.6" fill="#F87BAB" />
+      </svg>
+    </div>
+  );
+}
+
+function StarShape({ size = 18 }: { size?: number }) {
+  return (
+    <div style={{ display: "flex", width: size, height: size }}>
+      <svg width={size} height={size} viewBox="-10 -10 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M 0 -9 L 2.6 -2.8 L 9 -2.5 L 4 1.5 L 5.6 8 L 0 4.5 L -5.6 8 L -4 1.5 L -9 -2.5 L -2.6 -2.8 Z"
+          fill="#FFE066"
+          stroke="#1E7A38"
+          strokeWidth="1.4"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function BabyMoLogo({ size = 110 }: { size?: number }) {
+  // Stylised approximation of the official @babymo.official mark:
+  // green pill, chibi character peeking on top, "Baby Mo" text with
+  // green stroke + dark-green 3D shadow + yellow star in the "o".
+  // SVG handles the character + star; HTML handles the text.
+  const headSize = Math.round(size * 0.62);
+  const wordmark: React.CSSProperties = {
+    fontFamily: "Fredoka, sans-serif",
+    fontWeight: 700,
+    fontSize: Math.round(size * 0.34),
+    color: "#FFFFFF",
+    letterSpacing: 0.5,
+    lineHeight: 1,
+    display: "flex",
+    textShadow: [
+      "-2px 0 0 #1E7A38",
+      "2px 0 0 #1E7A38",
+      "0 -2px 0 #1E7A38",
+      "0 2px 0 #1E7A38",
+      "-2px -2px 0 #1E7A38",
+      "2px -2px 0 #1E7A38",
+      "-2px 2px 0 #1E7A38",
+      "2px 2px 0 #1E7A38",
+      "0 4px 0 #1E7A38",
+      "0 5px 0 rgba(0,0,0,0.18)",
+    ].join(", "),
+  };
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        gap: 0,
-        background: "#2EA84F",
-        border: `4px solid ${stroke}`,
-        boxShadow: `0 4px 0 rgba(0,0,0,0.12)`,
-        borderRadius: 9999,
-        padding: "10px 22px 10px 22px",
-        fontFamily: "Fredoka, sans-serif",
-        fontWeight: 700,
-        fontSize: 30,
-        color: "#FFFFFF",
-        letterSpacing: 0.5,
       }}
     >
-      <span style={{ display: "flex", marginRight: 6 }}>Baby</span>
-      <span style={{ display: "flex", color: "#FFE066" }}>Mo</span>
+      {/* Chibi head */}
+      <div style={{ display: "flex", marginBottom: -Math.round(headSize * 0.45) }}>
+        <ChibiHead size={headSize} />
+      </div>
+      {/* Green pill with the wordmark */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          background: "#2EA84F",
+          border: "3px solid #FFFFFF",
+          borderRadius: 9999,
+          padding: `${Math.round(size * 0.14)}px ${Math.round(size * 0.32)}px ${Math.round(size * 0.16)}px ${Math.round(size * 0.32)}px`,
+          boxShadow: "0 4px 0 rgba(0,0,0,0.14)",
+        }}
+      >
+        <span style={{ ...wordmark, color: "#FFFFFF" }}>Baby Mo</span>
+        <div style={{ display: "flex", marginLeft: 6 }}>
+          <StarShape size={Math.round(size * 0.22)} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -405,7 +484,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
 
       {/* Logo at top center */}
       <div style={{ display: "flex", zIndex: "2" as any }}>
-        <LogoBadge stroke={theme.titleStroke} />
+        <BabyMoLogo size={isReels ? 120 : 110} />
       </div>
 
       {/* Big sticker title */}
@@ -435,12 +514,12 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
           style={{
             display: "flex",
             flexDirection: "column",
-            background: theme.card,
+            background: theme.cardBody ?? theme.card,
             border: `3px solid ${theme.titleStroke}`,
-            borderRadius: 24,
-            padding: isReels ? "26px 34px" : "24px 32px",
+            borderRadius: 28,
+            padding: isReels ? "30px 36px" : "28px 36px",
             marginTop: 30,
-            boxShadow: "0 6px 0 rgba(0,0,0,0.08)",
+            boxShadow: "0 6px 0 rgba(0,0,0,0.10)",
             width: "92%",
             zIndex: "2" as any,
           }}
@@ -451,10 +530,10 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                 display: "flex",
                 fontFamily: "Fredoka, sans-serif",
                 fontWeight: 700,
-                fontSize: 22,
+                fontSize: 28,
                 color: theme.title,
-                letterSpacing: 0.5,
-                marginBottom: 10,
+                letterSpacing: 0.3,
+                marginBottom: 14,
               }}
             >
               {props.slide.kicker}
@@ -468,14 +547,14 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                 justifyContent: "center",
                 width: "100%",
                 fontFamily: "NotoArabic, Inter, sans-serif",
-                fontSize: 56,
-                lineHeight: 1.65,
-                color: theme.ink,
-                marginBottom: 18,
+                fontSize: 72,
+                lineHeight: 1.55,
+                color: theme.title,
+                marginBottom: 20,
                 marginTop: 4,
                 fontWeight: 700,
                 textAlign: "center",
-                letterSpacing: -0.5,
+                letterSpacing: -1,
               }}
             >
               {props.slide.arabic}
@@ -485,12 +564,13 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
             style={{
               display: "flex",
               fontFamily: "Inter, sans-serif",
-              fontSize: 26,
+              fontSize: 34,
               lineHeight: 1.45,
               color: theme.ink,
               textAlign: "center",
               justifyContent: "center",
               width: "100%",
+              fontWeight: 600,
             }}
           >
             {props.slide.body}
@@ -500,12 +580,12 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
               style={{
                 display: "flex",
                 fontFamily: "Inter, sans-serif",
-                fontSize: 20,
-                color: theme.muted,
-                marginTop: 12,
+                fontSize: 24,
+                color: theme.title,
+                marginTop: 14,
                 justifyContent: "center",
                 width: "100%",
-                fontWeight: 600,
+                fontWeight: 700,
               }}
             >
               ({props.slide.attribution})

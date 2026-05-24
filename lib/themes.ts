@@ -32,6 +32,8 @@ export interface Theme {
   muted: string;
   accent: string;
   card: string;
+  /** Optional soft tint for the body card (matches the published @babymo.official look). */
+  cardBody?: string;
   footer: string;
   mood: "light" | "dark";
   sceneHint: string;
@@ -49,6 +51,7 @@ export const THEMES: Theme[] = [
     muted: "#7A4B61",
     accent: "#FFD93D",
     card: "#FFFFFF",
+    cardBody: "#FFF6F9",
     footer: "#7A4B61",
     mood: "light",
     sceneHint: "pink room / soft cloud scene",
@@ -64,6 +67,7 @@ export const THEMES: Theme[] = [
     muted: "#4A6B8C",
     accent: "#FFE066",
     card: "#FFFFFF",
+    cardBody: "#F2F8FF",
     footer: "#4A6B8C",
     mood: "light",
     sceneHint: "blue sky + clouds + sun",
@@ -79,6 +83,7 @@ export const THEMES: Theme[] = [
     muted: "#4F7048",
     accent: "#FFD93D",
     card: "#FFFFFF",
+    cardBody: "#F4FAEC",
     footer: "#4F7048",
     mood: "light",
     sceneHint: "garden / outdoor / grass + sky",
@@ -94,6 +99,7 @@ export const THEMES: Theme[] = [
     muted: "#7A532A",
     accent: "#FF8FB0",
     card: "#FFFFFF",
+    cardBody: "#FFF9E4",
     footer: "#7A532A",
     mood: "light",
     sceneHint: "kitchen / dining table morning",
@@ -109,6 +115,7 @@ export const THEMES: Theme[] = [
     muted: "#7A4A2F",
     accent: "#7AC4D9",
     card: "#FFFFFF",
+    cardBody: "#FFF4EC",
     footer: "#7A4A2F",
     mood: "light",
     sceneHint: "warm interior / wooden room",
@@ -124,6 +131,7 @@ export const THEMES: Theme[] = [
     muted: "#7B7AAA",
     accent: "#FFD93D",
     card: "#FFFFFF",
+    cardBody: "#FFFCF0",
     footer: "#C4C0E0",
     mood: "dark",
     sceneHint: "bedroom at night / stars",
@@ -139,6 +147,7 @@ export const THEMES: Theme[] = [
     muted: "#7A5E2A",
     accent: "#F87BAB",
     card: "#FFFFFF",
+    cardBody: "#FFFAEC",
     footer: "#7A5E2A",
     mood: "light",
     sceneHint: "study / library / soft shelves",
@@ -154,6 +163,7 @@ export const THEMES: Theme[] = [
     muted: "#4A6B7A",
     accent: "#F87BAB",
     card: "#FFFFFF",
+    cardBody: "#F4FAFF",
     footer: "#4A6B7A",
     mood: "light",
     sceneHint: "sky + grass + sunshine playful",
