@@ -97,14 +97,14 @@ Every slide reserves space for:
 - an **illustration zone** (the middle area opposite the text)
 
 The design team can drop Baby Mo characters, illustrations, stickers, or
-hand-drawn details into the exported PNG / ZIP. The studio gives 80% of the
-finished feeling; designers polish the last 20%.
+hand-drawn details into the exported PNG / ZIP in **Canva**. The studio gives
+80% of the finished feeling; designers polish the last 20%.
 
 ## Caveats
 
 - The Arabic font (Cairo) renders correctly with Satori but ligature shaping is
   approximate — full Arabic shaping is not supported by Satori. Diacritics
-  render. For a final hero asset, designers can swap the Arabic in InDesign.
+  render. For a final hero asset, designers can swap the Arabic in Canva.
 - Live AI generation requires `ANTHROPIC_API_KEY`. Without it, content is drawn
   from the curated seed library — variations look identical across batches of
   the same type.

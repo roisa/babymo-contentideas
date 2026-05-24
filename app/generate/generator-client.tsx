@@ -233,18 +233,18 @@ export function GeneratorClient() {
 
       {/* Sticky generate bar */}
       <div className="sticky bottom-24 md:bottom-6 z-20 px-1">
-        <div className="rounded-full bg-white/80 backdrop-blur-ios border border-white shadow-ios-card p-2 flex items-center gap-3">
-          <div className="flex items-center gap-2 pl-3">
-            <Wand2 className="h-4 w-4 text-babymo-green" />
+        <div className="rounded-full bg-white/80 backdrop-blur-ios border border-white shadow-ios-card p-2 flex items-center gap-2">
+          <div className="flex items-center gap-2 pl-3 min-w-0 flex-1">
+            <Wand2 className="h-4 w-4 text-babymo-green shrink-0" />
             <span className="text-[13px] font-semibold truncate">
-              {activeType?.label} · {format} · {batchSize}×
+              <span className="hidden sm:inline">{activeType?.label} · {format} · </span>{batchSize}×
             </span>
           </div>
-          <Button onClick={handleGenerate} disabled={busy} size="lg" className="ml-auto">
+          <Button onClick={handleGenerate} disabled={busy} size="lg" className="shrink-0 whitespace-nowrap">
             {busy ? (
               <span className="inline-flex items-center gap-2">
                 <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-                Generating {batchSize}…
+                <span className="hidden xs:inline">Generating</span> {batchSize}…
               </span>
             ) : (
               <span className="inline-flex items-center gap-2">

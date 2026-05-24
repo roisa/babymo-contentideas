@@ -82,7 +82,7 @@ export default function HomePage() {
             icon={<Zap className="h-5 w-5" />}
             color="bg-babymo-coral/15 text-babymo-coral-dark"
             title="Cepet banget"
-            items={["Batch 5 / 10 / 20 sekali klik", "Render PNG / ZIP otomatis", "Tinggal swap art di-Photoshop"]}
+            items={["Batch 5 / 10 / 20 sekali klik", "Render PNG / ZIP otomatis", "Tinggal swap art di Canva"]}
           />
           <BulletCard
             icon={<Heart className="h-5 w-5" />}

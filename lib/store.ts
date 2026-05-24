@@ -22,6 +22,8 @@ export const useLibrary = create<LibraryState>()(
       remove: (id) => set((s) => ({ items: s.items.filter((i) => i.id !== id) })),
       clear: () => set({ items: [] }),
     }),
-    { name: "babymo-library-v1" }
+    // Bump to v2 to flush stale single-slide carousels saved before the
+    // multi-slide seed expansion + emoji-rendering fix.
+    { name: "babymo-library-v2" }
   )
 );

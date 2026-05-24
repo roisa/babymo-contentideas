@@ -295,24 +295,24 @@ function LogoBadge({ stroke }: { stroke: string }) {
 function CharacterPose({
   position,
   hint,
-  ink,
   contrast,
   size,
 }: {
   position: "br" | "bl" | "tr" | "tl" | "right" | "bottom";
   hint: string;
-  ink: string;
   /** A high-contrast color for the dashed border & label (light on dark, dark on light). */
   contrast: string;
   size: number;
 }) {
-  const wrap: React.CSSProperties = { position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, zIndex: "1" as any };
-  if (position === "br") Object.assign(wrap, { right: 50, bottom: 56 });
-  else if (position === "bl") Object.assign(wrap, { left: 50, bottom: 56 });
-  else if (position === "tr") Object.assign(wrap, { right: 50, top: 220 });
-  else if (position === "tl") Object.assign(wrap, { left: 50, top: 220 });
-  else if (position === "right") Object.assign(wrap, { right: 50, bottom: 200 });
-  else Object.assign(wrap, { left: "50%", bottom: 56, transform: "translateX(-50%)" });
+  // Compact text-only dashed marker — the design team replaces the whole
+  // circle with the Baby Mo character pose in Canva.
+  const wrap: React.CSSProperties = { position: "absolute", display: "flex", zIndex: "1" as any };
+  if (position === "br") Object.assign(wrap, { right: 60, bottom: 80 });
+  else if (position === "bl") Object.assign(wrap, { left: 60, bottom: 80 });
+  else if (position === "tr") Object.assign(wrap, { right: 60, top: 240 });
+  else if (position === "tl") Object.assign(wrap, { left: 60, top: 240 });
+  else if (position === "right") Object.assign(wrap, { right: 60, bottom: 200 });
+  else Object.assign(wrap, { left: "50%", bottom: 80, transform: "translateX(-50%)" });
 
   return (
     <div style={wrap}>
@@ -321,39 +321,29 @@ function CharacterPose({
           width: size,
           height: size,
           borderRadius: 9999,
-          border: `4px dashed ${contrast}77`,
-          background: `${contrast}15`,
+          border: `3px dashed ${contrast}66`,
+          background: `${contrast}0D`,
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          color: `${contrast}BB`,
-          fontFamily: "Fredoka, sans-serif",
-          fontWeight: 700,
-          fontSize: 30,
+          padding: 14,
         }}
       >
-        <div style={{ display: "flex" }}>baby mo</div>
-        <div style={{ display: "flex", fontFamily: "Inter, sans-serif", fontSize: 16, marginTop: 6, fontWeight: 400 }}>
-          drop pose here
+        <div
+          style={{
+            display: "flex",
+            color: `${contrast}AA`,
+            fontFamily: "Inter, sans-serif",
+            fontSize: 13,
+            letterSpacing: 1.6,
+            textTransform: "uppercase",
+            textAlign: "center",
+            fontWeight: 600,
+            lineHeight: 1.25,
+          }}
+        >
+          {hint}
         </div>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          padding: "8px 14px",
-          background: "#FFFFFF",
-          color: ink,
-          fontFamily: "Inter, sans-serif",
-          fontSize: 14,
-          letterSpacing: 1.4,
-          textTransform: "uppercase",
-          borderRadius: 8,
-          boxShadow: "0 2px 0 rgba(0,0,0,0.08)",
-          fontWeight: 600,
-        }}
-      >
-        ↳ {hint}
       </div>
     </div>
   );
@@ -380,8 +370,8 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
   const category = CATEGORIES.find((c) => c.id === props.categoryId);
   const pose = category?.pose ?? { hint: "happy pose", position: "bottom" as const };
 
-  // For reels we push the character lower, and use slightly bigger pose
-  const poseSize = isReels ? 360 : 320;
+  // Compact pose marker — easier to swap out in Canva
+  const poseSize = isReels ? 240 : 200;
   const posePosition = isReels ? "bottom" : pose.position;
 
   // Background: theme gradient (full bleed scene placeholder)
@@ -524,11 +514,10 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
         </div>
       )}
 
-      {/* Character pose reservation zone */}
+      {/* Character pose reservation zone — swap in Canva */}
       <CharacterPose
         position={posePosition}
         hint={pose.hint.replace("baby mo · ", "")}
-        ink={theme.ink}
         contrast={theme.mood === "dark" ? "#FFFFFF" : theme.ink}
         size={poseSize}
       />

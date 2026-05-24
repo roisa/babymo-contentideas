@@ -23,29 +23,37 @@ export default function ThemesPage() {
                 background: `linear-gradient(140deg, ${t.gradient[0]} 0%, ${t.gradient[1]} 55%, ${t.gradient[2]} 100%)`,
               }}
             >
-              <div className="absolute inset-4 flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <div
-                    className="rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] border bg-white/70"
-                    style={{ color: t.ink, borderColor: `${t.accent}55` }}
-                  >
-                    Baby Mo · {t.name}
+              {(() => {
+                // Mood-aware ink: light text on dark themes, dark text on light themes
+                const textInk = t.mood === "dark" ? t.titleStroke : t.ink;
+                const textMuted = t.mood === "dark" ? `${t.titleStroke}CC` : t.muted;
+                const chipBg = t.mood === "dark" ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.75)";
+                return (
+                  <div className="absolute inset-4 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] border backdrop-blur"
+                        style={{ color: textInk, borderColor: `${t.accent}55`, background: chipBg }}
+                      >
+                        Baby Mo · {t.name}
+                      </div>
+                      <div className="aspect-square w-10 rounded-full" style={{ background: `${t.accent}40`, border: `2px dashed ${t.accent}` }} />
+                    </div>
+                    <div>
+                      <div className="font-bold text-2xl tracking-tight" style={{ color: t.title, textShadow: t.mood === "dark" ? `2px 2px 0 ${t.titleStroke}33` : `1px 1px 0 rgba(255,255,255,0.5)` }}>
+                        Doa Tidur
+                      </div>
+                      <div className="text-xs mt-1" style={{ color: textMuted }}>
+                        Whisper it tonight.
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[10px]" style={{ color: textMuted }}>
+                      <span>babymo.studio</span>
+                      <span className="uppercase tracking-wider">{t.mood}</span>
+                    </div>
                   </div>
-                  <div className="aspect-square w-10 rounded-full" style={{ background: `${t.accent}40`, border: `2px dashed ${t.accent}` }} />
-                </div>
-                <div>
-                  <div className="font-semibold text-xl" style={{ color: t.ink }}>
-                    A tiny dua
-                  </div>
-                  <div className="text-xs mt-1" style={{ color: t.muted }}>
-                    Whisper it tonight.
-                  </div>
-                </div>
-                <div className="flex justify-between text-[10px]" style={{ color: t.footer }}>
-                  <span>babymo.studio</span>
-                  <span>{t.mood}</span>
-                </div>
-              </div>
+                );
+              })()}
             </div>
             <CardContent className="p-4 space-y-2">
               <div className="flex items-center justify-between">

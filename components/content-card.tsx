@@ -87,11 +87,14 @@ export function ContentDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 mb-2">
             <Badge variant="soft" className="font-normal">{content.contentTypeLabel}</Badge>
             <Badge variant="outline" className="font-normal capitalize">{content.format}</Badge>
-            <span className="ml-1">{content.title}</span>
-          </DialogTitle>
+            {content.slides.length > 1 && (
+              <Badge variant="outline" className="font-normal">{content.slides.length} slides</Badge>
+            )}
+          </div>
+          <DialogTitle className="text-base">{content.title}</DialogTitle>
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr,360px] gap-6 mt-2">
