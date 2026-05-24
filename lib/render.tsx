@@ -266,6 +266,21 @@ function Decorations({ themeId, width }: { themeId: Theme["id"]; width: number }
 
 /* ---------- Slide chrome pieces ---------- */
 
+/* ---------- Baby Mo logo (real PNG, base64-embedded) ---------- */
+
+let cachedLogo: string | null | undefined; // dataUrl, null = tried & missing
+
+async function loadLogoDataUrl(): Promise<string | null> {
+  if (cachedLogo !== undefined) return cachedLogo;
+  try {
+    const buf = await readFile(path.join(process.cwd(), "public", "babymo-logo.png"));
+    cachedLogo = `data:image/png;base64,${buf.toString("base64")}`;
+  } catch {
+    cachedLogo = null;
+  }
+  return cachedLogo;
+}
+
 function ChibiHead({ size }: { size: number }) {
   // Simplified Baby Mo character head (SVG paths only — no text).
   const w = size;
@@ -311,11 +326,21 @@ function StarShape({ size = 18 }: { size?: number }) {
   );
 }
 
-function BabyMoLogo({ size = 110 }: { size?: number }) {
-  // Stylised approximation of the official @babymo.official mark:
-  // green pill, chibi character peeking on top, "Baby Mo" text with
-  // green stroke + dark-green 3D shadow + yellow star in the "o".
-  // SVG handles the character + star; HTML handles the text.
+function BabyMoLogo({ size = 110, logoDataUrl }: { size?: number; logoDataUrl?: string | null }) {
+  // Real logo image when available (rendered as <img> with base64 data URL).
+  // Falls back to the stylised SVG approximation if the PNG isn't bundled.
+  if (logoDataUrl) {
+    // The official PNG is roughly square (838x834). Render at the requested
+    // size, preserving aspect ratio.
+    return (
+      <div style={{ display: "flex" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+        <img src={logoDataUrl} width={size * 1.4} height={size * 1.4} />
+      </div>
+    );
+  }
+
+  // -- Fallback chibi+pill stylisation --
   const headSize = Math.round(size * 0.62);
   const wordmark: React.CSSProperties = {
     fontFamily: "Fredoka, sans-serif",
@@ -440,6 +465,7 @@ interface SlideRenderProps {
   categoryId: string;
   cta?: string;
   hashtags?: string[];
+  logoDataUrl?: string | null;
 }
 
 function SlideNode(props: SlideRenderProps): React.ReactElement {
@@ -484,7 +510,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
 
       {/* Logo at top center */}
       <div style={{ display: "flex", zIndex: "2" as any }}>
-        <BabyMoLogo size={isReels ? 120 : 110} />
+        <BabyMoLogo size={isReels ? 120 : 110} logoDataUrl={props.logoDataUrl} />
       </div>
 
       {/* Big sticker title */}
@@ -639,7 +665,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
 
 export async function renderSlidePng(content: GeneratedContent, slideIndex: number): Promise<Buffer> {
   const fmt = FORMATS.find((f) => f.id === content.format)!;
-  const fonts = await loadFonts();
+  const [fonts, logoDataUrl] = await Promise.all([loadFonts(), loadLogoDataUrl()]);
   const node = SlideNode({
     slide: content.slides[slideIndex],
     index: slideIndex,
@@ -650,6 +676,7 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     categoryId: content.categoryId,
     cta: content.cta,
     hashtags: content.hashtags,
+    logoDataUrl,
   });
 
   type FontList = Parameters<typeof satori>[1]["fonts"];
