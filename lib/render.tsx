@@ -5,6 +5,7 @@ import path from "node:path";
 import { FORMATS, CATEGORIES, findContentType } from "./content-types";
 import { getTheme, type Theme } from "./themes";
 import type { GeneratedContent, Slide } from "./types";
+import { loadPoseDataUrl } from "./poses";
 import React from "react";
 
 let cachedFonts: {
@@ -522,23 +523,40 @@ function CharacterPose({
   hint,
   contrast,
   size,
+  poseDataUrl,
 }: {
   position: "br" | "bl" | "tr" | "tl" | "right" | "bottom";
   hint: string;
   /** A high-contrast color for the dashed border & label (light on dark, dark on light). */
   contrast: string;
   size: number;
+  /** When provided, renders the real Baby Mo character PNG instead of the dashed placeholder. */
+  poseDataUrl?: string | null;
 }) {
-  // Compact text-only dashed marker — the design team replaces the whole
-  // circle with the Baby Mo character pose in Canva.
   const wrap: React.CSSProperties = { position: "absolute", display: "flex", zIndex: "1" as any };
-  if (position === "br") Object.assign(wrap, { right: 60, bottom: 80 });
-  else if (position === "bl") Object.assign(wrap, { left: 60, bottom: 80 });
-  else if (position === "tr") Object.assign(wrap, { right: 60, top: 240 });
-  else if (position === "tl") Object.assign(wrap, { left: 60, top: 240 });
-  else if (position === "right") Object.assign(wrap, { right: 60, bottom: 200 });
-  else Object.assign(wrap, { left: "50%", bottom: 80, transform: "translateX(-50%)" });
+  // Real character flushes near the canvas edges. Dashed placeholder
+  // keeps a small inset.
+  const isRealPose = Boolean(poseDataUrl);
+  const inset = isRealPose ? -30 : 30;
+  const bottomGap = isRealPose ? -40 : 30;
+  if (position === "br") Object.assign(wrap, { right: inset, bottom: bottomGap });
+  else if (position === "bl") Object.assign(wrap, { left: inset, bottom: bottomGap });
+  else if (position === "tr") Object.assign(wrap, { right: inset, top: 200 });
+  else if (position === "tl") Object.assign(wrap, { left: inset, top: 200 });
+  else if (position === "right") Object.assign(wrap, { right: inset, bottom: 180 });
+  else Object.assign(wrap, { left: "50%", bottom: bottomGap, transform: "translateX(-50%)" });
 
+  if (poseDataUrl) {
+    // Real character — drop in the PNG, no dashed marker.
+    return (
+      <div style={wrap}>
+        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+        <img src={poseDataUrl} width={size} height={size} style={{ objectFit: "contain" }} />
+      </div>
+    );
+  }
+
+  // Fallback: dashed placeholder when no pose is bundled
   return (
     <div style={wrap}>
       <div
@@ -589,6 +607,7 @@ interface SlideRenderProps {
   logoDataUrl?: string | null;
   arabicImageUrl?: string | null;
   arabicImageHeight?: number;
+  poseDataUrl?: string | null;
 }
 
 function SlideNode(props: SlideRenderProps): React.ReactElement {
@@ -599,8 +618,16 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
   const pose = category?.pose ?? { hint: "happy pose", position: "bottom" as const };
 
   // Compact pose marker — easier to swap out in Canva
-  const poseSize = isReels ? 240 : 200;
+  // Real character art? Make it large (matches @babymo.official feed).
+  // Fallback dashed placeholder stays compact.
+  const hasRealPose = Boolean(props.poseDataUrl);
+  // Character sized to peek next to the card without dominating. The
+  // category's preferred position (per pose.position in content-types)
+  // decides which side it sits.
+  const poseSize = hasRealPose ? (isReels ? 620 : 420) : isReels ? 240 : 200;
   const posePosition = isReels ? "bottom" : pose.position;
+  // Body card narrows slightly when there's a real pose to share the canvas.
+  const cardWidth = hasRealPose ? "84%" : "92%";
 
   // Background: theme gradient (full bleed scene placeholder)
   const bg = `linear-gradient(170deg, ${theme.gradient[0]} 0%, ${theme.gradient[1]} 55%, ${theme.gradient[2]} 100%)`;
@@ -628,8 +655,19 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
         overflow: "hidden",
       }}
     >
-      {/* Decorative scene shapes */}
+      {/* Decorative scene shapes (sit behind everything) */}
       <Decorations themeId={theme.id} width={fmt.width} />
+
+      {/* Baby Mo character — paint order matters: render BEFORE the card
+          so the card paints over the character's body (Satori paints in
+          document order; CSS z-index is mostly ignored). */}
+      <CharacterPose
+        position={posePosition}
+        hint={pose.hint.replace("baby mo · ", "")}
+        contrast={theme.mood === "dark" ? "#FFFFFF" : theme.ink}
+        size={poseSize}
+        poseDataUrl={props.poseDataUrl}
+      />
 
       {/* Logo at top center */}
       <div style={{ display: "flex", zIndex: "2" as any }}>
@@ -687,7 +725,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
             padding: isReels ? "30px 36px" : "28px 36px",
             marginTop: 0,
             boxShadow: "0 6px 0 rgba(0,0,0,0.10)",
-            width: "92%",
+            width: cardWidth,
             zIndex: "2" as any,
           }}
         >
@@ -803,14 +841,6 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
         </div>
       )}
 
-      {/* Character pose reservation zone — swap in Canva */}
-      <CharacterPose
-        position={posePosition}
-        hint={pose.hint.replace("baby mo · ", "")}
-        contrast={theme.mood === "dark" ? "#FFFFFF" : theme.ink}
-        size={poseSize}
-      />
-
       {/* tiny scene hint for designers (bottom-left, low opacity) */}
       <div
         style={{
@@ -854,12 +884,13 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
   // to composite an <img>. The text colour matches the theme's title accent.
   const arabicMaxWidth = fmt.width - 220; // body card inner width
   const arabicFontSize = 80;
-  const [fonts, logoDataUrl, arabicResult] = await Promise.all([
+  const [fonts, logoDataUrl, arabicResult, poseDataUrl] = await Promise.all([
     loadFonts(),
     loadLogoDataUrl(),
     slide.arabic
       ? renderArabicAsImage(slide.arabic, theme.title, arabicFontSize, arabicMaxWidth)
       : Promise.resolve(null),
+    loadPoseDataUrl(content.categoryId, slideIndex),
   ]);
   const node = SlideNode({
     slide,
@@ -874,6 +905,7 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     logoDataUrl,
     arabicImageUrl: arabicResult?.dataUrl ?? null,
     arabicImageHeight: arabicResult?.height,
+    poseDataUrl,
   });
 
   type FontList = Parameters<typeof satori>[1]["fonts"];
