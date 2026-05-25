@@ -338,13 +338,14 @@ async function renderArabicAsImage(
   const fontBuf = await getArabicFontBuf();
   if (!fontBuf) return null;
 
-  // ~22 chars per line works well for Cairo Bold at our sizes; shrink slightly
-  // for very long ayat by lowering the font.
+  // ~22 chars per line works well for Cairo Bold at our sizes; shrink the
+  // font when Arabic wraps to many lines so the card doesn't overflow.
   let activeSize = fontSize;
   let lines = wrapArabicLines(text, 22);
-  // If we'd need more than 3 lines, shrink the font a little.
-  while (lines.length > 3 && activeSize > 48) {
-    activeSize -= 8;
+  // Aim for ≤2 lines: keeps the card compact even when there's also
+  // transliteration + translation + attribution below the Arabic.
+  while (lines.length > 2 && activeSize > 44) {
+    activeSize -= 6;
     lines = wrapArabicLines(text, Math.round(22 * (fontSize / activeSize)));
   }
 
@@ -628,6 +629,9 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
   const posePosition = isReels ? "bottom" : pose.position;
   // Body card narrows slightly when there's a real pose to share the canvas.
   const cardWidth = hasRealPose ? "84%" : "92%";
+  // A card with Arabic + transliteration + Indonesian translation is dense
+  // and overflows the slide unless we shrink the inner text sizes.
+  const denseCard = Boolean(props.slide.arabic && /\n\s*\n/.test(props.slide.body || ""));
 
   // Background: theme gradient (full bleed scene placeholder)
   const bg = `linear-gradient(170deg, ${theme.gradient[0]} 0%, ${theme.gradient[1]} 55%, ${theme.gradient[2]} 100%)`;
@@ -657,17 +661,6 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
     >
       {/* Decorative scene shapes (sit behind everything) */}
       <Decorations themeId={theme.id} width={fmt.width} />
-
-      {/* Baby Mo character — paint order matters: render BEFORE the card
-          so the card paints over the character's body (Satori paints in
-          document order; CSS z-index is mostly ignored). */}
-      <CharacterPose
-        position={posePosition}
-        hint={pose.hint.replace("baby mo · ", "")}
-        contrast={theme.mood === "dark" ? "#FFFFFF" : theme.ink}
-        size={poseSize}
-        poseDataUrl={props.poseDataUrl}
-      />
 
       {/* Logo at top center */}
       <div style={{ display: "flex", zIndex: "2" as any }}>
@@ -735,10 +728,10 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                 display: "flex",
                 fontFamily: "Fredoka, sans-serif",
                 fontWeight: 700,
-                fontSize: 28,
+                fontSize: denseCard ? 22 : 28,
                 color: theme.title,
                 letterSpacing: 0.3,
-                marginBottom: 14,
+                marginBottom: denseCard ? 10 : 14,
               }}
             >
               {props.slide.kicker}
@@ -791,14 +784,14 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                       display: "flex",
                       fontFamily: "Inter, sans-serif",
                       fontStyle: "italic",
-                      fontSize: 28,
+                      fontSize: denseCard ? 22 : 28,
                       lineHeight: 1.45,
                       color: theme.title,
                       textAlign: "center",
                       justifyContent: "center",
                       width: "100%",
                       fontWeight: 600,
-                      marginBottom: 14,
+                      marginBottom: denseCard ? 10 : 14,
                     }}
                   >
                     {translit}
@@ -808,7 +801,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
                   style={{
                     display: "flex",
                     fontFamily: "Inter, sans-serif",
-                    fontSize: 34,
+                    fontSize: denseCard ? 26 : 34,
                     lineHeight: 1.45,
                     color: theme.ink,
                     textAlign: "center",
@@ -827,9 +820,9 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
               style={{
                 display: "flex",
                 fontFamily: "Inter, sans-serif",
-                fontSize: 24,
+                fontSize: denseCard ? 20 : 24,
                 color: theme.title,
-                marginTop: 14,
+                marginTop: denseCard ? 10 : 14,
                 justifyContent: "center",
                 width: "100%",
                 fontWeight: 700,
@@ -872,6 +865,17 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
       >
         {props.index + 1} / {props.total}
       </div>
+
+      {/* Baby Mo character — paint order matters in Satori (document
+          order = paint order, z-index mostly ignored). Rendered LAST so
+          it sits on top of the body card and footer. */}
+      <CharacterPose
+        position={posePosition}
+        hint={pose.hint.replace("baby mo · ", "")}
+        contrast={theme.mood === "dark" ? "#FFFFFF" : theme.ink}
+        size={poseSize}
+        poseDataUrl={props.poseDataUrl}
+      />
     </div>
   );
 }
@@ -883,7 +887,7 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
   // Pre-render Arabic via Resvg (proper harfbuzz shaping) so Satori only has
   // to composite an <img>. The text colour matches the theme's title accent.
   const arabicMaxWidth = fmt.width - 220; // body card inner width
-  const arabicFontSize = 80;
+  const arabicFontSize = 64;
   const [fonts, logoDataUrl, arabicResult, poseDataUrl] = await Promise.all([
     loadFonts(),
     loadLogoDataUrl(),
