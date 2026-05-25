@@ -432,6 +432,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Apa Kata Rasulullah ﷺ?",
           kicker: "Hadits Hari Ini:",
           body: "“Orang kuat itu BUKAN yang menang dalam pertarungan. Tapi yang mampu menahan dirinya ketika sedang marah.”",
+          arabic: "لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ، إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ",
           attribution: "HR. Bukhari 6114 & HR. Muslim 2609",
         },
         {
@@ -472,6 +473,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Yes — SENYUM! 😊",
           kicker: "Sabda Rasulullah:",
           body: "“Senyummu kepada saudaramu adalah sedekah.”",
+          arabic: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ",
           attribution: "HR. Tirmidzi 1956",
         },
         {
@@ -502,6 +504,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Jawabannya Mengejutkan!",
           kicker: "Hadits Rasulullah ﷺ:",
           body: "“Amalan yang paling Allah cintai adalah yang KONSISTEN, walaupun sedikit.”",
+          arabic: "أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ",
           attribution: "HR. Bukhari 6464 & HR. Muslim 783",
         },
         {
@@ -527,19 +530,51 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   ],
   "friday-reminder": [
     {
-      title: "Jumat Berkah!",
-      hook: "Hari yang paling Allah cintai.",
+      title: "Jumat Mubarak!",
+      hook: "Hari paling istimewa minggu ini.",
       slides: [
         {
-          heading: "Jumat Penuh Berkah!",
-          kicker: "Yuk, Amalkan!",
-          body: "Hari Jumat adalah hari yang istimewa. Yuk, perbanyak baca shalawat & Surah Al-Kahfi!",
-          attribution: "HR. Hakim 3392",
+          heading: "Jumat Mubarak! 🌿",
+          kicker: "Yuk, Amalkan:",
+          body: "Hari paling Allah cintai dalam seminggu. Perbanyak shalawat, baca Surah Al-Kahfi, & doa di antara ashar-maghrib (waktu mustajab).",
+          attribution: "HR. Muslim 854",
         },
       ],
-      caption: "Jumat Mubarak, Sahabat Mo! 🌿✨",
+      caption: "Jumat Mubarak, Sahabat Mo! 🌿✨ Tag yang perlu pengingat hari ini!",
       cta: "Tag sahabatmu, ucapkan Jumat Mubarak!",
       hashtags: ["#BabyMo", "#JumatBerkah", "#Shalawat"],
+    },
+    {
+      title: "Baca Surah Al-Kahfi Hari Ini? 🌅",
+      hook: "Surah yang ngelindungi kamu sampai Jumat depan.",
+      slides: [
+        {
+          heading: "Baca Surah Al-Kahfi Hari Ini! 🌅",
+          kicker: "Sunnah Jumat:",
+          body: "Rasulullah ﷺ janji: barang siapa baca Surah Al-Kahfi di hari Jumat, akan dipancarkan cahaya untuknya sampai Jumat berikutnya.",
+          arabic: "مَنْ قَرَأَ سُورَةَ الْكَهْفِ فِي يَوْمِ الْجُمُعَةِ أَضَاءَ لَهُ مِنَ النُّورِ",
+          attribution: "HR. Al-Hakim 3392",
+        },
+      ],
+      caption: "Cahaya Jumat dari Surah Al-Kahfi 🌅 Save & baca hari ini!",
+      cta: "Save buat dibaca!",
+      hashtags: ["#BabyMo", "#JumatBerkah", "#AlKahfi"],
+    },
+    {
+      title: "Shalawat 100x Hari Ini, Yuk!",
+      hook: "Hadiah singkat yang dibalas Allah berkali-kali.",
+      slides: [
+        {
+          heading: "Shalawat 100x Hari Ini, Yuk! 🌿",
+          kicker: "Sunnah Jumat:",
+          body: "Sabda Rasulullah ﷺ: “Barang siapa bershalawat untukku 1 kali, Allah akan bershalawat untuknya 10 kali.” 100x shalawat = 1000 balasan dari Allah.",
+          arabic: "مَنْ صَلَّى عَلَيَّ صَلَاةً صَلَّى اللَّهُ عَلَيْهِ بِهَا عَشْرًا",
+          attribution: "HR. Muslim 408",
+        },
+      ],
+      caption: "100 shalawat = 1000 balasan dari Allah 🌿 Tag yang mau ikutan!",
+      cta: "Save & shalawat hari ini!",
+      hashtags: ["#BabyMo", "#Shalawat", "#JumatBerkah"],
     },
   ],
   "ramadan-reminder": [
@@ -592,6 +627,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Kata Rasulullah ﷺ Tentang Sahur",
           kicker: "Sabda Beliau:",
           body: "“Bersahurlah kalian, karena dalam sahur itu ada BERKAH.”",
+          arabic: "تَسَحَّرُوا فَإِنَّ فِي السَّحُورِ بَرَكَةً",
           attribution: "HR. Bukhari 1923 & HR. Muslim 1095",
         },
         {
@@ -744,6 +780,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Itu Doa Paling Mustajab 💚",
           kicker: "Sabda Rasulullah:",
           body: "“Doa orangtua untuk anaknya adalah doa yang mustajab — TIDAK terhalang.”",
+          arabic: "دَعْوَةُ الْوَالِدِ لِوَلَدِهِ لَا تُحْجَبُ",
           attribution: "HR. Tirmidzi 1905",
         },
         {
@@ -853,6 +890,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Tapi Ini Yang Bikin Heran...",
           kicker: "Anas bercerita:",
           body: "“Selama 10 tahun itu, Rasulullah TIDAK PERNAH SEKALI PUN bilang ke aku 'kenapa kamu lakukan ini?' atau 'kenapa kamu nggak lakukan itu?'”",
+          arabic: "فَمَا قَالَ لِي قَطُّ لِمَ فَعَلْتَ كَذَا وَلَا تَرَكْتَ كَذَا",
           attribution: "HR. Bukhari 6038",
         },
         {
@@ -892,7 +930,8 @@ export const SEEDS: Record<string, SampleSeed[]> = {
         {
           heading: "Suaranya... Di Surga!",
           kicker: "Sabda Rasulullah:",
-          body: "Rasulullah ﷺ bercerita bahwa di mimpi beliau melihat Bilal di Surga. Suara langkahnya terdengar — bahkan di sana.",
+          body: "“Aku mendengar suara langkah sandalmu di hadapanku, di dalam Surga.”\n\nRasulullah berkata ini langsung ke Bilal. MasyaAllah.",
+          arabic: "سَمِعْتُ خَشْفَ نَعْلَيْكَ بَيْنَ يَدَيَّ فِي الْجَنَّةِ",
           attribution: "HR. Bukhari 1149",
         },
         {
@@ -904,6 +943,233 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       caption: "Bilal — dari budak jadi muadzin pertama di dunia 💚 Save buat cerita anak!",
       cta: "Save buat bedtime story!",
       hashtags: ["#BabyMo", "#KisahSahabat", "#BilalBinRabah", "#KisahMuslim"],
+    },
+  ],
+  "kisah-nabi": [
+    {
+      title: "Nabi Yusuf — Dari Sumur Ke Istana",
+      hook: "Allah selalu siapkan jalan, walau lewat ujian.",
+      slides: [
+        {
+          heading: "Pernah Denger Cerita Nabi Yusuf? 🌙",
+          kicker: "Kisah Hari Ini:",
+          body: "Sahabat Mo, ada satu kisah Nabi yang Allah sendiri sebut dalam Al-Qur'an sebagai “sebaik-baik kisah”. Tebak siapa? Swipe pelan-pelan →",
+        },
+        {
+          heading: "Beliau: Nabi Yusuf 'alaihissalam",
+          kicker: "Babak 1 — Sumur:",
+          body: "Yusuf kecil dimasukkan ke dalam sumur oleh saudara-saudaranya sendiri. Sendirian, gelap, dingin. Kelihatannya akhir dari segalanya.",
+        },
+        {
+          heading: "Tapi Allah Punya Rencana...",
+          kicker: "Babak 2 — Istana:",
+          body: "Yusuf diangkat dari sumur, dijual, dibawa ke Mesir, difitnah, dipenjara — lalu akhirnya jadi BENDAHARA NEGARA. Dari sumur, ke istana.",
+        },
+        {
+          heading: "Janji Allah Yang Diingat Yusuf",
+          kicker: "Firman Allah:",
+          body: "“Sesungguhnya siapa yang bertakwa dan bersabar — Allah tidak menyia-nyiakan pahala orang yang berbuat baik.”",
+          arabic: "إِنَّهُۥ مَن يَتَّقِ وَيَصْبِرْ فَإِنَّ ٱللَّهَ لَا يُضِيعُ أَجْرَ ٱلْمُحْسِنِينَ",
+          attribution: "QS. Yusuf: 90",
+        },
+        {
+          heading: "Pesan Buat Sahabat Mo 💚",
+          kicker: "Yang Bisa Kita Ambil:",
+          body: "Kalau kamu lagi di “sumur” — sabar, jangan menyerah. Allah lagi siapin “istana”-mu, dengan cara yang nggak kamu duga. Save & cerita ke adik!",
+        },
+      ],
+      caption: "Dari sumur ke istana — Allah selalu siapkan jalan 🌙 Save buat bedtime story!",
+      cta: "Save buat bedtime story!",
+      hashtags: ["#BabyMo", "#KisahNabi", "#NabiYusuf", "#JanganMenyerah"],
+    },
+    {
+      title: "Nabi Yunus — Doa di Perut Ikan",
+      hook: "Doa singkat yang membuka pintu ampunan paling tertutup.",
+      slides: [
+        {
+          heading: "Ada Nabi Yang Pernah Di Perut Ikan 🐋",
+          kicker: "Kisah Hari Ini:",
+          body: "Sahabat Mo, percaya nggak — ada Nabi yang pernah hidup BERHARI-HARI di dalam perut ikan paus, lalu Allah selamatkan. Tebak siapa? Swipe →",
+        },
+        {
+          heading: "Beliau: Nabi Yunus 'alaihissalam",
+          kicker: "Cerita Singkat:",
+          body: "Nabi Yunus pergi tanpa izin Allah, naik kapal, kapalnya kena badai. Beliau dilempar ke laut, lalu ditelan ikan paus. Gelap, dalam, sendirian.",
+        },
+        {
+          heading: "Di Sana, Beliau Berdoa...",
+          kicker: "3 Kalimat Yang Ubah Segalanya:",
+          body: "“Tiada Tuhan selain Engkau. Maha Suci Engkau. Sesungguhnya aku termasuk orang yang zalim (pada diri sendiri).”",
+          arabic: "لَا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّى كُنتُ مِنَ ٱلظَّالِمِينَ",
+          attribution: "QS. Al-Anbiya: 87",
+        },
+        {
+          heading: "Lalu... Allah Selamatkan!",
+          kicker: "Babak Akhir:",
+          body: "Ikan paus muntahkan Yunus ke daratan. Hidup. Sembuh. Diberi tugas baru. Doa singkat itu membuka pintu yang paling tertutup di dunia.",
+        },
+        {
+          heading: "Doa Ini Bisa Buat Sahabat Mo Juga 💚",
+          kicker: "Pesan Mama Mo:",
+          body: "Kalau kamu lagi dalam “perut ikan” sendiri — masalah yang kelihatannya nggak ada jalan keluarnya — baca doa Yunus. Allah dengar. Selalu. Save & hafalkan!",
+        },
+      ],
+      caption: "Doa Nabi Yunus — buat saat kamu di titik paling bawah 🐋 Save & hafalkan!",
+      cta: "Save & hafalkan doa Yunus!",
+      hashtags: ["#BabyMo", "#KisahNabi", "#NabiYunus", "#DoaYunus"],
+    },
+  ],
+  "pertanyaan-sahabat-mo": [
+    {
+      title: "Q: Kenapa Allah Nggak Bisa Dilihat?",
+      hook: "Pertanyaan jujur anak yang dijawab dengan lembut.",
+      slides: [
+        {
+          heading: "Anak Mama Pernah Tanya... 👀",
+          kicker: "Pertanyaan Sahabat Mo:",
+          body: "“Ma, kenapa Allah nggak kelihatan? Kalau Dia ada, kenapa nggak kita lihat aja?”\n\nJawaban yang sering kita panik. Swipe untuk jawaban lembutnya →",
+        },
+        {
+          heading: "Coba Jawab Pakai Pertanyaan Balik",
+          kicker: "Pancing Dia Mikir:",
+          body: "Tanya balik: “Sayang, kamu bisa LIHAT angin nggak? Atau LIHAT cinta mama ke kamu? Kalau nggak, berarti angin & cinta nggak ada?”",
+        },
+        {
+          heading: "Apa Kata Al-Qur'an?",
+          kicker: "Firman Allah:",
+          body: "“Penglihatan tidak dapat menjangkau-Nya, tapi Dia dapat menjangkau segala penglihatan. Dialah Yang Maha Halus, Maha Mengetahui.”",
+          arabic: "لَّا تُدْرِكُهُ ٱلْأَبْصَـٰرُ وَهُوَ يُدْرِكُ ٱلْأَبْصَـٰرَ",
+          attribution: "QS. Al-An'am: 103",
+        },
+        {
+          heading: "Allah Terlalu Besar Buat Mata Kita",
+          kicker: "Analogi Sederhana:",
+          body: "Sahabat Mo nggak bisa pegang matahari karena terlalu panas. Tapi kamu bisa rasain hangatnya. Allah juga begitu — terlalu besar buat dilihat, tapi terasa lewat semua hal.",
+        },
+        {
+          heading: "Mama, Save Buat Pertanyaan Berikutnya 🌿",
+          kicker: "Tips Tarbiyah:",
+          body: "Anak tanya = anak sedang BERPIKIR tentang Allah. Itu sehat. Jangan panik, jawab dengan lembut. Save slide ini buat referensi waktu anak tanya lagi.",
+        },
+      ],
+      caption: "Pertanyaan anak yang sering bikin mama panik — ini jawabannya 🌿 Save!",
+      cta: "Save buat pertanyaan berikutnya!",
+      hashtags: ["#BabyMo", "#PertanyaanSahabatMo", "#TarbiyahCinta", "#JawabanAnak"],
+    },
+    {
+      title: "Q: Kenapa Harus Sholat Sih?",
+      hook: "Jawaban yang nggak bikin anak takut tapi paham.",
+      slides: [
+        {
+          heading: "Pertanyaan Klasik Anak 🤔",
+          kicker: "Pertanyaan Sahabat Mo:",
+          body: "“Ma, kenapa harus sholat sih? Kan capek. Allah udah tau aku sayang.”\n\nJangan jawab “pokoknya harus!”. Coba jawaban yang bikin anak PAHAM. Swipe →",
+        },
+        {
+          heading: "Pakai Analogi Anak Suka",
+          kicker: "Coba Cara Ini:",
+          body: "“Sayang, kamu sayang mama kan? Tapi kalau seminggu nggak pelukan, nggak ngobrol — kita masih dekat nggak?”\n\nAnak biasanya menggeleng.",
+        },
+        {
+          heading: "Itu Sholat 💚",
+          kicker: "Sholat = Pelukan Ke Allah:",
+          body: "“Sholat itu pelukan kita ke Allah. Lima kali sehari, biar kita & Allah tetap dekat. Bukan beban — itu hadiah.”",
+        },
+        {
+          heading: "Apa Kata Allah?",
+          kicker: "Firman Allah:",
+          body: "“Sesungguhnya shalat itu mencegah dari perbuatan keji dan munkar.”",
+          arabic: "إِنَّ ٱلصَّلَوٰةَ تَنْهَىٰ عَنِ ٱلْفَحْشَآءِ وَٱلْمُنكَرِ",
+          attribution: "QS. Al-Ankabut: 45",
+        },
+        {
+          heading: "Mama, Save Buat Pertanyaan Anak 🌿",
+          kicker: "Tips Tarbiyah:",
+          body: "Anak yang ngerti TUJUAN sholat akan sholat dengan hati, bukan karena dipaksa. Save slide ini. Coba ceritain ke anakmu malam ini. Diskusi yuk!",
+        },
+      ],
+      caption: "Anak tanya kenapa harus sholat? Ini jawaban lembut yang bikin paham 💚",
+      cta: "Save & diskusi sama anak!",
+      hashtags: ["#BabyMo", "#PertanyaanSahabatMo", "#AjarinSholat", "#TarbiyahCinta"],
+    },
+  ],
+  "adab-hari-ini": [
+    {
+      title: "Adab Masuk Rumah — 3 Detik Yang Sering Kita Skip",
+      hook: "Ritual masuk rumah Rasulullah yang bawa berkah.",
+      slides: [
+        {
+          heading: "Sahabat Mo, Coba Inget...",
+          kicker: "Adab Hari Ini:",
+          body: "Pas pulang ke rumah, langsung buka pintu & masuk? Atau ada langkah kecil yang sering Sahabat Mo skip? Yang Rasulullah ajarin... Swipe →",
+        },
+        {
+          heading: "Langkah #1: Salam — Walau Sendirian!",
+          kicker: "Tunggu, sendirian?",
+          body: "Yes, walau di rumah lagi nggak ada siapa-siapa. Ucap “Assalamu'alaikum.” Salam buat siapa? Buat malaikat penjaga rumah & untuk dirimu sendiri.",
+        },
+        {
+          heading: "Apa Kata Al-Qur'an?",
+          kicker: "Firman Allah:",
+          body: "“Jika kalian masuk ke rumah, ucapkanlah salam kepada DIRIMU SENDIRI — salam yang ditetapkan dari sisi Allah.”",
+          arabic: "فَإِذَا دَخَلْتُم بُيُوتًۭا فَسَلِّمُوا۟ عَلَىٰٓ أَنفُسِكُمْ",
+          attribution: "QS. An-Nur: 61",
+        },
+        {
+          heading: "Langkah #2: Baca Doa Masuk Rumah",
+          kicker: "Doa Singkat:",
+          body: "“Allahumma innii as-aluka khoirol mawliji wa khoirol makhroji.”\n\nArtinya: “Ya Allah, aku mohon kebaikan saat masuk & keluar rumah.”",
+          arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلِجِ وَخَيْرَ الْمَخْرَجِ",
+          attribution: "HR. Abu Daud 5096",
+        },
+        {
+          heading: "Mulai Latih Hari Ini, Sahabat Mo 🏡",
+          kicker: "Misi:",
+          body: "Setiap kamu masuk rumah hari ini: 1) Salam dulu, 2) Baca doa. Save slide & coba seharian. Komen kalau udah berhasil! 💚",
+        },
+      ],
+      caption: "Adab kecil, berkah besar 🏡 Save & coba seharian ini!",
+      cta: "Save & latih seharian!",
+      hashtags: ["#BabyMo", "#AdabHariIni", "#AdabIslami", "#AdabRumah"],
+    },
+    {
+      title: "Adab Makan — Yang Sering Dilupain Anak (& Kita)",
+      hook: "3 adab makan dari Rasulullah ﷺ — singkat tapi penting.",
+      slides: [
+        {
+          heading: "Tahukah Kamu... 🍽️",
+          kicker: "Adab Hari Ini:",
+          body: "Sahabat Mo, makan itu bukan cuma masukkan makanan ke mulut. Rasulullah ﷺ ajarin 3 adab kecil yang ubah makan biasa jadi IBADAH. Swipe →",
+        },
+        {
+          heading: "Adab #1: Bismillah Dulu",
+          kicker: "Pondasi:",
+          body: "“Jika salah seorang dari kalian makan, hendaklah ia menyebut nama Allah.”\n\nLupa? Baca tengah jalan: “Bismillahi awwalahu wa aakhirahu.”",
+          arabic: "إِذَا أَكَلَ أَحَدُكُمْ فَلْيَذْكُرِ اسْمَ اللَّهِ",
+          attribution: "HR. Abu Daud 3767",
+        },
+        {
+          heading: "Adab #2: Pakai Tangan Kanan",
+          kicker: "Pesan Rasulullah:",
+          body: "“Jika kalian makan, makanlah dengan tangan kananmu. Jika kalian minum, minumlah dengan tangan kananmu.”",
+          arabic: "إِذَا أَكَلَ أَحَدُكُمْ فَلْيَأْكُلْ بِيَمِينِهِ",
+          attribution: "HR. Muslim 2020",
+        },
+        {
+          heading: "Adab #3: Makan Yang Dekat Aja",
+          kicker: "Sopan Bersantap:",
+          body: "“Makanlah yang dekat denganmu (yang ada di hadapanmu).”\n\nNggak ambil dari piring tengah jauh-jauh. Bukan cuma adab — itu HORMAT ke orang lain juga.",
+          attribution: "HR. Bukhari 5376",
+        },
+        {
+          heading: "Latih Bareng Anak Yuk! 🌿",
+          kicker: "Misi Keluarga:",
+          body: "Save slide ini. Pas makan malam ini, latih 3 adab bareng anak. Yang paling rajin = juara! Tag #BabyMo kalau udah praktek 💚",
+        },
+      ],
+      caption: "Adab makan = ibadah harian 🍽️ Save & latih sekeluarga malam ini!",
+      cta: "Save & latih sekeluarga!",
+      hashtags: ["#BabyMo", "#AdabHariIni", "#AdabMakan", "#AdabIslami"],
     },
   ],
   "guess-the-sunnah": [
@@ -1109,6 +1375,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Dan Itu... Cukup. 💚",
           kicker: "Firman Allah:",
           body: "“Berdoalah kepada-Ku, niscaya Aku kabulkan untukmu.”\n\nAllah dengar doa yang nggak ada kata-katanya. Allah tau yang tersembunyi di hati. Mama nggak butuh doa fancy.",
+          arabic: "ٱدْعُونِىٓ أَسْتَجِبْ لَكُمْ",
           attribution: "QS. Al-Mu'min: 60",
         },
         {
@@ -1160,19 +1427,52 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   ],
   "dhikr-reminder": [
     {
-      title: "SubhanAllah",
-      hook: "Satu kata, banyak pahala.",
+      title: "SubhanAllah — Dzikir 1 Kata Yang Allah Cinta",
+      hook: "Satu kata, pohon di Surga.",
       slides: [
         {
-          heading: "SubhanAllah!",
-          kicker: "Dzikir Harian:",
-          body: "Yuk, ucapkan SubhanAllah 33x setiap hari. Hati jadi tenang, pahala terus bertambah!",
-          arabic: "سُبْحَانَ ٱللَّٰهِ",
+          heading: "SubhanAllah 🌿",
+          kicker: "Dzikir Hari Ini:",
+          body: "“Subhanallahil 'azhiim wa bihamdihi.” Rasulullah ﷺ bilang: setiap kali kamu ucap ini, ditanamkan 1 POHON untukmu di Surga.",
+          arabic: "سُبْحَانَ ٱللَّهِ وَبِحَمْدِهِ",
+          attribution: "HR. Tirmidzi 3464",
         },
       ],
-      caption: "Dzikir dulu sebentar, hati jadi adem 🌿",
-      cta: "Save & dzikir bareng!",
-      hashtags: ["#BabyMo", "#Dzikir", "#AnakMuslim"],
+      caption: "Tiap SubhanAllah = 1 pohon di Surga 🌿 Save & dzikir hari ini!",
+      cta: "Save & dzikir 33x!",
+      hashtags: ["#BabyMo", "#Dzikir", "#SubhanAllah"],
+    },
+    {
+      title: "Alhamdulillah — Hadiah Yang Allah Suka",
+      hook: "Dzikir paling Allah cintai, paling sering kita lupa.",
+      slides: [
+        {
+          heading: "Alhamdulillah 💚",
+          kicker: "Dzikir Hari Ini:",
+          body: "Sabda Rasulullah ﷺ: “Alhamdulillah memenuhi timbangan.” Satu kalimat ini di hari kiamat akan jadi BERAT BANGET di timbangan amal kamu.",
+          arabic: "ٱلْحَمْدُ لِلَّهِ تَمْلَأُ ٱلْمِيزَانَ",
+          attribution: "HR. Muslim 223",
+        },
+      ],
+      caption: "Alhamdulillah = berat banget di timbangan akhirat 💚 Save & ucap hari ini!",
+      cta: "Save & ucap Alhamdulillah!",
+      hashtags: ["#BabyMo", "#Dzikir", "#Alhamdulillah"],
+    },
+    {
+      title: "Astaghfirullah — Dzikir Penghapus Beban",
+      hook: "Kalimat yang ngebuka pintu rezeki & keluar dari masalah.",
+      slides: [
+        {
+          heading: "Astaghfirullah 🌧️",
+          kicker: "Dzikir Hari Ini:",
+          body: "Janji Allah: barang siapa istighfar (mohon ampun) terus-menerus, Allah akan kasih jalan keluar dari setiap kesusahan & rezeki dari arah tak terduga.",
+          arabic: "أَسْتَغْفِرُ ٱللَّهَ",
+          attribution: "HR. Abu Daud 1518",
+        },
+      ],
+      caption: "Astaghfirullah = pintu jalan keluar 🌧️ Save & ucap 100x hari ini!",
+      cta: "Save & istighfar 100x!",
+      hashtags: ["#BabyMo", "#Dzikir", "#Astaghfirullah"],
     },
   ],
 
@@ -1253,18 +1553,52 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   ],
   "tiny-tafakkur": [
     {
-      title: "Lihat Daun, Ingat Allah",
+      title: "MasyaAllah, Lihat Daun Itu 🍃",
       hook: "Tafakkur kecil setiap hari.",
       slides: [
         {
-          heading: "MasyaAllah, Indah Banget!",
-          kicker: "Yuk, Tafakkur:",
-          body: "Lihat warna daun, suara angin, bentuk awan — semua tanda kebesaran Allah. Yuk, bilang “MasyaAllah!”",
+          heading: "MasyaAllah, Lihat Daun Itu 🍃",
+          kicker: "Tafakkur Hari Ini:",
+          body: "Coba sentuh daun di sekitarmu, Sahabat Mo. Lihat urat-uratnya. Setiap urat itu pipa air mini yang Allah desain — SubhanAllah.",
+          arabic: "إِنَّ فِى خَلْقِ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ لَءَايَـٰتٍۢ",
+          attribution: "QS. Al-Imran: 190",
         },
       ],
       caption: "Belajar lihat dunia dengan mata syukur 🌿",
       cta: "Save & ajak anak tafakkur!",
       hashtags: ["#BabyMo", "#Tafakkur", "#KebesaranAllah"],
+    },
+    {
+      title: "Setiap Nafas Yang Kamu Tarik... 🌬️",
+      hook: "Tafakkur tentang nikmat yang sering kita lupain.",
+      slides: [
+        {
+          heading: "Tarik Nafas. Hembuskan. 🌬️",
+          kicker: "Tafakkur Hari Ini:",
+          body: "Hari ini kamu udah tarik nafas ribuan kali tanpa mikir. Setiap satu napas = nikmat dari Allah yang nggak kamu bisa hitung. Alhamdulillah.",
+          arabic: "وَإِن تَعُدُّوا۟ نِعْمَةَ ٱللَّهِ لَا تُحْصُوهَآ",
+          attribution: "QS. Ibrahim: 34",
+        },
+      ],
+      caption: "Setiap nafas = nikmat 🌬️ Save & syukur hari ini!",
+      cta: "Save & ucap Alhamdulillah!",
+      hashtags: ["#BabyMo", "#Tafakkur", "#Syukur"],
+    },
+    {
+      title: "Pas Liat Hujan, Coba Ucap Ini... ☔",
+      hook: "Tafakkur 30 detik yang ubah mood.",
+      slides: [
+        {
+          heading: "Pas Liat Hujan ☔",
+          kicker: "Tafakkur Hari Ini:",
+          body: "Tiap tetes hujan adalah malaikat yang bertugas. Allah hidupkan bumi yang mati lewatnya. Coba ucap pelan: “SubhanAllah, betapa lembut Engkau, ya Allah.”",
+          arabic: "وَيُنَزِّلُ مِنَ ٱلسَّمَآءِ مَآءًۭ فَيُحْىِۦ بِهِ ٱلْأَرْضَ",
+          attribution: "QS. Ar-Rum: 24",
+        },
+      ],
+      caption: "Hujan = rahmat. Bukan keluhan ☔ Save buat hujan berikutnya!",
+      cta: "Save buat saat hujan!",
+      hashtags: ["#BabyMo", "#Tafakkur", "#TafakkurHujan"],
     },
   ],
   /* ---------- PARENTING ---------- */
@@ -1282,6 +1616,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Apa Kata Rasulullah ﷺ?",
           kicker: "Teladan Beliau:",
           body: "“Anas bin Malik melayani Rasulullah ﷺ selama 10 tahun. Beliau tidak pernah sekali pun membentakku.”",
+          arabic: "خَدَمْتُ النَّبِيَّ ﷺ عَشْرَ سِنِينَ، فَمَا قَالَ لِي أُفٍّ قَطُّ",
           attribution: "HR. Muslim 2310",
         },
         {
@@ -1343,18 +1678,52 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   ],
   "mama-reflection": [
     {
-      title: "Mama, Kamu Hebat!",
+      title: "Mama, Allah Lihat Kamu 💛",
       hook: "Setiap kelelahanmu dilihat Allah.",
       slides: [
         {
-          heading: "Mama, Allah Lihat Kamu",
+          heading: "Mama, Allah Lihat Kamu 💛",
           kicker: "Pesan Sayang:",
-          body: "Setiap pelukan, setiap usapan kepala, setiap doa diam-diam — semua jadi pahala. Kamu hebat, Ma!",
+          body: "Setiap pelukan, usapan kepala, doa diam-diam pukul 3 pagi — semua dicatat. Sahabat Mo bilang ke mama: kamu HEBAT.",
+          arabic: "إِنَّ ٱللَّهَ لَا يُضِيعُ أَجْرَ ٱلْمُحْسِنِينَ",
+          attribution: "QS. Yusuf: 90",
         },
       ],
-      caption: "Untuk para mama yang tak pernah berhenti mencintai 💛",
+      caption: "Untuk para mama yang tak pernah berhenti mencintai 💛 Tag mama!",
       cta: "Tag mama hebatmu!",
       hashtags: ["#BabyMo", "#MamaHebat", "#ParentingIslami"],
+    },
+    {
+      title: "Capek? Mama, Ini Bukan Tanda Lemah 🌿",
+      hook: "Tarbiyah itu marathon, bukan sprint.",
+      slides: [
+        {
+          heading: "Capek Itu Wajar, Ma 🌿",
+          kicker: "Pesan Hari Ini:",
+          body: "Mama nangis tadi malam? Sahabat Mo ngerti. Tarbiyah itu marathon, bukan sprint. Rasulullah ﷺ pun pernah lelah — Allah ingatkan hamba-Nya untuk istirahat.",
+          arabic: "وَجَعَلْنَا نَوْمَكُمْ سُبَاتًۭا",
+          attribution: "QS. An-Naba: 9",
+        },
+      ],
+      caption: "Capek bukan tanda kamu gagal 🌿 Tag mama yang lagi lelah.",
+      cta: "Tag mama yang butuh ini!",
+      hashtags: ["#BabyMo", "#MamaReflection", "#TarbiyahCinta"],
+    },
+    {
+      title: "Doa Mama = Doa Paling Mustajab 🤲",
+      hook: "Pengingat bahwa setiap doamu untuk anak — terkabul.",
+      slides: [
+        {
+          heading: "Doamu Untuk Anak = Mustajab 🤲",
+          kicker: "Janji Allah:",
+          body: "Sabda Rasulullah ﷺ: “Doa orangtua untuk anaknya adalah doa yang TIDAK terhalang.” Setiap kali Mama berdoa tadi malam — itu sudah sampai.",
+          arabic: "دَعْوَةُ الْوَالِدِ لِوَلَدِهِ لَا تُحْجَبُ",
+          attribution: "HR. Tirmidzi 1905",
+        },
+      ],
+      caption: "Doa mama paling mustajab 🤲 Save buat reminder!",
+      cta: "Save & doakan anakmu hari ini!",
+      hashtags: ["#BabyMo", "#MamaReflection", "#DoaIbu"],
     },
   ],
   "emotional-parenting-reminder": [
@@ -1430,6 +1799,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Jawabannya: WUDHU! 💧",
           kicker: "Sabda Rasulullah:",
           body: "“Siapa tidur dalam keadaan suci (berwudhu), malaikat akan bersamanya sepanjang malam dan mendoakan ampunan baginya.”",
+          arabic: "مَنْ بَاتَ طَاهِرًا بَاتَ فِي شِعَارِهِ مَلَكٌ",
           attribution: "HR. Ibnu Hibban 1051",
         },
         {
@@ -1465,6 +1835,7 @@ export const SEEDS: Record<string, SampleSeed[]> = {
           heading: "Jawabannya: SENYUM 😊",
           kicker: "Sabda Rasulullah:",
           body: "“Senyummu kepada saudaramu adalah sedekah.”",
+          arabic: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ",
           attribution: "HR. Tirmidzi 1956",
         },
         {
@@ -1561,18 +1932,66 @@ export const SEEDS: Record<string, SampleSeed[]> = {
   "arabic-word-of-the-day": [
     {
       title: "Kata Hari Ini: Rahmah",
-      hook: "Satu kata, banyak makna.",
+      hook: "Cinta Allah yang sedalam pelukan ibu.",
       slides: [
         {
-          heading: "Apa Itu Rahmah?",
-          kicker: "Kata Arab Hari Ini:",
-          body: "Rahmah (رحمة) artinya kasih sayang. Akar kata yang sama dengan “rahim”. Cinta Allah itu sedalam pelukan ibu.",
+          heading: "Kata Hari Ini: Rahmah ✨",
+          kicker: "Belajar Arab:",
+          body: "Rahmah artinya KASIH SAYANG. Akar katanya sama dengan “rahim” (perut ibu). Cinta Allah itu sedalam pelukan seorang ibu ke anaknya.",
           arabic: "رَحْمَة",
         },
       ],
-      caption: "Yuk, hafal kata Arab baru hari ini! ✨",
+      caption: "Rahmah = cinta sedalam pelukan ibu ✨ Save & ajarin adik!",
       cta: "Comment kata Arab favoritmu!",
-      hashtags: ["#BabyMo", "#BelajarArab", "#AnakMuslim"],
+      hashtags: ["#BabyMo", "#BelajarArab", "#Rahmah"],
+    },
+    {
+      title: "Kata Hari Ini: Syukur",
+      hook: "Kata kecil yang mengundang nikmat lebih banyak.",
+      slides: [
+        {
+          heading: "Kata Hari Ini: Syukur ✨",
+          kicker: "Belajar Arab:",
+          body: "Syukur artinya BERTERIMA KASIH. Allah janji: kalau kamu syukur, Dia tambah nikmatmu. Coba ucap “Alhamdulillah” 10x hari ini, rasakan bedanya.",
+          arabic: "شُكْر",
+          attribution: "QS. Ibrahim: 7",
+        },
+      ],
+      caption: "Syukur = pintu nikmat tambahan ✨ Save & latih hari ini!",
+      cta: "Save & ucap Alhamdulillah 10x!",
+      hashtags: ["#BabyMo", "#BelajarArab", "#Syukur"],
+    },
+    {
+      title: "Kata Hari Ini: Sabar",
+      hook: "Kata yang Allah ulang 90+ kali dalam Al-Qur'an.",
+      slides: [
+        {
+          heading: "Kata Hari Ini: Sabar ✨",
+          kicker: "Belajar Arab:",
+          body: "Sabar artinya MENAHAN (diri). Bukan diam pasif — tapi aktif menahan amarah, putus asa, dan tergesa-gesa. Allah cinta orang yang sabar.",
+          arabic: "صَبْر",
+          attribution: "QS. Al-Baqarah: 153",
+        },
+      ],
+      caption: "Sabar bukan diam pasif — itu kekuatan ✨ Save & ajarin anak!",
+      cta: "Save & ajarin anak!",
+      hashtags: ["#BabyMo", "#BelajarArab", "#Sabar"],
+    },
+    {
+      title: "Kata Hari Ini: Tawakkal",
+      hook: "Skill paling sulit, paling Allah cintai.",
+      slides: [
+        {
+          heading: "Kata Hari Ini: Tawakkal ✨",
+          kicker: "Belajar Arab:",
+          body: "Tawakkal artinya BERSERAH (kepada Allah). Setelah berusaha keras, kita serahkan hasilnya. “Manusia berencana, Allah yang tentukan.” Itu tawakkal.",
+          arabic: "تَوَكُّل",
+          attribution: "QS. At-Talaq: 3",
+        },
+      ],
+      caption: "Tawakkal = istirahatnya hati ✨ Save buat hari-hari berat!",
+      cta: "Save buat hari berat!",
+      hashtags: ["#BabyMo", "#BelajarArab", "#Tawakkal"],
     },
   ],
   /* ---------- INTERACTIVE (additional) ---------- */
