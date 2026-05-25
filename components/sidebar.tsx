@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star } from "lucide-react";
+import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -11,6 +11,7 @@ const NAV = [
   { href: "/library", label: "Library", icon: Library, color: "babymo-yellow" },
   { href: "/calendar", label: "Calendar", icon: Calendar, color: "babymo-sky" },
   { href: "/themes", label: "Themes", icon: Palette, color: "babymo-orange" },
+  { href: "/settings", label: "Settings", icon: Settings, color: "babymo-green" },
 ];
 
 export function BrandMark({ size = 44 }: { size?: number }) {
