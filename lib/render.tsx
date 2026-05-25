@@ -266,6 +266,122 @@ function Decorations({ themeId, width }: { themeId: Theme["id"]; width: number }
 
 /* ---------- Slide chrome pieces ---------- */
 
+/* ---------- Arabic rendered via Resvg (proper harfbuzz shaping) ---------- */
+
+let cachedArabicFontBuf: Buffer | null | undefined;
+
+async function getArabicFontBuf(): Promise<Buffer | null> {
+  if (cachedArabicFontBuf !== undefined) return cachedArabicFontBuf;
+  const dir = path.join(process.cwd(), ".fonts");
+  for (const name of ["arabic-cairo-bold.ttf", "arabic-reemkufi.ttf", "arabic-noto-sans.ttf", "noto-arabic.ttf"]) {
+    try {
+      cachedArabicFontBuf = await readFile(path.join(dir, name));
+      return cachedArabicFontBuf;
+    } catch {
+      /* try next */
+    }
+  }
+  cachedArabicFontBuf = null;
+  return null;
+}
+
+function escapeXml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+/**
+ * Wrap Arabic text into balanced lines at word boundaries.
+ * Heuristic: ~22 chars per line at our font sizes (works for Cairo Bold at 72-84pt).
+ */
+function wrapArabicLines(text: string, maxCharsPerLine: number): string[] {
+  if (text.length <= maxCharsPerLine) return [text];
+  const words = text.trim().split(/\s+/);
+  if (words.length === 1) return [text];
+  // Greedy fill — keep adding words until the next would overflow.
+  const lines: string[] = [];
+  let cur = "";
+  for (const w of words) {
+    const tryLine = cur ? cur + " " + w : w;
+    if (tryLine.length > maxCharsPerLine && cur) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = tryLine;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+/**
+ * Render Arabic text via Resvg directly (harfbuzz shaping), return PNG data URL
+ * + the resulting image height (so the caller can size the <img> correctly).
+ * Satori can't shape Arabic so we hand it off to Resvg as an image.
+ */
+async function renderArabicAsImage(
+  text: string,
+  color: string,
+  fontSize: number,
+  maxWidth: number
+): Promise<{ dataUrl: string; height: number } | null> {
+  const fontBuf = await getArabicFontBuf();
+  if (!fontBuf) return null;
+
+  // ~22 chars per line works well for Cairo Bold at our sizes; shrink slightly
+  // for very long ayat by lowering the font.
+  let activeSize = fontSize;
+  let lines = wrapArabicLines(text, 22);
+  // If we'd need more than 3 lines, shrink the font a little.
+  while (lines.length > 3 && activeSize > 48) {
+    activeSize -= 8;
+    lines = wrapArabicLines(text, Math.round(22 * (fontSize / activeSize)));
+  }
+
+  const lineHeight = Math.round(activeSize * 1.55);
+  const topPad = Math.round(activeSize * 0.85);
+  const height = topPad + lineHeight * (lines.length - 1) + Math.round(activeSize * 0.6);
+
+  // tspan inside an RTL <text> renders incorrectly in resvg — use one
+  // <text> element per line, stacked vertically.
+  const textElements = lines
+    .map(
+      (line, i) =>
+        `<text x="${maxWidth / 2}" y="${topPad + i * lineHeight}"
+        text-anchor="middle"
+        font-family="Cairo"
+        font-size="${activeSize}"
+        font-weight="700"
+        fill="${color}"
+        direction="rtl"
+        xml:lang="ar">${escapeXml(line)}</text>`
+    )
+    .join("\n  ");
+
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${maxWidth}" height="${height}">
+  ${textElements}
+</svg>`;
+
+  try {
+    const resvg = new Resvg(svg, {
+      font: { fontBuffers: [fontBuf], loadSystemFonts: false, defaultFontFamily: "Cairo" } as any,
+      fitTo: { mode: "width", value: maxWidth },
+    });
+    const png = resvg.render().asPng();
+    return {
+      dataUrl: `data:image/png;base64,${png.toString("base64")}`,
+      height,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /* ---------- Baby Mo logo (real PNG, base64-embedded) ---------- */
 
 let cachedLogo: string | null | undefined; // dataUrl, null = tried & missing
@@ -466,6 +582,8 @@ interface SlideRenderProps {
   cta?: string;
   hashtags?: string[];
   logoDataUrl?: string | null;
+  arabicImageUrl?: string | null;
+  arabicImageHeight?: number;
 }
 
 function SlideNode(props: SlideRenderProps): React.ReactElement {
@@ -565,7 +683,17 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
               {props.slide.kicker}
             </div>
           )}
-          {props.slide.arabic && (
+          {props.slide.arabic && props.arabicImageUrl && (
+            <div style={{ display: "flex", justifyContent: "center", width: "100%", marginBottom: 16, marginTop: 4 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+              <img
+                src={props.arabicImageUrl}
+                width={fmt.width - 220}
+                height={props.arabicImageHeight ?? 180}
+              />
+            </div>
+          )}
+          {props.slide.arabic && !props.arabicImageUrl && (
             <div
               dir="rtl"
               style={{
@@ -665,9 +793,21 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
 
 export async function renderSlidePng(content: GeneratedContent, slideIndex: number): Promise<Buffer> {
   const fmt = FORMATS.find((f) => f.id === content.format)!;
-  const [fonts, logoDataUrl] = await Promise.all([loadFonts(), loadLogoDataUrl()]);
+  const slide = content.slides[slideIndex];
+  const theme = getTheme(content.theme);
+  // Pre-render Arabic via Resvg (proper harfbuzz shaping) so Satori only has
+  // to composite an <img>. The text colour matches the theme's title accent.
+  const arabicMaxWidth = fmt.width - 220; // body card inner width
+  const arabicFontSize = 80;
+  const [fonts, logoDataUrl, arabicResult] = await Promise.all([
+    loadFonts(),
+    loadLogoDataUrl(),
+    slide.arabic
+      ? renderArabicAsImage(slide.arabic, theme.title, arabicFontSize, arabicMaxWidth)
+      : Promise.resolve(null),
+  ]);
   const node = SlideNode({
-    slide: content.slides[slideIndex],
+    slide,
     index: slideIndex,
     total: content.slides.length,
     themeId: content.theme,
@@ -677,6 +817,8 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     cta: content.cta,
     hashtags: content.hashtags,
     logoDataUrl,
+    arabicImageUrl: arabicResult?.dataUrl ?? null,
+    arabicImageHeight: arabicResult?.height,
   });
 
   type FontList = Parameters<typeof satori>[1]["fonts"];

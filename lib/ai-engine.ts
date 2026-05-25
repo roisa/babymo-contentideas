@@ -91,10 +91,34 @@ Return JSON in this exact shape:
   return parts.join("\n");
 }
 
+/**
+ * Per-batch shuffled seed order. Built once per batch via
+ * `prepareBatchSeedOrder` so a batch of N gets N distinct seeds when
+ * available (Fisher–Yates), with random-but-stable ordering inside the batch.
+ */
+let currentBatchOrder: number[] | null = null;
+
+function prepareBatchSeedOrder(req: GenerationRequest): void {
+  const seeds = getSeedsFor(req.contentTypeId);
+  if (seeds.length === 0) {
+    currentBatchOrder = null;
+    return;
+  }
+  const idxs = Array.from({ length: seeds.length }, (_, i) => i);
+  // Fisher–Yates shuffle
+  for (let i = idxs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+  }
+  currentBatchOrder = idxs;
+}
+
 function variationSeed(req: GenerationRequest, index: number): SampleSeed | undefined {
   const seeds = getSeedsFor(req.contentTypeId);
   if (seeds.length === 0) return undefined;
-  return seeds[index % seeds.length];
+  const order = currentBatchOrder ?? Array.from({ length: seeds.length }, (_, i) => i);
+  const seedIdx = order[index % order.length];
+  return seeds[seedIdx];
 }
 
 function resolveSlidesCount(req: GenerationRequest): number {
@@ -248,6 +272,9 @@ export async function generateBatch(req: GenerationRequest): Promise<{ items: Ge
   const slidesCount = resolveSlidesCount(req);
   const apiKey = process.env.ANTHROPIC_API_KEY;
   const items: GeneratedContent[] = [];
+
+  // Fresh per-batch seed shuffle — distinct results each generate.
+  prepareBatchSeedOrder(req);
 
   if (apiKey) {
     const client = new Anthropic({ apiKey });
