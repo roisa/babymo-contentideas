@@ -132,7 +132,8 @@ function stickerStroke(stroke: string, w = 4): React.CSSProperties {
       shadows.push(`${dx}px ${dy}px 0 ${stroke}`);
     }
   }
-  shadows.push(`6px 8px 0 rgba(0,0,0,0.10)`);
+  // Smaller drop shadow so it doesn't collide with the body card below.
+  shadows.push(`3px 5px 0 rgba(0,0,0,0.08)`);
   return { textShadow: shadows.join(", ") };
 }
 
@@ -632,24 +633,42 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
       </div>
 
       {/* Big sticker title */}
+      {/**
+       * Title sits inside a flex column wrapper with explicit padding-bottom
+       * to reserve space for the text's drop shadow. The shadow visually
+       * extends below the text glyph but Satori/Yoga doesn't add that to
+       * the element height — without this padding the next sibling (card)
+       * overlaps the shadow.
+       */}
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          textAlign: "center",
-          fontFamily: "Fredoka, sans-serif",
-          fontWeight: 700,
-          fontSize: titleSize,
-          lineHeight: 1.0,
-          color: theme.title,
-          marginTop: 28,
-          padding: "0 20px",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: 32,
+          paddingBottom: 36,
+          width: "100%",
           zIndex: "2" as any,
-          ...strokeStyle,
         }}
       >
-        {props.slide.heading}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            textAlign: "center",
+            fontFamily: "Fredoka, sans-serif",
+            fontWeight: 700,
+            fontSize: titleSize,
+            lineHeight: 1.25,
+            color: theme.title,
+            paddingLeft: 20,
+            paddingRight: 20,
+            ...strokeStyle,
+          }}
+        >
+          {props.slide.heading}
+        </div>
       </div>
 
       {/* Body card (only render if body has content) */}
@@ -662,7 +681,7 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
             border: `3px solid ${theme.titleStroke}`,
             borderRadius: 28,
             padding: isReels ? "30px 36px" : "28px 36px",
-            marginTop: 30,
+            marginTop: 0,
             boxShadow: "0 6px 0 rgba(0,0,0,0.10)",
             width: "92%",
             zIndex: "2" as any,
