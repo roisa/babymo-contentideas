@@ -2,25 +2,22 @@
  * Maps Baby Mo Studio's `GeneratedContent` schema → Canva Brand Template
  * autofill payload.
  *
- * The designer team builds one Brand Template per `{format, theme?}` combo
- * in Canva (see CANVA_TEMPLATE_GUIDE.md for the spec), names each text
- * field exactly like the keys below, and pastes the template IDs into
- * CANVA_TEMPLATES.
+ * v2 architecture: ONE master Brand Template per format. Themes live in
+ * the Canva Brand Kit as named color palettes; the studio additionally
+ * uploads a pre-rendered theme background as the `bg` image field and a
+ * pose PNG as the `character` image field. See CANVA_TEMPLATE_GUIDE.md.
  *
  * Field naming convention inside Canva templates:
- *   - title         → the big sticker title  (heading)
- *   - kicker        → the small label inside the body card
- *   - body          → main body text
+ *   - title         → big sticker title (heading)
+ *   - kicker        → small label inside the body card
+ *   - body          → main body text (Indonesian translation when applicable)
  *   - translit      → italic Latin transliteration (split from body)
- *   - arabic        → Arabic text (Canva will shape it natively)
+ *   - arabic        → Arabic text (Canva shapes it natively — perfect)
  *   - attribution   → "HR. Bukhari 6312" / "QS. Al-Hadid: 4"
- *   - footer        → "babymo.studio · day 04" style chrome
+ *   - footer        → "babymo.studio · Daily Dua" style chrome
  *   - page_number   → "1 / 5" carousel pip
- *
- * For carousels, the template is multi-page (one page per slide). We send
- * one autofill request per slide, then assemble — or we use a single
- * brand template with N slide variants. v2 starts simple: one template
- * per format, one autofill per slide.
+ *   - bg            → image: full-bleed theme background
+ *   - character     → image: matching Baby Mo character pose
  */
 
 import type { GeneratedContent, Slide } from "./types";
@@ -28,13 +25,7 @@ import type { AutofillFieldValue } from "./canva";
 
 type FormatId = GeneratedContent["format"];
 
-/**
- * Template ID lookup. Paste real IDs here once the design team builds them.
- * Falls back to undefined → the autofill route returns a helpful error.
- *
- * Use the environment variable form if you'd rather not check IDs into git:
- *   CANVA_TEMPLATE_SINGLE, CANVA_TEMPLATE_CAROUSEL, CANVA_TEMPLATE_REELS
- */
+/** One template per format. Theme is conveyed by the `bg` image, not by template choice. */
 export const CANVA_TEMPLATES: Record<FormatId, string | undefined> = {
   single: process.env.CANVA_TEMPLATE_SINGLE,
   carousel: process.env.CANVA_TEMPLATE_CAROUSEL,
@@ -54,12 +45,19 @@ function splitTranslitTranslation(body: string): { translit?: string; translatio
   return { translation: body };
 }
 
-/** Build the autofill `data` map for a single slide. */
+/**
+ * Build the autofill `data` map for a single slide.
+ *
+ * `bgAssetId` and `characterAssetId` are optional — when present, the
+ * studio has pre-uploaded a themed background / pose to Canva. When
+ * absent, those slots stay as whatever the designer set in the template.
+ */
 export function slideToAutofillData(
   slide: Slide,
   index: number,
   total: number,
-  contentTypeLabel: string
+  contentTypeLabel: string,
+  assets: { bgAssetId?: string; characterAssetId?: string } = {}
 ): Record<string, AutofillFieldValue> {
   const { translit, translation } = splitTranslitTranslation(slide.body || "");
   const data: Record<string, AutofillFieldValue> = {
@@ -72,6 +70,8 @@ export function slideToAutofillData(
   if (slide.arabic) data.arabic = { type: "text", text: slide.arabic };
   if (translit) data.translit = { type: "text", text: translit };
   if (slide.attribution) data.attribution = { type: "text", text: `(${slide.attribution})` };
+  if (assets.bgAssetId) data.bg = { type: "image", asset_id: assets.bgAssetId };
+  if (assets.characterAssetId) data.character = { type: "image", asset_id: assets.characterAssetId };
   return data;
 }
 
