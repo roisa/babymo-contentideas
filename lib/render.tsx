@@ -10,6 +10,7 @@ import React from "react";
 let cachedFonts: {
   sans: ArrayBuffer;
   sansBold: ArrayBuffer;
+  sansItalic?: ArrayBuffer;
   display: ArrayBuffer; // Fredoka medium
   displayBold: ArrayBuffer; // Fredoka bold
   arabic?: ArrayBuffer;
@@ -29,9 +30,10 @@ async function loadFonts() {
   if (cachedFonts) return cachedFonts;
   const dir = path.join(process.cwd(), ".fonts");
   try {
-    const [sans, sansBold, display, displayBold, arabic] = await Promise.all([
+    const [sans, sansBold, sansItalic, display, displayBold, arabic] = await Promise.all([
       readFile(path.join(dir, "inter.ttf")),
       readFile(path.join(dir, "fraunces.ttf")), // Inter SemiBold legacy
+      readFile(path.join(dir, "inter-italic.ttf")).catch(() => null),
       readFile(path.join(dir, "fredoka-medium.ttf")),
       readFile(path.join(dir, "fredoka-bold.ttf")),
       // Arabic font: Cairo Bold renders shaped Arabic in Satori; Reem Kufi
@@ -45,6 +47,7 @@ async function loadFonts() {
     cachedFonts = {
       sans: toAB(sans),
       sansBold: toAB(sansBold),
+      sansItalic: sansItalic ? toAB(sansItalic) : undefined,
       display: toAB(display),
       displayBold: toAB(displayBold),
       arabic: arabic ? toAB(arabic) : undefined,
@@ -53,16 +56,17 @@ async function loadFonts() {
   } catch {
     // fall through
   }
-  const [sans, sansBold, display, displayBold, arabic] = await Promise.all([
+  const [sans, sansBold, sansItalic, display, displayBold, arabic] = await Promise.all([
     fetchFont("https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZg.ttf"),
     fetchFont("https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYMZg.ttf"),
+    fetchFont("https://fonts.gstatic.com/s/inter/v20/UcCM3FwrK3iLTcvneQg7Ca725JhhKnNqk4j1ebLhAm8SrXTc69thjQ.ttf").catch(() => undefined),
     fetchFont("https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3OwyLMFg.ttf"),
     fetchFont("https://fonts.gstatic.com/s/fredoka/v17/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3OFiXMFg.ttf"),
     fetchFont("https://fonts.gstatic.com/s/scheherazadenew/v21/4UaerFhTvxVnHDvUkUiHg8jprP4DM79DHlY.ttf").catch(() =>
       fetchFont("https://fonts.gstatic.com/s/notosansarabic/v33/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfL2uvuw.ttf")
     ).catch(() => undefined),
   ]);
-  cachedFonts = { sans, sansBold, display, displayBold, arabic };
+  cachedFonts = { sans, sansBold, sansItalic, display, displayBold, arabic };
   return cachedFonts;
 }
 
@@ -733,21 +737,53 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
               {props.slide.arabic}
             </div>
           )}
-          <div
-            style={{
-              display: "flex",
-              fontFamily: "Inter, sans-serif",
-              fontSize: 34,
-              lineHeight: 1.45,
-              color: theme.ink,
-              textAlign: "center",
-              justifyContent: "center",
-              width: "100%",
-              fontWeight: 600,
-            }}
-          >
-            {props.slide.body}
-          </div>
+          {(() => {
+            // Detect transliteration vs translation. Many seeds use
+            // `<latin-arabic>\n\n"<Indonesian translation>"`. The first chunk
+            // (transliteration) is italicised so the team can tell at a glance.
+            const parts = props.slide.body.split(/\n\s*\n/);
+            const hasTranslit = parts.length > 1 && props.slide.arabic;
+            const translit = hasTranslit ? parts[0] : null;
+            const main = hasTranslit ? parts.slice(1).join("\n\n") : props.slide.body;
+            return (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+                {translit && (
+                  <div
+                    style={{
+                      display: "flex",
+                      fontFamily: "Inter, sans-serif",
+                      fontStyle: "italic",
+                      fontSize: 28,
+                      lineHeight: 1.45,
+                      color: theme.title,
+                      textAlign: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      fontWeight: 600,
+                      marginBottom: 14,
+                    }}
+                  >
+                    {translit}
+                  </div>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: 34,
+                    lineHeight: 1.45,
+                    color: theme.ink,
+                    textAlign: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    fontWeight: 600,
+                  }}
+                >
+                  {main}
+                </div>
+              </div>
+            );
+          })()}
           {props.slide.attribution && (
             <div
               style={{
@@ -847,6 +883,12 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     { name: "Fredoka", data: fonts.display, weight: 500, style: "normal" },
     { name: "Fredoka", data: fonts.displayBold, weight: 700, style: "normal" },
   ];
+  if (fonts.sansItalic) {
+    baseFonts.push(
+      { name: "Inter", data: fonts.sansItalic, weight: 400, style: "italic" },
+      { name: "Inter", data: fonts.sansItalic, weight: 600, style: "italic" }
+    );
+  }
   const withArabic: FontList = fonts.arabic
     ? [...baseFonts, { name: "NotoArabic", data: fonts.arabic, weight: 500, style: "normal" }]
     : baseFonts;
