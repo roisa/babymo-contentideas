@@ -126,6 +126,9 @@ export const CATEGORIES: Category[] = [
       { id: "arabic-word-of-the-day", label: "Arabic Word of the Day", hint: "One Arabic word + meaning + use.", suggestedFormat: "single", tone: "educational, simple" },
       { id: "islamic-fun-facts", label: "Islamic Fun Facts", hint: "A playful Islamic fact.", suggestedFormat: "carousel", tone: "playful" },
       { id: "tiny-sahabah-stories", label: "Tiny Sahabah Stories", hint: "A short story of a companion.", suggestedFormat: "carousel", tone: "story, gentle" },
+      { id: "kisah-nabi", label: "Kisah Nabi", hint: "A prophet's story in kid-friendly format.", suggestedFormat: "carousel", tone: "story, awe" },
+      { id: "pertanyaan-sahabat-mo", label: "Pertanyaan Sahabat Mo", hint: "Common kids' questions about Islam, gently answered.", suggestedFormat: "carousel", tone: "curious, warm" },
+      { id: "adab-hari-ini", label: "Adab Hari Ini", hint: "One specific adab per piece, with scene + practice.", suggestedFormat: "carousel", tone: "playful, instructive" },
     ],
   },
   {
