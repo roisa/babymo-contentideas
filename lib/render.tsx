@@ -894,7 +894,7 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     slide.arabic
       ? renderArabicAsImage(slide.arabic, theme.title, arabicFontSize, arabicMaxWidth)
       : Promise.resolve(null),
-    loadPoseDataUrl(content.categoryId, slideIndex),
+    loadPoseDataUrl(content.categoryId, content.contentTypeId, slideIndex, content.slides.length),
   ]);
   const node = SlideNode({
     slide,
