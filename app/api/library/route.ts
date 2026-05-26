@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   addItems,
   clearAll,
-  getAllItems,
+  getItems,
   isLibraryStoreConfigured,
 } from "@/lib/library-store";
 import type { GeneratedContent } from "@/lib/types";
@@ -10,16 +10,31 @@ import type { GeneratedContent } from "@/lib/types";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: Request) {
   if (!isLibraryStoreConfigured()) {
-    return NextResponse.json({ configured: false, items: [] }, { status: 200 });
+    return NextResponse.json(
+      { configured: false, items: [], nextBefore: null, total: 0 },
+      { status: 200 }
+    );
   }
   try {
-    const items = await getAllItems();
-    return NextResponse.json({ configured: true, items });
+    const url = new URL(req.url);
+    const limit = url.searchParams.get("limit");
+    const before = url.searchParams.get("before");
+    const result = await getItems({
+      limit: limit ? parseInt(limit, 10) : undefined,
+      before: before ? parseInt(before, 10) : undefined,
+    });
+    return NextResponse.json({ configured: true, ...result });
   } catch (e) {
     return NextResponse.json(
-      { configured: true, items: [], error: e instanceof Error ? e.message : String(e) },
+      {
+        configured: true,
+        items: [],
+        nextBefore: null,
+        total: 0,
+        error: e instanceof Error ? e.message : String(e),
+      },
       { status: 500 }
     );
   }
@@ -34,7 +49,6 @@ export async function POST(req: Request) {
     if (!Array.isArray(body.items) || body.items.length === 0) {
       return NextResponse.json({ error: "items array required" }, { status: 400 });
     }
-    // Light validation — these fields are required for everything else to work.
     for (const it of body.items) {
       if (!it.id || !it.contentTypeId || !it.format || !Array.isArray(it.slides)) {
         return NextResponse.json({ error: "invalid item shape" }, { status: 400 });

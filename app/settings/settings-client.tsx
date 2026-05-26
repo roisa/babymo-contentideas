@@ -100,6 +100,9 @@ export function SettingsClient() {
       {/* Team library card */}
       <LibraryCard />
 
+      {/* AI usage / cost telemetry */}
+      <UsageCard />
+
       {/* Quickstart card */}
       <Card>
         <CardContent className="p-6">
@@ -277,5 +280,130 @@ function LibraryCard() {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+interface UsageDay {
+  date: string;
+  requests: number;
+  inputTokens: number;
+  outputTokens: number;
+  cacheReadTokens: number;
+  cacheCreationTokens: number;
+  cacheHits: number;
+  cacheMisses: number;
+}
+
+interface UsageResponse {
+  configured: boolean;
+  days: UsageDay[];
+  totals: (UsageDay & { cacheHitRate: number; cost: number }) | null;
+}
+
+function UsageCard() {
+  const [data, setData] = useState<UsageResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function refresh() {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/usage?days=7", { cache: "no-store" });
+      setData((await r.json()) as UsageResponse);
+    } catch (e) {
+      setData({ configured: false, days: [], totals: null });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  // Find the peak request day so the bars can be proportionally sized.
+  const peak = Math.max(1, ...(data?.days ?? []).map((d) => d.requests));
+
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-2xl bg-babymo-coral/10 flex items-center justify-center text-xl">📊</div>
+            <div>
+              <div className="font-bold text-base">AI usage · last 7 days</div>
+              <div className="text-xs text-muted-foreground">Token totals, prompt cache effectiveness, estimated cost.</div>
+            </div>
+          </div>
+          {data && !data.configured && (
+            <Badge variant="accent" className="text-[11px]">
+              <CloudOff className="h-3 w-3 mr-1" /> Local-only
+            </Badge>
+          )}
+        </div>
+
+        {data && !data.configured && (
+          <div className="text-[12px] text-muted-foreground leading-relaxed">
+            Usage tracking requires Upstash Redis (same env vars as the team library above). Without it, generations still work — they just aren't tallied.
+          </div>
+        )}
+
+        {data?.configured && data.totals && (
+          <div className="space-y-4">
+            {/* Totals row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Stat label="Generations" value={data.totals.requests.toLocaleString()} />
+              <Stat
+                label="Cache hit rate"
+                value={`${(data.totals.cacheHitRate * 100).toFixed(0)}%`}
+                hint={`${data.totals.cacheHits}/${data.totals.cacheHits + data.totals.cacheMisses}`}
+              />
+              <Stat
+                label="Tokens (input+output)"
+                value={`${((data.totals.inputTokens + data.totals.outputTokens) / 1000).toFixed(1)}K`}
+              />
+              <Stat
+                label="Est. cost"
+                value={`$${data.totals.cost.toFixed(2)}`}
+                hint="Sonnet 4.6 pricing"
+              />
+            </div>
+
+            {/* Mini bar chart of daily request volume */}
+            <div className="rounded-2xl bg-secondary/50 border border-border/40 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-3">Daily requests</div>
+              <div className="flex items-end gap-1.5 h-20">
+                {data.days.map((d) => (
+                  <div key={d.date} className="flex-1 flex flex-col items-center gap-1 group">
+                    <div
+                      className="w-full rounded-t bg-babymo-coral/70 transition-all min-h-[2px]"
+                      style={{ height: `${(d.requests / peak) * 100}%` }}
+                      title={`${d.date}: ${d.requests} requests`}
+                    />
+                    <div className="text-[9px] text-muted-foreground">{d.date.slice(5)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 pt-1">
+              <Button onClick={refresh} disabled={loading} variant="soft" size="sm">
+                <RefreshCw className={`h-3.5 w-3.5 mr-2 ${loading ? "animate-spin" : ""}`} />
+                Refresh
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <div className="rounded-xl bg-white/60 border border-border/40 p-3">
+      <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground font-semibold">{label}</div>
+      <div className="text-base font-bold mt-1">{value}</div>
+      {hint && <div className="text-[10px] text-muted-foreground mt-0.5">{hint}</div>}
+    </div>
   );
 }

@@ -2,6 +2,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { findContentType, FORMATS, STORY_STYLES, type FormatId } from "./content-types";
 import { getSeedsFor, SEEDS, type SampleSeed } from "./samples";
 import { suggestTheme } from "./themes";
+import { getIslamicContext, type IslamicPhase } from "./hijri";
+import { trackUsage } from "./usage-store";
 import type { GeneratedContent, GenerationRequest, Slide } from "./types";
 
 /** Pick the theme for one item: when autoTheme is on, derive from
@@ -292,12 +294,22 @@ async function aiGenerateOne(client: Anthropic, req: GenerationRequest, index: n
     ],
     messages: [{ role: "user", content: userPrompt(req, slidesCount, seed) }],
   });
+  const u = msg.usage;
   if (process.env.BABYMO_LOG_CACHE === "1") {
-    const u = msg.usage;
     console.log(
       `[cache] item ${index}: write=${u.cache_creation_input_tokens ?? 0} read=${u.cache_read_input_tokens ?? 0} input=${u.input_tokens}`
     );
   }
+  // Fire-and-forget usage telemetry — never blocks the response.
+  trackUsage({
+    inputTokens: u.input_tokens,
+    outputTokens: u.output_tokens,
+    cacheReadTokens: u.cache_read_input_tokens ?? 0,
+    cacheCreationTokens: u.cache_creation_input_tokens ?? 0,
+    cacheHit: (u.cache_read_input_tokens ?? 0) > 0,
+  }).catch(() => {
+    /* never block generation */
+  });
   const text = msg.content
     .map((c) => (c.type === "text" ? c.text : ""))
     .join("\n")
@@ -359,16 +371,89 @@ export async function generateBatch(req: GenerationRequest): Promise<{ items: Ge
   };
 }
 
-export function generateCalendar(theme: GenerationRequest["theme"]): GeneratedContent[] {
-  const plan: Array<{ weekday: string; contentTypeId: string; format: FormatId }> = [
-    { weekday: "Mon", contentTypeId: "daily-dua", format: "single" },
-    { weekday: "Tue", contentTypeId: "gentle-muslim-parenting", format: "carousel" },
-    { weekday: "Wed", contentTypeId: "did-you-know", format: "carousel" },
-    { weekday: "Thu", contentTypeId: "mini-islamic-story", format: "carousel" },
-    { weekday: "Fri", contentTypeId: "friday-reminder", format: "single" },
-    { weekday: "Sat", contentTypeId: "muslim-childhood-nostalgia", format: "carousel" },
-    { weekday: "Sun", contentTypeId: "before-sleep-series", format: "carousel" },
-  ];
+/**
+ * Default weekly plan — year-round backbone. Each weekday has a stable
+ * "theme of the day" so the team's grid feels predictable.
+ */
+const DEFAULT_WEEKLY_PLAN: Array<{ weekday: string; contentTypeId: string; format: FormatId }> = [
+  { weekday: "Mon", contentTypeId: "daily-dua", format: "single" },
+  { weekday: "Tue", contentTypeId: "gentle-muslim-parenting", format: "carousel" },
+  { weekday: "Wed", contentTypeId: "did-you-know", format: "carousel" },
+  { weekday: "Thu", contentTypeId: "mini-islamic-story", format: "carousel" },
+  { weekday: "Fri", contentTypeId: "friday-reminder", format: "single" },
+  { weekday: "Sat", contentTypeId: "muslim-childhood-nostalgia", format: "carousel" },
+  { weekday: "Sun", contentTypeId: "before-sleep-series", format: "carousel" },
+];
+
+/**
+ * Pick the right weekly plan for an Islamic-calendar phase.
+ *
+ * - ramadan / ramadan-last-ten: every slot is Ramadan content, with the
+ *   last-ten window leaning into Lailatul Qadr and Eid prep.
+ * - ramadan-approaching: half Ramadan ramp-up + half evergreen.
+ * - eid-week: Eid content dominates, with a couple of celebratory
+ *   evergreen slots.
+ * - none: the default plan.
+ */
+function planForPhase(phase: IslamicPhase): typeof DEFAULT_WEEKLY_PLAN {
+  if (phase === "ramadan-last-ten") {
+    return [
+      { weekday: "Mon", contentTypeId: "lailatul-qadr",       format: "carousel" },
+      { weekday: "Tue", contentTypeId: "ramadan-tarawih",     format: "carousel" },
+      { weekday: "Wed", contentTypeId: "lailatul-qadr",       format: "carousel" },
+      { weekday: "Thu", contentTypeId: "ramadan-iftar",       format: "single"   },
+      { weekday: "Fri", contentTypeId: "ramadan-tarawih",     format: "carousel" },
+      { weekday: "Sat", contentTypeId: "lailatul-qadr",       format: "carousel" },
+      { weekday: "Sun", contentTypeId: "eid-mubarak",         format: "carousel" },
+    ];
+  }
+  if (phase === "ramadan") {
+    return [
+      { weekday: "Mon", contentTypeId: "ramadan-sahur",       format: "single"   },
+      { weekday: "Tue", contentTypeId: "ramadan-fun-facts",   format: "carousel" },
+      { weekday: "Wed", contentTypeId: "ramadan-tarawih",     format: "carousel" },
+      { weekday: "Thu", contentTypeId: "ramadan-iftar",       format: "single"   },
+      { weekday: "Fri", contentTypeId: "ramadan-first-fast",  format: "carousel" },
+      { weekday: "Sat", contentTypeId: "ramadan-sahur",       format: "single"   },
+      { weekday: "Sun", contentTypeId: "ramadan-iftar",       format: "single"   },
+    ];
+  }
+  if (phase === "ramadan-approaching") {
+    return [
+      { weekday: "Mon", contentTypeId: "ramadan-reminder",    format: "carousel" },
+      { weekday: "Tue", contentTypeId: "gentle-muslim-parenting", format: "carousel" },
+      { weekday: "Wed", contentTypeId: "ramadan-fun-facts",   format: "carousel" },
+      { weekday: "Thu", contentTypeId: "mini-islamic-story",  format: "carousel" },
+      { weekday: "Fri", contentTypeId: "friday-reminder",     format: "single"   },
+      { weekday: "Sat", contentTypeId: "ramadan-first-fast",  format: "carousel" },
+      { weekday: "Sun", contentTypeId: "before-sleep-series", format: "carousel" },
+    ];
+  }
+  if (phase === "eid-week") {
+    return [
+      { weekday: "Mon", contentTypeId: "eid-mubarak",         format: "carousel" },
+      { weekday: "Tue", contentTypeId: "muslim-childhood-nostalgia", format: "carousel" },
+      { weekday: "Wed", contentTypeId: "eid-mubarak",         format: "carousel" },
+      { weekday: "Thu", contentTypeId: "gentle-muslim-parenting", format: "carousel" },
+      { weekday: "Fri", contentTypeId: "friday-reminder",     format: "single"   },
+      { weekday: "Sat", contentTypeId: "eid-mubarak",         format: "carousel" },
+      { weekday: "Sun", contentTypeId: "tiny-heart-talks",    format: "carousel" },
+    ];
+  }
+  return DEFAULT_WEEKLY_PLAN;
+}
+
+export interface CalendarMeta {
+  /** Hijri context driving this plan — exposed so the UI can show a banner. */
+  islamic: ReturnType<typeof getIslamicContext>;
+}
+
+export function generateCalendar(
+  theme: GenerationRequest["theme"]
+): GeneratedContent[] & { meta?: CalendarMeta } {
+  const ctx = getIslamicContext();
+  const plan = planForPhase(ctx.phase);
+
   const out: GeneratedContent[] = [];
   for (let day = 0; day < 30; day++) {
     const slot = plan[day % 7];
@@ -376,5 +461,8 @@ export function generateCalendar(theme: GenerationRequest["theme"]): GeneratedCo
     const slidesCount = FORMATS.find((f) => f.id === slot.format)!.defaultSlides;
     out.push(offlineGenerateOne(req, day, slidesCount));
   }
-  return out;
+  // Attach the meta as a non-enumerable property so callers that want
+  // the Islamic context can grab it without changing the public shape.
+  (out as GeneratedContent[] & { meta?: CalendarMeta }).meta = { islamic: ctx };
+  return out as GeneratedContent[] & { meta?: CalendarMeta };
 }
