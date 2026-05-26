@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { AnimatorClient } from "./animator-client";
 
 export const metadata = {
@@ -12,10 +13,14 @@ export default function AnimatePage() {
         <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">Animator</div>
         <h1 className="text-2xl font-bold mt-1">Build a Reel</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Pick 1-3 Baby Mo poses, choose a scene, hit Record mode, then screen-record the loop on iPhone or QuickTime.
+          From any Library piece (Animate as Reel) or freestyle — pick poses, choose a scene, hit Record, then screen-record the loop on iPhone or QuickTime.
         </p>
       </header>
-      <AnimatorClient />
+      {/* AnimatorClient calls useSearchParams() — Next 14 requires Suspense
+       *  around it so the route doesn't fail to statically pre-render. */}
+      <Suspense fallback={<div className="text-sm text-muted-foreground">Loading…</div>}>
+        <AnimatorClient />
+      </Suspense>
     </div>
   );
 }

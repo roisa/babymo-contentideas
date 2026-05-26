@@ -329,7 +329,7 @@ function wrapArabicLines(text: string, maxCharsPerLine: number): string[] {
  * + the resulting image height (so the caller can size the <img> correctly).
  * Satori can't shape Arabic so we hand it off to Resvg as an image.
  */
-async function renderArabicAsImage(
+export async function renderArabicAsImage(
   text: string,
   color: string,
   fontSize: number,

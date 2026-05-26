@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SlidePreview } from "@/components/slide-preview";
-import { Download, Eye, Trash2, ChevronLeft, ChevronRight, Copy, Check } from "lucide-react";
+import { Download, Eye, Trash2, ChevronLeft, ChevronRight, Copy, Check, Video } from "lucide-react";
 import type { GeneratedContent } from "@/lib/types";
 import { useLibrary } from "@/lib/store";
+import Link from "next/link";
 
 interface Props {
   content: GeneratedContent;
@@ -43,6 +44,11 @@ export function ContentCard({ content, onRemove }: Props) {
         <CardContent className="pt-0 flex gap-2">
           <Button size="sm" variant="soft" className="flex-1" onClick={() => setOpen(true)}>
             <Eye className="h-3.5 w-3.5 mr-1.5" /> View
+          </Button>
+          <Button asChild size="icon" variant="soft" className="h-8 w-8" title="Animate as reel">
+            <Link href={`/animate?from=${encodeURIComponent(content.id)}`}>
+              <Video className="h-3.5 w-3.5" />
+            </Link>
           </Button>
           <ExportButton content={content} variant="default" />
           {onRemove && (
@@ -151,6 +157,11 @@ export function ContentDetailDialog({
               <div className="text-xs text-muted-foreground leading-relaxed">{content.hashtags.join("  ")}</div>
             </div>
             <ExportButton content={content} variant="full" />
+            <Button asChild variant="soft" className="w-full">
+              <Link href={`/animate?from=${encodeURIComponent(content.id)}`}>
+                <Video className="h-4 w-4 mr-2" /> Animate as Reel
+              </Link>
+            </Button>
             <CanvaButton content={content} />
           </div>
         </div>

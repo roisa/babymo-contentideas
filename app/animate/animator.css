@@ -59,7 +59,24 @@
   75%      { transform: rotate(-2deg) translateY(-4px); }
 }
 
+/* Slideshow — Ken-Burns-ish: gentle scale + cross-fade for carousel beats */
+@keyframes pose-zoom-fade-in {
+  0%   { opacity: 0; transform: scale(1.03) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.anim-pose-zoom-fade-in {
+  animation: pose-zoom-fade-in 900ms cubic-bezier(.2,.7,.2,1) both;
+}
+
 /* ============ POSE EXITS ============ */
+@keyframes pose-zoom-fade-out {
+  0%   { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.98) translateY(-20px); }
+}
+.anim-pose-zoom-fade-out {
+  animation: pose-zoom-fade-out 800ms cubic-bezier(.4,0,.7,.2) both;
+}
+
 @keyframes pose-shrink-out {
   0%   { opacity: 1; transform: scale(1) rotate(0); }
   100% { opacity: 0; transform: scale(0.7) translateY(-30px) rotate(8deg); }
@@ -219,8 +236,9 @@
 /* Respect prefers-reduced-motion: collapse all animations to instant. */
 @media (prefers-reduced-motion: reduce) {
   .anim-pose-bounce-in, .anim-pose-fade-up, .anim-pose-slide-in,
-  .anim-pose-fade, .anim-pose-hop-in, .anim-pose-shrink-out,
-  .anim-pose-fade-down, .anim-pose-slide-out, .anim-pose-hop-out,
+  .anim-pose-fade, .anim-pose-hop-in, .anim-pose-zoom-fade-in,
+  .anim-pose-shrink-out, .anim-pose-fade-down, .anim-pose-slide-out,
+  .anim-pose-hop-out, .anim-pose-zoom-fade-out,
   .anim-card-pop, .anim-card-rise, .anim-title-sticker,
   .anim-title-soft, .anim-title-type {
     animation-duration: 1ms !important;

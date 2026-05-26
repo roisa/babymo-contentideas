@@ -11,6 +11,7 @@ const nextConfig = {
       "/api/export-zip": [".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
       "/api/warmup": [".fonts/**/*", "public/babymo-logo.png"],
       "/api/pose/[name]": ["baby-mo-poses/**/*"],
+      "/api/arabic": [".fonts/**/*"],
       "/api/generate": [".fonts/**/*", ".emoji/**/*"],
       "/api/calendar": [".fonts/**/*", ".emoji/**/*"],
     },
