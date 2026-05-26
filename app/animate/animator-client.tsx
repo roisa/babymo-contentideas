@@ -685,25 +685,32 @@ function RecordingOverlay({
   countdown: number | null;
   onExit: () => void;
 }) {
-  const [scale, setScale] = useState(0);
+  // Measure the container (which has position:fixed; inset:0) instead of
+  // window.innerWidth/Height. Safari mid-transition (URL bar collapsing)
+  // returns stale window dims; ResizeObserver re-fires once the actual
+  // visual viewport settles.
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+
   useLayoutEffect(() => {
-    function measure() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      if (vw > 0 && vh > 0) {
-        setScale(Math.min(vw / 1080, vh / 1920));
-      }
-    }
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) setSize({ w: rect.width, h: rect.height });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
+  const scale = size ? Math.min(size.w / 1080, size.h / 1920) : 0;
   const cssW = 1080 * scale;
   const cssH = 1920 * scale;
 
   return (
-    <div className="stage-recording">
+    <div ref={containerRef} className="stage-recording">
       <button
         onClick={onExit}
         className="absolute top-4 right-4 z-[110] inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-xs text-white hover:bg-white/25"
