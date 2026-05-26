@@ -380,6 +380,12 @@ export async function renderArabicAsImage(
       fitTo: { mode: "width", value: maxWidth },
     });
     const png = resvg.render().asPng();
+    // Sanity check: a real Arabic render of ≥1 word at 64-80pt produces a
+    // PNG well over 1KB. Anything tiny here means Resvg silently produced
+    // a transparent canvas (font shaping failed, glyph missing, etc.) —
+    // returning null tells the caller to skip the Arabic slot entirely
+    // instead of reserving a 180px gap for an invisible image.
+    if (png.length < 800) return null;
     return {
       dataUrl: `data:image/png;base64,${png.toString("base64")}`,
       height,
@@ -747,7 +753,12 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
               />
             </div>
           )}
-          {props.slide.arabic && !props.arabicImageUrl && (
+          {/* When Resvg shaping fails we used to fall back to a Satori-
+           *  rendered RTL <div> which produced tofu boxes — strictly
+           *  worse than just skipping the slot. If arabicImageUrl is
+           *  missing, the slide layout collapses cleanly. The translit
+           *  + translation still convey the meaning. */}
+          {false && (
             <div
               dir="rtl"
               style={{

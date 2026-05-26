@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getTheme, type ThemeId } from "@/lib/themes";
 import { type Scene } from "./scenes";
@@ -145,32 +146,61 @@ export function AnimatedScene({
 
       {/* Pose layer — anchored to canvas bottom so the character fills
        *  the lower half. Head lands at y≈1020 (just below the body card).
-       *  Feet at the canvas edge get covered by IG chrome — intentional. */}
+       *  Feet at the canvas edge get covered by IG chrome — intentional.
+       *
+       *  Migrated from CSS-keyframes to Framer Motion's AnimatePresence
+       *  with mode="wait" so the OLD pose finishes its exit BEFORE the
+       *  new pose enters — no more mid-transition double-pose overlap.
+       *  The outer motion.div handles enter/exit; the inner motion.img
+       *  runs the perpetual breathing loop. */}
       <div className="absolute inset-0 z-10 flex items-end justify-center">
-        {beats.map((b, i) => {
-          const isActive = i === active;
-          const animClass = isActive ? scene.poseEnter : scene.poseExit;
-          return (
-            <img
-              // Re-mount per (loopKey, active, in/out) so CSS animations
-              // re-fire deterministically — React reuses elements otherwise.
-              key={`pose-${i}-${loopKey}-${isActive ? "in" : "out"}-${active}`}
-              src={`/api/pose/${b.pose}`}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            // Key changes when the active beat changes → AnimatePresence
+            // triggers exit on the old element, waits, then mounts new.
+            key={`pose-${loopKey}-${active}-${beat.pose}`}
+            className="absolute bottom-0"
+            style={{
+              width: POSE_SIZE,
+              height: POSE_SIZE,
+              left: "50%",
+              marginLeft: -POSE_SIZE / 2,
+              pointerEvents: "none",
+            }}
+            initial={{ opacity: 0, scale: 0.96, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -16 }}
+            transition={{
+              duration: 0.45,
+              ease: [0.22, 0.7, 0.2, 1],
+            }}
+          >
+            <motion.img
+              src={`/api/pose/${beat.pose}`}
               alt=""
-              className={cn("absolute bottom-0", animClass)}
               style={{
                 width: POSE_SIZE,
                 height: POSE_SIZE,
-                left: "50%",
-                marginLeft: -POSE_SIZE / 2,
                 objectFit: "contain",
-                opacity: isActive ? 1 : 0,
-                pointerEvents: "none",
+              }}
+              // Perpetual breathing — independent of enter/exit. scale + y
+              // pulse on a 3.4s loop, starting after enter completes so
+              // the bounce-in landing doesn't fight the breath.
+              animate={{
+                scale: [1, 1.018, 1],
+                y: [0, -6, 0],
+              }}
+              transition={{
+                duration: 3.4,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop",
+                delay: 0.5,
               }}
               draggable={false}
             />
-          );
-        })}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Body card — anchored to a fixed top inside safe zone (not bottom),

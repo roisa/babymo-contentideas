@@ -75,7 +75,7 @@ Always return exactly this shape:
       "heading": "BIG bold sticker title (Indonesian, 1-3 lines, attention-grabbing)",
       "kicker": "small label from the kicker library",
       "body": "1-3 short Indonesian sentences in the white card",
-      "arabic": "OPTIONAL Arabic text if relevant (dua/ayat/hadith)",
+      "arabic": "REQUIRED Arabic text when body has transliteration OR attribution mentions HR./QS. — omit ENTIRELY (don't send empty string) for non-religious-text slides",
       "attribution": "OPTIONAL source like 'HR. Bukhari 6312' or 'QS. Al-Hadid: 4'"
     }
   ],
@@ -90,7 +90,14 @@ Hard rules:
 - Keep body text short (max 3 lines).
 - For Reels: even shorter, hook-driven.
 - The first slide is the strongest hook; for carousels, the last slide is the CTA/save moment.
-- If unsure whether a hadith reference is authentic, omit the attribution field entirely.`;
+- If unsure whether a hadith reference is authentic, omit the attribution field entirely.
+- **Arabic is REQUIRED, not optional, in these cases** (skipping it breaks the rendered card layout):
+    • Any dua content (daily-dua, ramadan-sahur, ramadan-iftar, etc.)
+    • Any Quran ayah or hadith reveal (quran-ayah, hadith-motivation)
+    • Any slide whose body contains a Latin-script transliteration (the "Bismika..." / "Alhamdulillahi..." / "Allahumma..." style)
+    • Any slide whose attribution starts with "HR." or "QS."
+  In those cases, the \`arabic\` field MUST contain the authentic Arabic script. Never send "", " ", "...", or omit the field — emit the real shaped Arabic text.
+- For NON-religious-text slides (kid feeling slides, scene transitions, CTA wraps), OMIT the arabic field entirely — don't include it as an empty string.`;
 
 interface RawSlide {
   heading?: string;
