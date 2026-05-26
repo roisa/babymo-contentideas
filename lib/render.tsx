@@ -895,18 +895,25 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
   const theme = getTheme(content.theme);
   // Pre-render Arabic via Resvg (proper harfbuzz shaping) so Satori only has
   // to composite an <img>. The text colour matches the theme's title accent.
+  // Treat whitespace-only Arabic as missing — the AI sometimes emits "" or
+  // " " and the layout would otherwise reserve space for a failed-to-render
+  // Arabic image (the empty gap users see in the body card).
+  const arabicText = slide.arabic && slide.arabic.trim().length > 0 ? slide.arabic.trim() : null;
   const arabicMaxWidth = fmt.width - 220; // body card inner width
   const arabicFontSize = 64;
   const [fonts, logoDataUrl, arabicResult, poseDataUrl] = await Promise.all([
     loadFonts(),
     loadLogoDataUrl(),
-    slide.arabic
-      ? renderArabicAsImage(slide.arabic, theme.title, arabicFontSize, arabicMaxWidth)
+    arabicText
+      ? renderArabicAsImage(arabicText, theme.title, arabicFontSize, arabicMaxWidth)
       : Promise.resolve(null),
     loadPoseDataUrl(content.categoryId, content.contentTypeId, slideIndex, content.slides.length, hashIdToBatchIndex(content.id)),
   ]);
+  // Synthesize a cleaned slide so SlideNode doesn't try to render the
+  // raw whitespace via the RTL fallback path either.
+  const slideForRender = arabicText === slide.arabic ? slide : { ...slide, arabic: arabicText ?? undefined };
   const node = SlideNode({
-    slide,
+    slide: slideForRender,
     index: slideIndex,
     total: content.slides.length,
     themeId: content.theme,

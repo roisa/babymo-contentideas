@@ -183,3 +183,32 @@ export function pickPosesForContent(
     pickPoseFilename(categoryId, contentTypeId, i, slideCount, batchIndex)
   );
 }
+
+/**
+ * Pick poses for a *Reel* derived from a Library piece.
+ *
+ * Multi-slide content → one pose per slide (calls pickPosesForContent).
+ *
+ * Single-slide content (Daily Dua, Mama Reflection, etc.) → returns
+ * 3 mood-matched poses from the category's ICONIC_POSES alternates,
+ * so the reel becomes a multi-beat loop where the pose alternates
+ * while the title/body/Arabic stay constant. Falls back to a tighter
+ * content-type override track if one exists (e.g. soft-affirmations
+ * wants gentle/shy poses, not the energetic iconic set).
+ */
+export function pickReelPosesFromContent(
+  categoryId: string,
+  contentTypeId: string,
+  slideCount: number,
+  batchIndex = 0
+): string[] {
+  if (slideCount > 1) {
+    return pickPosesForContent(categoryId, contentTypeId, slideCount, batchIndex);
+  }
+  // Single-slide → expand into 3 alternates.
+  const override = CONTENT_TYPE_OVERRIDES[contentTypeId];
+  if (override && override.length >= 3) return override.slice(0, 3);
+  const iconic = ICONIC_POSES[categoryId];
+  if (iconic && iconic.length > 0) return iconic.slice(0, 3);
+  return [DEFAULT_POSE];
+}

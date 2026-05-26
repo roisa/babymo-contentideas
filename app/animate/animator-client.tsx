@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { THEMES, type ThemeId } from "@/lib/themes";
-import { ALL_POSES, pickPosesForContent } from "@/lib/poses-pure";
+import { ALL_POSES, pickReelPosesFromContent } from "@/lib/poses-pure";
 import { useLibrary } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import {
@@ -94,12 +94,30 @@ export function AnimatorClient() {
   // ---- Build beats[] for the active mode ----
   const beats: Beat[] = useMemo(() => {
     if (sourceContent) {
-      const autoPoses = pickPosesForContent(
+      const autoPoses = pickReelPosesFromContent(
         sourceContent.categoryId,
         sourceContent.contentTypeId,
         sourceContent.slides.length
       );
       const poses = posesOverride ?? autoPoses;
+
+      // Single-slide content (Daily Dua etc.): the piece has ONE slide but
+      // the reel plays multiple beats — repeat the slide content across
+      // each pose so title/body/Arabic stay constant while the pose
+      // alternates between mood-matched alternates.
+      if (sourceContent.slides.length === 1 && poses.length > 1) {
+        const slide = sourceContent.slides[0];
+        return poses.map((pose) => ({
+          pose,
+          title: slide.heading,
+          kicker: slide.kicker,
+          body: slide.body,
+          arabic: slide.arabic,
+          attribution: slide.attribution,
+        }));
+      }
+
+      // Multi-slide: one pose per slide.
       return sourceContent.slides.map((slide, i) => ({
         pose: poses[i] ?? autoPoses[i] ?? "baby-mo-ok.png",
         title: slide.heading,
@@ -129,7 +147,7 @@ export function AnimatorClient() {
 
   function togglePoseOverride(slot: number, name: string) {
     setPosesOverride((cur) => {
-      const base = cur ?? (sourceContent ? pickPosesForContent(sourceContent.categoryId, sourceContent.contentTypeId, sourceContent.slides.length) : []);
+      const base = cur ?? (sourceContent ? pickReelPosesFromContent(sourceContent.categoryId, sourceContent.contentTypeId, sourceContent.slides.length) : []);
       const next = [...base];
       next[slot] = name;
       return next;
@@ -253,7 +271,7 @@ export function AnimatorClient() {
               sceneId={sceneId}
               setSceneId={setSceneId}
               posesOverride={posesOverride}
-              autoPoses={pickPosesForContent(
+              autoPoses={pickReelPosesFromContent(
                 sourceContent.categoryId,
                 sourceContent.contentTypeId,
                 sourceContent.slides.length

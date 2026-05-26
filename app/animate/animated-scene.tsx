@@ -90,6 +90,18 @@ export function AnimatedScene({
 
   const bg = `linear-gradient(170deg, ${t.gradient[0]} 0%, ${t.gradient[1]} 55%, ${t.gradient[2]} 100%)`;
 
+  // Whitespace-only Arabic counts as missing. Without this, the layout
+  // would reserve space for an invisible/failed-to-render Arabic image
+  // (the empty gap users see in the body card).
+  const arabic = beat.arabic && beat.arabic.trim().length > 0 ? beat.arabic.trim() : null;
+
+  // Use the actual text as the React key. If consecutive beats share the
+  // same text (single-slide reels repeat title/kicker/body across poses),
+  // React keeps the element mounted and skips the re-mount animation —
+  // exactly what we want, no jarring text re-pop on every beat.
+  const titleKey = `title-${loopKey}-${beat.title ?? ""}`;
+  const cardKey  = `card-${loopKey}-${beat.kicker ?? ""}-${arabic ?? ""}-${beat.body ?? ""}-${beat.attribution ?? ""}`;
+
   return (
     <div
       key={loopKey}
@@ -115,7 +127,7 @@ export function AnimatedScene({
       {/* Title sticker — below logo, still in safe zone */}
       {beat.title && (
         <div
-          key={`title-${loopKey}-${active}`}
+          key={titleKey}
           className={cn("absolute z-20 text-center px-12 left-0 right-0", scene.titleAnim)}
           style={{
             top: TITLE_TOP,
@@ -163,10 +175,10 @@ export function AnimatedScene({
 
       {/* Body card — anchored to a fixed top inside safe zone (not bottom),
        *  so it stays clear of IG/TikTok chrome. Card bottom stays under
-       *  SAFE_BOTTOM as long as content fits in ~440px. */}
-      {(beat.body || beat.arabic || beat.attribution) && (
+       *  SAFE_BOTTOM as long as content fits in ~340px. */}
+      {(beat.body || arabic || beat.attribution) && (
         <div
-          key={`body-${loopKey}-${active}`}
+          key={cardKey}
           className={cn("absolute z-30 left-12 right-12", scene.cardAnim)}
           style={{
             top: CARD_TOP,
@@ -194,8 +206,8 @@ export function AnimatedScene({
               {beat.kicker}
             </div>
           )}
-          {beat.arabic && (
-            <ArabicLine text={beat.arabic} color={t.title} loopKey={`${loopKey}-${active}`} />
+          {arabic && (
+            <ArabicLine text={arabic} color={t.title} loopKey={`${loopKey}-${arabic}`} />
           )}
           {beat.body && (
             <BodyText body={beat.body} ink={t.ink} accent={t.title} />

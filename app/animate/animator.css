@@ -7,6 +7,23 @@
  * pose), not these CSS durations. Keep them in sync if you tweak.
  */
 
+/* ============ BREATHING (idle pose pulse) ============
+ *
+ * Composes after every pose-enter animation: the enter keyframe lands
+ * the pose at scale(1) translateY(0), then `pose-breathe` takes over
+ * with a slow infinite scale+float — so the character feels alive
+ * during the hold between beat transitions.
+ *
+ * Composition syntax: `animation: <enter> <duration> <easing> both,
+ *                                   pose-breathe <duration> ease-in-out
+ *                                   <delay> infinite;`
+ * The exit class replaces both with its own animation, killing breath.
+ */
+@keyframes pose-breathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.018) translateY(-6px); }
+}
+
 /* ============ POSE ENTRANCES ============ */
 @keyframes pose-bounce-in {
   0%   { opacity: 0; transform: translateY(60px) scale(0.4) rotate(-6deg); }
@@ -15,7 +32,9 @@
   100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
 }
 .anim-pose-bounce-in {
-  animation: pose-bounce-in 450ms cubic-bezier(.22,1.6,.36,1) both;
+  animation:
+    pose-bounce-in 450ms cubic-bezier(.22,1.6,.36,1) both,
+    pose-breathe 3.4s ease-in-out 600ms infinite;
 }
 
 @keyframes pose-fade-up {
@@ -23,7 +42,9 @@
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 .anim-pose-fade-up {
-  animation: pose-fade-up 700ms cubic-bezier(.2,.7,.2,1) both;
+  animation:
+    pose-fade-up 700ms cubic-bezier(.2,.7,.2,1) both,
+    pose-breathe 3.4s ease-in-out 800ms infinite;
 }
 
 @keyframes pose-slide-in {
@@ -31,7 +52,9 @@
   100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 .anim-pose-slide-in {
-  animation: pose-slide-in 500ms cubic-bezier(.22,1,.36,1) both;
+  animation:
+    pose-slide-in 500ms cubic-bezier(.22,1,.36,1) both,
+    pose-breathe 3.4s ease-in-out 600ms infinite;
 }
 
 @keyframes pose-fade {
@@ -39,7 +62,9 @@
   100% { opacity: 1; transform: scale(1); }
 }
 .anim-pose-fade {
-  animation: pose-fade 900ms ease both;
+  animation:
+    pose-fade 900ms ease both,
+    pose-breathe 3.6s ease-in-out 1000ms infinite;
 }
 
 @keyframes pose-hop-in {
@@ -65,7 +90,9 @@
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 .anim-pose-zoom-fade-in {
-  animation: pose-zoom-fade-in 900ms cubic-bezier(.2,.7,.2,1) both;
+  animation:
+    pose-zoom-fade-in 900ms cubic-bezier(.2,.7,.2,1) both,
+    pose-breathe 3.4s ease-in-out 1000ms infinite;
 }
 
 /* ============ POSE EXITS ============ */
@@ -249,4 +276,6 @@
   .anim-sparkle-burst > *, .anim-rising-hearts > * {
     animation: none !important;
   }
+  /* pose-breathe is composed into multiple .anim-pose-*-in classes; the
+   * !important above on those entries already covers it. */
 }
