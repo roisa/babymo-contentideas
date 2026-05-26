@@ -3,7 +3,22 @@
  *
  * `lib/poses.ts` re-exports everything here AND adds `loadPoseDataUrl`
  * (which needs `node:fs`). Browser code imports from this file directly.
+ *
+ * All pose+category data is declared in `lib/content-types.ts` (CATEGORIES
+ * with inline `categoryPoseTrack`, `iconicPoses`, and per-type `poseTrack`).
+ * The constants below are derived from that single source.
  */
+
+import {
+  CATEGORIES,
+  POSES_BY_CATEGORY,
+  ICONIC_POSES,
+  CONTENT_TYPE_POSE_OVERRIDES as CONTENT_TYPE_OVERRIDES,
+} from "./content-types";
+
+export { POSES_BY_CATEGORY, ICONIC_POSES, CONTENT_TYPE_OVERRIDES };
+
+/* ---------- Visual catalogue (50 poses — names + numbered extras) ---------- */
 
 export const ALL_NAMED_POSES = [
   "baby-mo-alright.png",
@@ -25,186 +40,12 @@ export const ALL_POSES = [...ALL_NAMED_POSES, ...ALL_EXTRAS];
 
 export type SlideBeat = "hook" | "curiosity" | "reveal" | "faq" | "cta";
 
-/**
- * 5-beat carousel track per category. Position [i] is the pose for
- * slide i in a 5-slide carousel (HOOK → CURIOSITY → REVEAL → FAQ → CTA).
- * Shorter carousels distribute beats, single posts use ICONIC_POSE.
- */
-export const POSES_BY_CATEGORY: Record<string, string[]> = {
-  // Daily Islamic — climbs to SUJUD on the CTA slide
-  "daily-islamic": [
-    "baby-mo-idea.png",          // 1. HOOK — "ada doa baru!"
-    "baby-mo-pose-05.png",       // 2. CURIOSITY — hopeful clasped
-    "baby-mo-thank-you.png",     // 3. REVEAL — hands in dua
-    "baby-mo-pose-12.png",       // 4. FAQ — sit-dua reflective
-    "baby-mo-pose-17.png",       // 5. CTA — SUJUD
-  ],
-  "emotional-childhood": [
-    "baby-mo-alright.png",
-    "baby-mo-pose-39.png",
-    "baby-mo-pose-28.png",
-    "baby-mo-pose-07.png",
-    "baby-mo-pose-21.png",
-  ],
-  parenting: [
-    "baby-mo-alright.png",
-    "baby-mo-pose-22.png",
-    "baby-mo-ok.png",
-    "baby-mo-pose-15.png",
-    "baby-mo-pose-25.png",
-  ],
-  "kids-educational": [
-    "baby-mo-idea.png",
-    "baby-mo-pose-22.png",
-    "baby-mo-wow.png",
-    "baby-mo-pose-08.png",
-    "baby-mo-yes.png",
-  ],
-  interactive: [
-    "baby-mo-idea.png",
-    "baby-mo-pose-22.png",
-    "baby-mo-yeyy.png",
-    "baby-mo-pose-21.png",
-    "baby-mo-pose-35.png",
-  ],
-  story: [
-    "baby-mo-pose-11.png",
-    "baby-mo-pose-06.png",
-    "baby-mo-wow.png",
-    "baby-mo-pose-12.png",
-    "baby-mo-pose-21.png",
-  ],
-  reels: [
-    "baby-mo-pose-29.png",
-    "baby-mo-pose-32.png",
-    "baby-mo-wow.png",
-    "baby-mo-pose-42.png",
-    "baby-mo-run.png",
-  ],
-
-  // Ramadan — arc moves from gentle anticipation → reverent dua → joyful celebration
-  ramadan: [
-    "baby-mo-pose-05.png",       // 1. HOOK — hopeful clasped, anticipating sahur/iftar
-    "baby-mo-pose-12.png",       // 2. CURIOSITY — sit-dua reflective
-    "baby-mo-thank-you.png",     // 3. REVEAL — hands in dua (the moment)
-    "baby-mo-pose-17.png",       // 4. FAQ — SUJUD (Lailatul Qadr / Tarawih)
-    "baby-mo-yeyy.png",          // 5. CTA — celebration (Eid joy)
-  ],
-};
-
-/**
- * Iconic poses per category — used for single-slide posts. The FIRST
- * entry is the canonical iconic pose for the category; the rest are
- * mood-matched alternates that rotate through a batch.
- */
-export const ICONIC_POSES: Record<string, string[]> = {
-  "daily-islamic": ["baby-mo-thank-you.png", "baby-mo-pose-12.png", "baby-mo-pose-17.png"],
-  "emotional-childhood": ["baby-mo-alright.png", "baby-mo-pose-07.png", "baby-mo-pose-28.png"],
-  parenting: ["baby-mo-ok.png", "baby-mo-pose-21.png", "baby-mo-pose-25.png"],
-  "kids-educational": ["baby-mo-idea.png", "baby-mo-pose-22.png", "baby-mo-wow.png"],
-  interactive: ["baby-mo-yeyy.png", "baby-mo-pose-35.png", "baby-mo-pose-37.png"],
-  story: ["baby-mo-pose-11.png", "baby-mo-pose-06.png", "baby-mo-pose-18.png"],
-  reels: ["baby-mo-run.png", "baby-mo-pose-32.png", "baby-mo-pose-42.png"],
-  ramadan: [
-    "baby-mo-thank-you.png",     // praying hands (canonical for Ramadan)
-    "baby-mo-pose-12.png",       // sit-dua reflective
-    "baby-mo-pose-17.png",       // sujud
-  ],
-};
+/* ---------- Picker helpers ---------- */
 
 /** Back-compat: callers that just want the canonical iconic pose. */
 export const ICONIC_POSE: Record<string, string> = Object.fromEntries(
   Object.entries(ICONIC_POSES).map(([k, v]) => [k, v[0]])
 );
-
-/**
- * Per-content-type overrides — when a specific content type has a
- * mood that differs from its parent category.
- */
-export const CONTENT_TYPE_OVERRIDES: Record<string, string[]> = {
-  "pov-muslim-childhood": [
-    "baby-mo-pose-28.png", "baby-mo-pose-18.png", "baby-mo-pose-06.png", "baby-mo-pose-11.png", "baby-mo-pose-12.png",
-  ],
-  "soft-islamic-affirmations": [
-    "baby-mo-pose-07.png", "baby-mo-pose-28.png", "baby-mo-thank-you.png", "baby-mo-alright.png", "baby-mo-pose-21.png",
-  ],
-  "five-second-habit": [
-    "baby-mo-idea.png", "baby-mo-pose-08.png", "baby-mo-yes.png", "baby-mo-run.png", "baby-mo-pose-21.png",
-  ],
-  "cozy-islamic-reels": [
-    "baby-mo-pose-06.png", "baby-mo-pose-28.png", "baby-mo-pose-11.png", "baby-mo-thank-you.png", "baby-mo-pose-12.png",
-  ],
-  "adab-hari-ini": [
-    "baby-mo-pose-34.png", "baby-mo-pose-22.png", "baby-mo-pose-15.png", "baby-mo-pose-21.png", "baby-mo-pose-25.png",
-  ],
-  "kisah-nabi": [
-    "baby-mo-pose-11.png", "baby-mo-pose-39.png", "baby-mo-wow.png", "baby-mo-pose-12.png", "baby-mo-thank-you.png",
-  ],
-  "pertanyaan-sahabat-mo": [
-    "baby-mo-pose-22.png", "baby-mo-pose-23.png", "baby-mo-idea.png", "baby-mo-ok.png", "baby-mo-pose-21.png",
-  ],
-  "what-would-prophet-do": [
-    "baby-mo-pose-22.png", "baby-mo-pose-27.png", "baby-mo-thank-you.png", "baby-mo-pose-15.png", "baby-mo-pose-25.png",
-  ],
-  "emotional-story-carousel": [
-    "baby-mo-pose-39.png", "baby-mo-pose-38.png", "baby-mo-thank-you.png", "baby-mo-pose-28.png", "baby-mo-pose-21.png",
-  ],
-  "mama-reflection": ["baby-mo-pose-21.png", "baby-mo-pose-07.png", "baby-mo-thank-you.png"],
-
-  /* ===== Ramadan ===== */
-  // Sahur — quiet, sleepy-warm, building to readiness
-  "ramadan-sahur": [
-    "baby-mo-pose-06.png",       // sit cross-legged, calm
-    "baby-mo-pose-12.png",       // sit-dua reflective
-    "baby-mo-thank-you.png",     // praying hands (niat)
-  ],
-  // Iftar — anticipation → reveal → joy
-  "ramadan-iftar": [
-    "baby-mo-pose-05.png",       // hopeful clasped (waiting)
-    "baby-mo-thank-you.png",     // dua before suap pertama
-    "baby-mo-yeyy.png",          // joy of breaking fast
-  ],
-  // Tarawih — communal, building to sujud
-  "ramadan-tarawih": [
-    "baby-mo-pose-11.png",       // sit-wave (come pray)
-    "baby-mo-pose-12.png",       // sit-dua
-    "baby-mo-thank-you.png",     // standing prayer
-    "baby-mo-pose-17.png",       // SUJUD
-    "baby-mo-pose-21.png",       // gentle thumbs (CTA)
-  ],
-  // First Fast — full emotional arc (anxious → tired → triumphant)
-  "ramadan-first-fast": [
-    "baby-mo-pose-22.png",       // thinking-chin (worried)
-    "baby-mo-pose-39.png",       // sad-down (hungry, struggling)
-    "baby-mo-pose-05.png",       // hopeful clasped (counting down)
-    "baby-mo-yeyy.png",          // celebration (made it!)
-    "baby-mo-pose-21.png",       // gentle thumbs (CTA: support others)
-  ],
-  // Fun Facts — curious + wonder
-  "ramadan-fun-facts": [
-    "baby-mo-idea.png",          // pointing up (did you know!)
-    "baby-mo-pose-22.png",       // thinking-chin
-    "baby-mo-wow.png",           // WOW!
-    "baby-mo-pose-08.png",       // present-pointing (explaining)
-    "baby-mo-pose-35.png",       // peace signs (save & share)
-  ],
-  // Lailatul Qadr — reverent, building to praying hands + sujud
-  "lailatul-qadr": [
-    "baby-mo-pose-18.png",       // contemplative
-    "baby-mo-pose-28.png",       // dreamy looking up (the night)
-    "baby-mo-thank-you.png",     // praying hands (the doa)
-    "baby-mo-pose-17.png",       // SUJUD (the moment)
-    "baby-mo-pose-12.png",       // sit-dua (witir)
-  ],
-  // Eid Mubarak — full celebration arc
-  "eid-mubarak": [
-    "baby-mo-pose-11.png",       // sit-wave (greeting)
-    "baby-mo-thank-you.png",     // takbir / praying
-    "baby-mo-yeyy.png",          // CELEBRATE
-    "baby-mo-pose-35.png",       // peace signs
-    "baby-mo-pose-37.png",       // cheer fists
-  ],
-};
 
 /** Used when a category isn't found (shouldn't happen). */
 export const DEFAULT_POSE = "baby-mo-ok.png";
@@ -270,14 +111,11 @@ export function pickPosesForContent(
 /**
  * Pick poses for a *Reel* derived from a Library piece.
  *
- * Multi-slide content → one pose per slide (calls pickPosesForContent).
- *
- * Single-slide content (Daily Dua, Mama Reflection, etc.) → returns
- * 3 mood-matched poses from the category's ICONIC_POSES alternates,
+ * Multi-slide content → one pose per slide.
+ * Single-slide content → 3 mood-matched poses from the category's
+ * ICONIC_POSES alternates (or content-type override if one exists),
  * so the reel becomes a multi-beat loop where the pose alternates
- * while the title/body/Arabic stay constant. Falls back to a tighter
- * content-type override track if one exists (e.g. soft-affirmations
- * wants gentle/shy poses, not the energetic iconic set).
+ * while the title/body/Arabic stay constant.
  */
 export function pickReelPosesFromContent(
   categoryId: string,
@@ -288,10 +126,13 @@ export function pickReelPosesFromContent(
   if (slideCount > 1) {
     return pickPosesForContent(categoryId, contentTypeId, slideCount, batchIndex);
   }
-  // Single-slide → expand into 3 alternates.
   const override = CONTENT_TYPE_OVERRIDES[contentTypeId];
   if (override && override.length >= 3) return override.slice(0, 3);
   const iconic = ICONIC_POSES[categoryId];
   if (iconic && iconic.length > 0) return iconic.slice(0, 3);
   return [DEFAULT_POSE];
 }
+
+// Silence the "imported but unused" warning if a future cleanup drops
+// the CATEGORIES re-export above without using it locally.
+export { CATEGORIES };

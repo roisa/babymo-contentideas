@@ -175,83 +175,14 @@ export function getTheme(id: ThemeId): Theme {
 }
 
 /**
- * Per-content-type theme suggestion. Picked at generation time when the
- * user hasn't manually selected a theme, so the team's grid auto-tunes
- * to the mood of the piece (bedtime → lavender night, morning → sunny
- * yellow, etc.) instead of every piece using the same default.
- *
- * Each entry is an array of equally-good fits; the picker rotates
- * across a batch so 10 of the same type don't all look identical.
+ * Theme mappings live in `lib/content-types.ts` (CATEGORIES → each type
+ * declares its `themeAlternates` inline). This file just exposes the
+ * picker function.
  */
-const THEMES_BY_CONTENT_TYPE: Record<string, ThemeId[]> = {
-  // bedtime / night moments
-  "before-sleep-series": ["lavender-night", "sky-blue"],
-  "doa-sebelum-tidur": ["lavender-night"],
-  // morning / energetic
-  "doa-bangun-tidur": ["sunny-yellow", "cloud-day"],
-  "friday-reminder": ["sunny-yellow", "mint-garden"],
-  "dhikr-reminder": ["cream-sand", "peach-apricot"],
-  // dua/quran/hadith — warm reverent
-  "daily-dua": ["cream-sand", "peach-apricot", "cloud-day"],
-  "quran-ayah": ["cream-sand", "lavender-night"],
-  "hadith-motivation": ["mint-garden", "cream-sand"],
-  "ramadan-reminder": ["lavender-night", "peach-apricot"],
-  // emotional / tender
-  "tiny-heart-talks": ["peach-apricot", "coral-pink"],
-  "dear-little-muslim": ["peach-apricot", "cream-sand"],
-  "tiny-tafakkur": ["sky-blue", "cloud-day"],
-  "muslim-childhood-nostalgia": ["peach-apricot", "cream-sand"],
-  "mama-reflection": ["peach-apricot", "coral-pink"],
-  "emotional-parenting-reminder": ["cream-sand", "peach-apricot"],
-  "emotional-story-carousel": ["lavender-night", "peach-apricot"],
-  // parenting — calm warm
-  "gentle-muslim-parenting": ["mint-garden", "peach-apricot"],
-  "ayah-series": ["cream-sand", "sky-blue"],
-  // kids educational — bright playful
-  "did-you-know": ["sunny-yellow", "sky-blue"],
-  "allahs-creation": ["sky-blue", "mint-garden"],
-  "arabic-word-of-the-day": ["sunny-yellow", "cream-sand"],
-  "islamic-fun-facts": ["sunny-yellow", "coral-pink"],
-  "tiny-sahabah-stories": ["cream-sand", "mint-garden"],
-  "kisah-nabi": ["cream-sand", "lavender-night"],
-  "pertanyaan-sahabat-mo": ["sky-blue", "sunny-yellow"],
-  "adab-hari-ini": ["mint-garden", "sunny-yellow"],
-  // interactive — high energy
-  "guess-the-sunnah": ["coral-pink", "sunny-yellow"],
-  "finish-the-dua": ["sunny-yellow", "mint-garden"],
-  "spot-the-adab": ["mint-garden", "sky-blue"],
-  "tiny-sunnah-missions": ["coral-pink", "sunny-yellow"],
-  "this-or-that-muslim-kid": ["coral-pink", "sky-blue"],
-  // story
-  "mini-islamic-story": ["sky-blue", "mint-garden"],
-  "what-would-prophet-do": ["cream-sand", "sky-blue"],
-  // reels — warm intimate vs punchy
-  "pov-muslim-childhood": ["peach-apricot", "lavender-night"],
-  "soft-islamic-affirmations": ["peach-apricot", "cream-sand"],
-  "five-second-habit": ["coral-pink", "sunny-yellow"],
-  "cozy-islamic-reels": ["lavender-night", "cream-sand"],
-  // Ramadan — pre-dawn/iftar are warm cream; tarawih/lailatul-qadr lean
-  // toward lavender-night; Eid is celebratory coral-pink + sunny-yellow.
-  "ramadan-sahur": ["lavender-night", "cream-sand"],
-  "ramadan-iftar": ["peach-apricot", "cream-sand"],
-  "ramadan-tarawih": ["lavender-night", "cream-sand"],
-  "ramadan-first-fast": ["peach-apricot", "coral-pink"],
-  "ramadan-fun-facts": ["sunny-yellow", "mint-garden"],
-  "lailatul-qadr": ["lavender-night", "cream-sand"],
-  "eid-mubarak": ["coral-pink", "sunny-yellow"],
-};
-
-/** Fallbacks per category when no per-content-type entry exists. */
-const THEMES_BY_CATEGORY: Record<string, ThemeId[]> = {
-  "daily-islamic": ["cream-sand", "peach-apricot", "mint-garden"],
-  "emotional-childhood": ["peach-apricot", "coral-pink", "cream-sand"],
-  parenting: ["mint-garden", "peach-apricot", "cream-sand"],
-  "kids-educational": ["sunny-yellow", "sky-blue", "mint-garden"],
-  interactive: ["coral-pink", "sunny-yellow", "sky-blue"],
-  story: ["sky-blue", "cream-sand", "mint-garden"],
-  reels: ["coral-pink", "peach-apricot", "sunny-yellow"],
-  ramadan: ["cream-sand", "lavender-night", "peach-apricot"],
-};
+import {
+  THEMES_BY_CONTENT_TYPE,
+  THEMES_BY_CATEGORY,
+} from "./content-types";
 
 /**
  * Suggest a theme based on content type + category. `batchIndex` rotates
@@ -264,8 +195,8 @@ export function suggestTheme(
   batchIndex = 0
 ): ThemeId {
   const byType = THEMES_BY_CONTENT_TYPE[contentTypeId];
-  if (byType && byType.length > 0) return byType[batchIndex % byType.length];
+  if (byType && byType.length > 0) return byType[batchIndex % byType.length] as ThemeId;
   const byCat = THEMES_BY_CATEGORY[categoryId];
-  if (byCat && byCat.length > 0) return byCat[batchIndex % byCat.length];
+  if (byCat && byCat.length > 0) return byCat[batchIndex % byCat.length] as ThemeId;
   return "coral-pink";
 }
