@@ -1,29 +1,94 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { findContentType, FORMATS, STORY_STYLES, type FormatId } from "./content-types";
 import { getSeedsFor, SEEDS, type SampleSeed } from "./samples";
+import { suggestTheme } from "./themes";
 import type { GeneratedContent, GenerationRequest, Slide } from "./types";
+
+/** Pick the theme for one item: when autoTheme is on, derive from
+ * content-type mood + batch position; otherwise honor the user's choice. */
+function themeFor(req: GenerationRequest, categoryId: string, batchIndex: number) {
+  return req.autoTheme ? suggestTheme(req.contentTypeId, categoryId, batchIndex) : req.theme;
+}
 
 const SYSTEM_PROMPT = `You write Instagram content for Baby Mo (@babymo.official) — a bright, kid-friendly Indonesian Islamic brand for Muslim children & families.
 
-Voice & style:
+# Voice & style
 - Bahasa Indonesia (kid-friendly), occasional English/Malay mix
-- BOLD, playful, attention-grabbing titles (e.g. "Tahukah Kamu?", "Yuk, Belajar!", "Wow!", "Senyum kecilmu...", "Mengalah itu hebat")
+- BOLD, playful, attention-grabbing titles
 - warm, encouraging, never preachy, never harsh dakwah tone
 - speak directly to "Sahabat Mo" (Baby Mo's friends / kids)
-- pair every reminder with practical small action
-
-Format conventions:
-- "heading" = the big bold sticker title (1-3 lines, bold, attention-grabbing). Indonesian.
-- "kicker" = small label inside the body card (e.g. "Catatan Hari Ini:", "Tahukah Kamu?", "Yuk, Hafalkan!", "Quiz Seru:")
-- "body" = the white-card body text, max 3 short lines, with optional Arabic translation/meaning quoted
-- "arabic" = original Arabic text (when relevant, for dua/ayat/hadith)
-- "attribution" = hadith/Quran source with number (e.g. "HR. Bukhari 6312", "QS. Al-Hadid: 4")
-- captions = Indonesian, 1-2 sentences, with 1-2 emojis like 🌙💚✨
-
-Hard rules:
+- pair every reminder with a practical small action
 - never invent hadith/Quran references — only use well-known authentic ones
 - when referring to Prophet Muhammad always add SAW or ﷺ
-- output STRICT JSON, no commentary, no markdown fences`;
+
+# Title pattern bank (use these patterns, vary the substance)
+- "Tahukah Kamu? [surprising fact]"
+- "Yuk, [verb] [object]!"
+- "Wow! [observation]"
+- "Sahabat Mo, [reminder]"
+- "Pernah ngga sih, [scenario]?"
+- "Kenapa [verb] itu [adjective]?"
+- "Mulai dari [small action]!"
+- "[Emotional state] itu [reframe]" (e.g. "Capek itu tanda kamu sayang")
+- "Doa [moment]" (e.g. "Doa Sebelum Tidur")
+- "Adab [activity]" (e.g. "Adab Mengucap Salam")
+- "Kisah Nabi [name]"
+- "POV: [scene]"
+
+# Kicker label library (pick one that matches the slide's role)
+Curious/educational:
+- "Tahukah Kamu?", "Fakta:", "Yuk, Belajar!", "Cobain Yuk!"
+Action/practice:
+- "Yuk, Hafalkan!", "Coba Yuk!", "Mulai Hari Ini!", "Praktikkan Yuk!"
+Reflective/warm:
+- "Catatan Hari Ini:", "Pesan Mama Mo:", "Untuk Mama", "Yuk, Renungkan:"
+Story/scene:
+- "Scene 1", "Pagi yang Cerah!", "Ingat Nggak?", "Cerita Hari Ini"
+Quiz/interactive:
+- "Quiz Seru:", "Pilih Mana?", "Tebak Yuk!", "Sahabat Mo Tahu?"
+CTA/wrap:
+- "Save & Bagikan!", "Tag Temanmu!", "Yuk, Bagikan!", "Coba Yuk!"
+
+# Format conventions
+- "heading" = the BIG bold sticker title (1-3 lines, bold, attention-grabbing). Indonesian.
+- "kicker" = small label inside the body card (from the library above)
+- "body" = the white-card body text, max 3 short lines, with optional Arabic translation/meaning quoted. When body has Arabic transliteration + Indonesian translation, separate them with a blank line: "Bismika Allahumma amuutu wa ahyaa.\\n\\n"Dengan nama-Mu ya Allah, aku mati dan aku hidup.""
+- "arabic" = original Arabic text (when relevant, for dua/ayat/hadith) — pasted as plain Arabic, not transliterated
+- "attribution" = hadith/Quran source with number (e.g. "HR. Bukhari 6312", "QS. Al-Hadid: 4")
+- "caption" = Indonesian, 1-2 sentences, with 1-2 emojis like 🌙💚✨
+- "cta" = Indonesian CTA (e.g. "Save & bagikan!", "Tag Sahabat Mo-mu!", "Comment jawabanmu!")
+
+# Per-format expectations
+- **single** (1 slide): one self-contained moment. The heading IS the post. Body adds intimate detail. Often a dua or a single emotional reflection.
+- **carousel** (3-5 slides): narrative arc — HOOK → CURIOSITY → REVEAL → FAQ → CTA. Each slide builds on the last. First slide is the strongest hook; last slide is the save/share moment. Don't repeat the same idea across slides.
+- **reels** (2-4 slides): punchy, hook-driven, ultra-short body. Each slide is a beat in a fast-paced scene. Vertical 1080×1920.
+
+# Output contract (STRICT JSON, no commentary, no markdown fences)
+Always return exactly this shape:
+{
+  "title": "short Indonesian title for the post (internal label)",
+  "hook": "one-line emotional hook in Indonesian",
+  "slides": [
+    {
+      "heading": "BIG bold sticker title (Indonesian, 1-3 lines, attention-grabbing)",
+      "kicker": "small label from the kicker library",
+      "body": "1-3 short Indonesian sentences in the white card",
+      "arabic": "OPTIONAL Arabic text if relevant (dua/ayat/hadith)",
+      "attribution": "OPTIONAL source like 'HR. Bukhari 6312' or 'QS. Al-Hadid: 4'"
+    }
+  ],
+  "caption": "Indonesian Instagram caption, 1-2 sentences, with 1-2 emojis",
+  "cta": "Indonesian CTA",
+  "hashtags": ["#BabyMo", "..."]
+}
+
+Hard rules:
+- The slides array length must match the requested slide count exactly.
+- Heading must be BOLD and punchy (kid-friendly Indonesian).
+- Keep body text short (max 3 lines).
+- For Reels: even shorter, hook-driven.
+- The first slide is the strongest hook; for carousels, the last slide is the CTA/save moment.
+- If unsure whether a hadith reference is authentic, omit the attribution field entirely.`;
 
 interface RawSlide {
   heading?: string;
@@ -54,7 +119,7 @@ function userPrompt(req: GenerationRequest, slidesCount: number, seed?: SampleSe
   parts.push(`Content type: ${meta.type.label} (${meta.category.name})`);
   parts.push(`Brief: ${meta.type.hint}`);
   parts.push(`Tone: ${meta.type.tone}`);
-  parts.push(`Format: ${format.name} (${slidesCount} slide${slidesCount === 1 ? "" : "s"})`);
+  parts.push(`Format: ${format.name} — exactly ${slidesCount} slide${slidesCount === 1 ? "" : "s"}.`);
   if (style) {
     parts.push(`Storytelling structure: ${style.name}. Use this blueprint in order: ${style.blueprint.join(" → ")}.`);
   }
@@ -64,30 +129,6 @@ function userPrompt(req: GenerationRequest, slidesCount: number, seed?: SampleSe
   if (seed) {
     parts.push(`Reference an internal seed for VOICE only (do NOT copy): "${seed.title}" — ${seed.hook}`);
   }
-  parts.push(`
-Return JSON in this exact shape:
-{
-  "title": "short Indonesian title for the post (internal label)",
-  "hook": "one-line emotional hook in Indonesian",
-  "slides": [
-    {
-      "heading": "BIG bold sticker title (Indonesian, 1-3 lines, attention-grabbing)",
-      "kicker": "small label like 'Tahukah Kamu?' / 'Catatan Hari Ini:' / 'Yuk, Hafalkan!' / 'Quiz Seru:'",
-      "body": "1-3 short Indonesian sentences in the white card",
-      "arabic": "OPTIONAL Arabic text if relevant (dua/ayat/hadith)",
-      "attribution": "OPTIONAL source like 'HR. Bukhari 6312' or 'QS. Al-Hadid: 4'"
-    }
-  ],
-  "caption": "Indonesian Instagram caption, 1-2 sentences, with 1-2 emojis",
-  "cta": "Indonesian CTA, e.g. 'Save & bagikan!', 'Tag Sahabat Mo-mu!', 'Comment jawabanmu!'",
-  "hashtags": ["#BabyMo", "..."]
-}
-- Exactly ${slidesCount} slide(s).
-- Heading must be BOLD and punchy (kid-friendly Indonesian).
-- Keep body text short (max 3 lines).
-- For Reels: even shorter, hook-driven.
-- The first slide is the strongest hook; for carousels, the last slide is the CTA/save moment.
-`);
   return parts.join("\n");
 }
 
@@ -203,7 +244,7 @@ function expandToCarousel(seed: SampleSeed, first: Slide, slidesCount: number, l
   return expansions.slice(0, slidesCount - 1);
 }
 
-function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: number): GeneratedContent {
+function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: number, batchIndex = index): GeneratedContent {
   const meta = findContentType(req.contentTypeId)!;
   const seed = variationSeed(req, index);
   const seeds = getSeedsFor(req.contentTypeId);
@@ -227,7 +268,7 @@ function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: 
     contentTypeLabel: meta.type.label,
     categoryId: meta.category.id,
     format: req.format,
-    theme: req.theme,
+    theme: themeFor(req, meta.category.id, batchIndex),
     storyStyle: req.storyStyle,
     title: variantTitle,
     hook: base.hook,
@@ -241,12 +282,22 @@ function offlineGenerateOne(req: GenerationRequest, index: number, slidesCount: 
 async function aiGenerateOne(client: Anthropic, req: GenerationRequest, index: number, slidesCount: number): Promise<GeneratedContent> {
   const meta = findContentType(req.contentTypeId)!;
   const seed = variationSeed(req, index);
+  // System prompt is stable across every batch item — cache it so the
+  // 2nd+ requests in a batch pay ~10% input price instead of full.
   const msg = await client.messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1500,
-    system: SYSTEM_PROMPT,
+    system: [
+      { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } },
+    ],
     messages: [{ role: "user", content: userPrompt(req, slidesCount, seed) }],
   });
+  if (process.env.BABYMO_LOG_CACHE === "1") {
+    const u = msg.usage;
+    console.log(
+      `[cache] item ${index}: write=${u.cache_creation_input_tokens ?? 0} read=${u.cache_read_input_tokens ?? 0} input=${u.input_tokens}`
+    );
+  }
   const text = msg.content
     .map((c) => (c.type === "text" ? c.text : ""))
     .join("\n")
@@ -262,7 +313,7 @@ async function aiGenerateOne(client: Anthropic, req: GenerationRequest, index: n
     contentTypeLabel: meta.type.label,
     categoryId: meta.category.id,
     format: req.format,
-    theme: req.theme,
+    theme: themeFor(req, meta.category.id, index),
     storyStyle: req.storyStyle,
     ...norm,
   };
@@ -278,14 +329,23 @@ export async function generateBatch(req: GenerationRequest): Promise<{ items: Ge
 
   if (apiKey) {
     const client = new Anthropic({ apiKey });
-    const promises = Array.from({ length: req.batchSize }, (_, i) =>
+    const run = (i: number) =>
       aiGenerateOne(client, req, i, slidesCount).catch((err: unknown) => {
         console.warn("AI generation failed for one item, falling back:", err);
         return offlineGenerateOne(req, i, slidesCount);
-      })
-    );
-    const settled = await Promise.all(promises);
-    items.push(...settled);
+      });
+    // Await the first request so it writes the cache for the shared system
+    // prompt; then fan out the rest in parallel — those reads cost ~10%.
+    // (Parallel calls can't share an in-flight cache write.)
+    if (req.batchSize <= 1) {
+      items.push(await run(0));
+    } else {
+      items.push(await run(0));
+      const rest = await Promise.all(
+        Array.from({ length: req.batchSize - 1 }, (_, i) => run(i + 1))
+      );
+      items.push(...rest);
+    }
     return { items, usedAI: true };
   }
 

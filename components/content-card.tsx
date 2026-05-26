@@ -151,10 +151,76 @@ export function ContentDetailDialog({
               <div className="text-xs text-muted-foreground leading-relaxed">{content.hashtags.join("  ")}</div>
             </div>
             <ExportButton content={content} variant="full" />
+            <CanvaButton content={content} />
           </div>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function CanvaButton({ content }: { content: GeneratedContent }) {
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<{ editUrl: string; perSlide?: Array<{ slideIndex: number; editUrl: string }>; multipage: boolean } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function openInCanva() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/canva/autofill", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      setResult(data);
+      // Open the first design in a new tab automatically
+      if (data.editUrl) window.open(data.editUrl, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <Button onClick={openInCanva} disabled={busy} variant="accent" className="w-full">
+        {busy ? (
+          <span className="inline-flex items-center gap-2">
+            <span className="h-4 w-4 rounded-full border-2 border-babymo-ink/30 border-t-babymo-ink animate-spin" />
+            Autofilling in Canva…
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-2">
+            🎨 Open in Canva {content.slides.length > 1 ? `(${content.slides.length} slides)` : ""}
+          </span>
+        )}
+      </Button>
+      {error && (
+        <div className="text-[11px] text-destructive leading-relaxed">
+          {error}
+          {error.includes("not configured") || error.includes("not set") ? (
+            <>
+              {" "}
+              <a href="/settings" className="underline">Open settings</a>
+            </>
+          ) : null}
+        </div>
+      )}
+      {result?.perSlide && result.perSlide.length > 1 && (
+        <div className="space-y-1 pt-1">
+          <div className="text-[11px] text-muted-foreground">Per-slide designs:</div>
+          {result.perSlide.map((s) => (
+            <a key={s.slideIndex} href={s.editUrl} target="_blank" rel="noopener noreferrer" className="block text-[11px] underline text-babymo-green truncate">
+              Slide {s.slideIndex + 1} → open in Canva
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

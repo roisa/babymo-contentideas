@@ -7,13 +7,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CATEGORIES } from "@/lib/content-types";
-import { Library as LibraryIcon, Trash2 } from "lucide-react";
+import { Library as LibraryIcon, Trash2, Cloud, CloudOff, RefreshCw, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 export function LibraryClient() {
   const items = useLibrary((s) => s.items);
   const remove = useLibrary((s) => s.remove);
   const clear = useLibrary((s) => s.clear);
+  const sync = useLibrary((s) => s.sync);
+  const syncError = useLibrary((s) => s.syncError);
+  const serverEnabled = useLibrary((s) => s.serverEnabled);
+  const hydrate = useLibrary((s) => s.hydrate);
   const [filter, setFilter] = useState<string>("all");
   const [mounted, setMounted] = useState(false);
 
@@ -53,6 +57,7 @@ export function LibraryClient() {
 
   return (
     <div className="space-y-5">
+      <SyncBanner sync={sync} serverEnabled={serverEnabled} syncError={syncError} onRetry={hydrate} />
       <div className="flex items-center gap-2 flex-wrap">
         <FilterChip label="All" count={items.length} active={filter === "all"} onClick={() => setFilter("all")} />
         {CATEGORIES.map((c) =>
@@ -80,6 +85,53 @@ export function LibraryClient() {
       </div>
     </div>
   );
+}
+
+function SyncBanner({
+  sync,
+  serverEnabled,
+  syncError,
+  onRetry,
+}: {
+  sync: import("@/lib/store").SyncStatus;
+  serverEnabled: boolean;
+  syncError: string | null;
+  onRetry: () => void;
+}) {
+  if (sync === "synced" && serverEnabled) {
+    return (
+      <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground">
+        <Cloud className="h-3 w-3 text-babymo-green" />
+        Team library · synced
+      </div>
+    );
+  }
+  if (sync === "hydrating") {
+    return (
+      <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground">
+        <RefreshCw className="h-3 w-3 animate-spin" />
+        Syncing team library…
+      </div>
+    );
+  }
+  if (sync === "local-only" || !serverEnabled) {
+    return (
+      <div className="rounded-2xl border border-border/40 bg-white/50 px-3 py-2 text-[12px] text-muted-foreground inline-flex items-center gap-2">
+        <CloudOff className="h-3.5 w-3.5" />
+        Local-only mode — library lives in this browser. Configure Upstash Redis in <Link href="/settings" className="underline">Settings</Link> to share across the team.
+      </div>
+    );
+  }
+  if (sync === "error") {
+    return (
+      <div className="rounded-2xl border border-destructive/40 bg-destructive/10 px-3 py-2 text-[12px] text-destructive inline-flex items-center gap-2">
+        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+        <span className="min-w-0 break-all">Sync error: {syncError ?? "unknown"}</span>
+        <button onClick={onRetry} className="ml-2 underline whitespace-nowrap">Retry</button>
+      </div>
+    );
+  }
+  return null;
 }
 
 function FilterChip({ label, count, active, onClick }: { label: string; count: number; active: boolean; onClick: () => void }) {

@@ -37,6 +37,8 @@ export interface GenerationRequest {
   contentTypeId: string;
   format: FormatId;
   theme: ThemeId;
+  /** When true, ignore `theme` and pick one per item via suggestTheme(). */
+  autoTheme?: boolean;
   batchSize: number;
   storyStyle?: string;
   customPrompt?: string;

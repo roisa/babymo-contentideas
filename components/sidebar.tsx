@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star } from "lucide-react";
+import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star, Settings, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Studio", icon: LayoutGrid, color: "babymo-green" },
   { href: "/generate", label: "Generate", icon: Sparkles, color: "babymo-coral" },
+  { href: "/animate", label: "Animate", icon: Video, color: "babymo-coral" },
   { href: "/library", label: "Library", icon: Library, color: "babymo-yellow" },
   { href: "/calendar", label: "Calendar", icon: Calendar, color: "babymo-sky" },
   { href: "/themes", label: "Themes", icon: Palette, color: "babymo-orange" },
+  { href: "/settings", label: "Settings", icon: Settings, color: "babymo-green" },
 ];
+
+// Mobile bottom tab bar fits ~5 items comfortably. Themes is dropped here
+// (still reachable from desktop sidebar; theme is also picked inline during
+// Generate). Settings is reachable via the Studio home page card.
+const MOBILE_NAV = NAV.filter((n) => !["/themes", "/settings"].includes(n.href));
 
 export function BrandMark({ size = 44 }: { size?: number }) {
   return (
@@ -97,7 +104,7 @@ export function MobileTabBar() {
   return (
     <div className="md:hidden sticky bottom-0 z-30 px-3 pb-3 pt-2">
       <div className="flex items-center justify-around gap-1 rounded-full bg-white/80 backdrop-blur-ios border border-white shadow-ios-card p-1.5">
-        {NAV.map((item) => {
+        {MOBILE_NAV.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
           return (

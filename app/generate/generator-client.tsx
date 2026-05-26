@@ -18,11 +18,12 @@ const BATCH_SIZES = [1, 5, 10, 20] as const;
 
 export function GeneratorClient() {
   const search = useSearchParams();
-  const initialTheme = (search.get("theme") as ThemeId) ?? "coral-pink";
+  const initialThemeParam = search.get("theme");
+  const initialTheme: ThemeId | "auto" = (initialThemeParam as ThemeId) ?? "auto";
   const initialType = search.get("type") ?? "daily-dua";
 
   const [contentTypeId, setContentTypeId] = useState<string>(initialType);
-  const [theme, setTheme] = useState<ThemeId>(initialTheme);
+  const [theme, setTheme] = useState<ThemeId | "auto">(initialTheme);
   const [format, setFormat] = useState<FormatId>(() => findContentType(initialType)?.type.suggestedFormat ?? "single");
   const [storyStyle, setStoryStyle] = useState<string>("style-a");
   const [batchSize, setBatchSize] = useState<number>(5);
@@ -60,7 +61,11 @@ export function GeneratorClient() {
       const req: GenerationRequest = {
         contentTypeId,
         format,
-        theme,
+        // When Auto is selected we still need a non-null theme on the wire
+        // for backwards-compat; the autoTheme flag is what actually triggers
+        // suggestTheme() per item on the server.
+        theme: theme === "auto" ? "coral-pink" : theme,
+        autoTheme: theme === "auto" ? true : undefined,
         batchSize,
         storyStyle: format === "carousel" ? storyStyle : undefined,
         customPrompt: customPrompt.trim() || undefined,
@@ -181,8 +186,23 @@ export function GeneratorClient() {
             </Field>
           )}
 
-          <Field label="Theme & scene">
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+          <Field label={theme === "auto" ? "Theme & scene — Auto (mood per piece)" : "Theme & scene"}>
+            <div className="grid grid-cols-4 sm:grid-cols-9 gap-2">
+              <button onClick={() => setTheme("auto")} className="text-left group">
+                <div
+                  className={cn(
+                    "aspect-square rounded-2xl border-[3px] shadow-ios-soft overflow-hidden relative transition group-active:scale-[0.95] flex items-center justify-center",
+                    theme === "auto" ? "border-babymo-green ring-2 ring-babymo-green/30" : "border-white"
+                  )}
+                  style={{
+                    background:
+                      "conic-gradient(from 90deg, #FFD7C4, #FFE7A0, #C6E8FF, #C9F0D4, #E2D3FF, #FFD3E0, #FFE0B0, #FFD7C4)",
+                  }}
+                >
+                  <Wand2 className="h-4 w-4 text-babymo-ink/80" />
+                </div>
+                <div className="text-[10px] mt-1 text-center font-semibold truncate">Auto</div>
+              </button>
               {THEMES.map((t) => (
                 <button key={t.id} onClick={() => setTheme(t.id)} className="text-left group">
                   <div

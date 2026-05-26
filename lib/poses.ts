@@ -6,9 +6,15 @@
  * (HOOK → CURIOSITY → REVEAL → FAQ → CTA), so each slide gets a pose
  * that matches its beat — not just rotates randomly through a list.
  *
- * Result: a 5-slide carousel reads like an actual story where Baby Mo
- * is reacting in real-time (curious on slide 1, thinking on slide 2,
- * wowed on slide 3, explaining on slide 4, celebrating on slide 5).
+ * Layered selection:
+ *   1) CONTENT_TYPE_OVERRIDES — specific content types (POV reels,
+ *      Soft Affirmations, etc.) get their own tracks
+ *   2) ICONIC_POSE — single-slide posts (Daily Dua, Mama Reflection)
+ *      always use the most iconic pose for the category
+ *   3) Distributed beats — 2-4 slide carousels pick representative
+ *      beats from the 5-beat track (always HOOK and CTA at minimum)
+ *   4) Full 5-beat track — 5+ slide carousels cycle through
+ *      POSES_BY_CATEGORY in narrative order
  */
 
 import { readFile } from "node:fs/promises";
@@ -18,7 +24,6 @@ const POSES_DIR = "baby-mo-poses";
 
 /**
  * Visual catalogue — what each pose actually shows.
- * Pose IDs reference the cleaned filenames in baby-mo-poses/.
  *
  *  NAMED (semantic tags)
  *    alright       — wink + finger-gun, confident-playful
@@ -54,96 +59,227 @@ const POSES_DIR = "baby-mo-poses";
  *    21 thumbs-up (calm)             42 walking-step
  */
 
-/**
- * The 5-beat carousel arc:
- *   HOOK       (slide 1) — invite, curious, "look here"
- *   CURIOSITY  (slide 2) — set up, ask, "tebak..."
- *   REVEAL     (slide 3) — hadith/ayat/answer, the "aha!" moment
- *   FAQ        (slide 4) — "but what if..." / explain
- *   CTA        (slide 5) — celebrate, save, share
- */
 export type SlideBeat = "hook" | "curiosity" | "reveal" | "faq" | "cta";
 
 /**
- * Per-category pose track. Position [i] is the pose for slide i
- * (cycles via modulo for longer carousels). The ordering is the
- * 5-beat narrative arc: hook → curiosity → reveal → faq → cta.
- *
- * Each category gets a track that fits its tone:
- *   - daily-islamic ends with SUJUD (the prayer pose) for CTA
- *   - kids-educational uses idea → think → wow → explain → yes
- *   - interactive uses idea → think → yeyy → thumbs → peace
- *   - story uses sit-wave → sit-listen → wow → reflect → thumbs
- *   - reels stays kinetic throughout (run / walk / wave / strut)
+ * 5-beat carousel track per category. Position [i] is the pose for
+ * slide i in a 5-slide carousel (HOOK → CURIOSITY → REVEAL → FAQ → CTA).
+ * Shorter carousels distribute beats, single posts use ICONIC_POSE.
  */
 export const POSES_BY_CATEGORY: Record<string, string[]> = {
-  // HOOK: idea (point up) → CURIOSITY: hopeful → REVEAL: thank-you (prayer)
-  // → FAQ: sit-dua → CTA: sujud
+  // Daily Islamic — climbs to SUJUD on the CTA slide
   "daily-islamic": [
-    "baby-mo-idea.png",          // 1. "Ada doa baru!"
-    "baby-mo-pose-05.png",       // 2. Hopeful clasped — "siap?"
-    "baby-mo-thank-you.png",     // 3. Hands in dua — the prayer
-    "baby-mo-pose-12.png",       // 4. Sit-dua reflective
-    "baby-mo-pose-17.png",       // 5. SUJUD — yuk sujud!
+    "baby-mo-idea.png",          // 1. HOOK — "ada doa baru!"
+    "baby-mo-pose-05.png",       // 2. CURIOSITY — hopeful clasped
+    "baby-mo-thank-you.png",     // 3. REVEAL — hands in dua
+    "baby-mo-pose-12.png",       // 4. FAQ — sit-dua reflective
+    "baby-mo-pose-17.png",       // 5. CTA — SUJUD
   ],
 
-  // HOOK: alright wink → CURIOSITY: sad-sit → REVEAL: dreamy/relief
-  // → FAQ: shy-blush comfort → CTA: gentle thumbs
+  // Emotional childhood — full arc: warm → sad → comfort → warmth → hope
   "emotional-childhood": [
-    "baby-mo-alright.png",       // 1. "Mama, ada cerita..."
-    "baby-mo-pose-39.png",       // 2. Sad-down — "pernah ngerasa...?"
-    "baby-mo-pose-28.png",       // 3. Dreamy looking up — the comfort
-    "baby-mo-pose-07.png",       // 4. Shy-blush — soft warmth
-    "baby-mo-pose-21.png",       // 5. Gentle thumbs — "kamu bisa"
+    "baby-mo-alright.png",       // 1. HOOK — soft wink
+    "baby-mo-pose-39.png",       // 2. CURIOSITY — sad-down
+    "baby-mo-pose-28.png",       // 3. REVEAL — dreamy looking up
+    "baby-mo-pose-07.png",       // 4. FAQ — shy-blush warmth
+    "baby-mo-pose-21.png",       // 5. CTA — gentle thumbs
   ],
 
-  // HOOK: alright → CURIOSITY: think → REVEAL: ok/firm → FAQ: present
-  // → CTA: confident-wink
+  // Parenting — thinking through to confident
   parenting: [
-    "baby-mo-alright.png",       // 1. "Ma, baca dulu..."
-    "baby-mo-pose-22.png",       // 2. Thinking-chin
-    "baby-mo-ok.png",            // 3. Firm OK — the principle
-    "baby-mo-pose-15.png",       // 4. Presenting — "begini caranya"
-    "baby-mo-pose-25.png",       // 5. Confident-wink — "kamu bisa, Ma"
+    "baby-mo-alright.png",       // 1. HOOK — "ma, baca dulu"
+    "baby-mo-pose-22.png",       // 2. CURIOSITY — thinking-chin
+    "baby-mo-ok.png",            // 3. REVEAL — firm OK
+    "baby-mo-pose-15.png",       // 4. FAQ — presenting "begini caranya"
+    "baby-mo-pose-25.png",       // 5. CTA — confident-wink "kamu bisa"
   ],
 
-  // HOOK: idea (point) → CURIOSITY: think → REVEAL: wow → FAQ: explain
-  // → CTA: yes
+  // Kids educational — classic quiz format: idea → think → WOW → explain → yes
   "kids-educational": [
-    "baby-mo-idea.png",          // 1. "Tahukah kamu?" 👆
-    "baby-mo-pose-22.png",       // 2. Thinking-chin — "tebak..."
-    "baby-mo-wow.png",           // 3. WOW — the reveal
-    "baby-mo-pose-08.png",       // 4. Present-pointing explain
-    "baby-mo-yes.png",           // 5. Yes — "save & coba!"
+    "baby-mo-idea.png",          // 1. HOOK — pointing up
+    "baby-mo-pose-22.png",       // 2. CURIOSITY — thinking-chin
+    "baby-mo-wow.png",           // 3. REVEAL — WOW!
+    "baby-mo-pose-08.png",       // 4. FAQ — present-pointing
+    "baby-mo-yes.png",           // 5. CTA — yes (fist)
   ],
 
-  // HOOK: idea → CURIOSITY: think → REVEAL: yeyy celebration
-  // → FAQ: thumbs → CTA: peace (comment)
+  // Interactive (quiz/game) — energetic celebration arc
   interactive: [
-    "baby-mo-idea.png",          // 1. "Quiz time!"
-    "baby-mo-pose-22.png",       // 2. Thinking — "pilih mana?"
-    "baby-mo-yeyy.png",          // 3. CELEBRATE — answer reveal
-    "baby-mo-pose-21.png",       // 4. Thumbs-up explain
-    "baby-mo-pose-35.png",       // 5. Peace signs — "komen ya!"
+    "baby-mo-idea.png",          // 1. HOOK — "quiz time!"
+    "baby-mo-pose-22.png",       // 2. CURIOSITY — "pilih mana?"
+    "baby-mo-yeyy.png",          // 3. REVEAL — CELEBRATE
+    "baby-mo-pose-21.png",       // 4. FAQ — thumbs-up
+    "baby-mo-pose-35.png",       // 5. CTA — peace-signs (komen!)
   ],
 
-  // HOOK: sit-wave → CURIOSITY: sit-listen → REVEAL: wow → FAQ: reflect
-  // → CTA: thumbs
+  // Story — listening pose throughout, building to thumbs save
   story: [
-    "baby-mo-pose-11.png",       // 1. Sit-wave — "ayo dengar"
-    "baby-mo-pose-06.png",       // 2. Sit cross-legged listening
-    "baby-mo-wow.png",           // 3. Wow — twist moment
-    "baby-mo-pose-12.png",       // 4. Sit-dua reflecting
-    "baby-mo-pose-21.png",       // 5. Thumbs — "save buat bedtime"
+    "baby-mo-pose-11.png",       // 1. HOOK — sit-wave "ayo dengar"
+    "baby-mo-pose-06.png",       // 2. CURIOSITY — sit-cross-legged
+    "baby-mo-wow.png",           // 3. REVEAL — story climax
+    "baby-mo-pose-12.png",       // 4. FAQ — sit-dua reflecting
+    "baby-mo-pose-21.png",       // 5. CTA — thumbs "save"
   ],
 
-  // Kinetic throughout — reels are short, dynamic, multi-shot
+  // Reels — kinetic throughout
   reels: [
-    "baby-mo-pose-29.png",       // 1. Shh-secret — "POV: ..."
-    "baby-mo-pose-32.png",       // 2. Wave-walk
-    "baby-mo-wow.png",           // 3. Wow moment
-    "baby-mo-pose-42.png",       // 4. Walking-step
-    "baby-mo-run.png",           // 5. Run — action close
+    "baby-mo-pose-29.png",       // 1. HOOK — shh-secret
+    "baby-mo-pose-32.png",       // 2. CURIOSITY — wave-walk
+    "baby-mo-wow.png",           // 3. REVEAL — wow
+    "baby-mo-pose-42.png",       // 4. FAQ — walking-step
+    "baby-mo-run.png",           // 5. CTA — RUN
+  ],
+};
+
+/**
+ * Iconic poses per category — used for single-slide posts. The FIRST
+ * entry is the canonical iconic pose for the category; the rest are
+ * mood-matched alternates that rotate through a batch so 10 Daily Dua
+ * singles don't all look identical. See pickIconicPose() for rotation.
+ */
+export const ICONIC_POSES: Record<string, string[]> = {
+  "daily-islamic": [
+    "baby-mo-thank-you.png",     // prayer hands (canonical)
+    "baby-mo-pose-12.png",       // sit-dua reflective
+    "baby-mo-pose-17.png",       // sujud prostration
+  ],
+  "emotional-childhood": [
+    "baby-mo-alright.png",       // warm wink (canonical)
+    "baby-mo-pose-07.png",       // shy-blush warmth
+    "baby-mo-pose-28.png",       // dreamy looking up
+  ],
+  parenting: [
+    "baby-mo-ok.png",            // calm firm (canonical)
+    "baby-mo-pose-21.png",       // gentle thumbs
+    "baby-mo-pose-25.png",       // confident wink
+  ],
+  "kids-educational": [
+    "baby-mo-idea.png",          // pointing up (canonical)
+    "baby-mo-pose-22.png",       // thinking-chin
+    "baby-mo-wow.png",           // amazed cheeks
+  ],
+  interactive: [
+    "baby-mo-yeyy.png",          // celebrating (canonical)
+    "baby-mo-pose-35.png",       // peace signs
+    "baby-mo-pose-37.png",       // cheer fists
+  ],
+  story: [
+    "baby-mo-pose-11.png",       // sit-wave inviting (canonical)
+    "baby-mo-pose-06.png",       // sit cross-legged calm
+    "baby-mo-pose-18.png",       // contemplative
+  ],
+  reels: [
+    "baby-mo-run.png",           // dynamic action (canonical)
+    "baby-mo-pose-32.png",       // wave-walk
+    "baby-mo-pose-42.png",       // walking step
+  ],
+};
+
+/** Back-compat: callers that just want the canonical iconic pose. */
+export const ICONIC_POSE: Record<string, string> = Object.fromEntries(
+  Object.entries(ICONIC_POSES).map(([k, v]) => [k, v[0]])
+);
+
+/**
+ * Pick an iconic pose for a single-slide post, rotating across a batch.
+ * `batchIndex` is the index of this content within the current generation
+ * batch — passed through from /api/generate. Different batch positions
+ * land on different alternates so the team's grid feels alive instead
+ * of cloned. Falls back to the canonical pose when categoryId is missing.
+ */
+function pickIconicPose(categoryId: string, batchIndex: number): string {
+  const alternates = ICONIC_POSES[categoryId];
+  if (!alternates || alternates.length === 0) return DEFAULT_POSE;
+  return alternates[batchIndex % alternates.length];
+}
+
+/**
+ * Per-content-type overrides — when a specific content type has a
+ * mood that differs from its parent category. The picker checks
+ * here first, then falls back to category track.
+ *
+ * The most common case is reels variants — Soft Affirmations should
+ * be gentle, not kinetic; POV Childhood should be dreamy/nostalgic;
+ * 5-Second Habit should be action.
+ */
+export const CONTENT_TYPE_OVERRIDES: Record<string, string[]> = {
+  // POV reels — dreamy, intimate, nostalgic
+  "pov-muslim-childhood": [
+    "baby-mo-pose-28.png",       // dreamy looking up
+    "baby-mo-pose-18.png",       // contemplative sitting
+    "baby-mo-pose-06.png",       // sit-calm
+    "baby-mo-pose-11.png",       // sit-wave
+    "baby-mo-pose-12.png",       // sit-dua
+  ],
+  // Soft affirmations — gentle, shy, warm
+  "soft-islamic-affirmations": [
+    "baby-mo-pose-07.png",       // shy-blush
+    "baby-mo-pose-28.png",       // dreamy
+    "baby-mo-thank-you.png",     // praying hands
+    "baby-mo-alright.png",       // gentle wink
+    "baby-mo-pose-21.png",       // thumbs gentle
+  ],
+  // 5-second habit — punchy action
+  "five-second-habit": [
+    "baby-mo-idea.png",          // hook with idea
+    "baby-mo-pose-08.png",       // present-pointing
+    "baby-mo-yes.png",           // yes fist
+    "baby-mo-run.png",           // run action
+    "baby-mo-pose-21.png",       // thumbs save
+  ],
+  // Cozy reels — calm, sit-back, warm
+  "cozy-islamic-reels": [
+    "baby-mo-pose-06.png",       // sit-calm
+    "baby-mo-pose-28.png",       // dreamy
+    "baby-mo-pose-11.png",       // sit-wave
+    "baby-mo-thank-you.png",     // praying hands
+    "baby-mo-pose-12.png",       // sit-dua
+  ],
+  // Adab Hari Ini — specific, instructive, bowing/greeting
+  "adab-hari-ini": [
+    "baby-mo-pose-34.png",       // bow-greeting (HOOK — "salam dulu")
+    "baby-mo-pose-22.png",       // thinking
+    "baby-mo-pose-15.png",       // present-tada (REVEAL)
+    "baby-mo-pose-21.png",       // thumbs-up (FAQ)
+    "baby-mo-pose-25.png",       // confident-wink (CTA)
+  ],
+  // Kisah Nabi — proper story arc, ends with prayer
+  "kisah-nabi": [
+    "baby-mo-pose-11.png",       // sit-wave "ayo dengar"
+    "baby-mo-pose-39.png",       // sad-down (act 2 — conflict)
+    "baby-mo-wow.png",           // wow (act 3 — turn)
+    "baby-mo-pose-12.png",       // sit-dua (reflection)
+    "baby-mo-thank-you.png",     // praying hands (CTA)
+  ],
+  // Pertanyaan Sahabat Mo — kid Q&A, thinking dominant
+  "pertanyaan-sahabat-mo": [
+    "baby-mo-pose-22.png",       // thinking-chin (the question)
+    "baby-mo-pose-23.png",       // shrug confused
+    "baby-mo-idea.png",          // idea (the answer)
+    "baby-mo-ok.png",            // ok (explained)
+    "baby-mo-pose-21.png",       // thumbs-up
+  ],
+  // What Would Rasulullah Do — comparing scenarios
+  "what-would-prophet-do": [
+    "baby-mo-pose-22.png",       // thinking
+    "baby-mo-pose-27.png",       // angry (reaction we DON'T want)
+    "baby-mo-thank-you.png",     // praying (the prophetic way)
+    "baby-mo-pose-15.png",       // presenting
+    "baby-mo-pose-25.png",       // confident
+  ],
+  // Emotional story — emotional journey ending with hope
+  "emotional-story-carousel": [
+    "baby-mo-pose-39.png",       // sad-down (set the scene)
+    "baby-mo-pose-38.png",       // sad-back (alone moment)
+    "baby-mo-thank-you.png",     // prayer (the turn)
+    "baby-mo-pose-28.png",       // dreamy relief
+    "baby-mo-pose-21.png",       // gentle thumbs (CTA)
+  ],
+  // Mama Reflection — single posts mostly, but if carousel: comfort arc
+  "mama-reflection": [
+    "baby-mo-pose-21.png",       // gentle thumbs (single iconic)
+    "baby-mo-pose-07.png",
+    "baby-mo-thank-you.png",
   ],
 };
 
@@ -153,16 +289,69 @@ export const DEFAULT_POSE = "baby-mo-ok.png";
 // Module-scope cache so the same pose isn't re-read + re-base64'd per request.
 const poseCache = new Map<string, string | null>();
 
-export function pickPoseFilename(categoryId: string, slideIndex: number): string {
-  const list = POSES_BY_CATEGORY[categoryId];
-  if (list && list.length > 0) {
-    return list[slideIndex % list.length];
+/**
+ * Pick the right pose for a slide.
+ *
+ * @param categoryId      e.g. "daily-islamic"
+ * @param contentTypeId   e.g. "pov-muslim-childhood" — used for type-specific overrides
+ * @param slideIndex      0-based slide index
+ * @param total           total slides in this content piece
+ * @param batchIndex      position in the current generation batch (for variety
+ *                        across single-post batches). Defaults to 0.
+ */
+export function pickPoseFilename(
+  categoryId: string,
+  contentTypeId: string,
+  slideIndex: number,
+  total: number,
+  batchIndex = 0
+): string {
+  // 1) Single-slide posts rotate through iconic alternates per batch position
+  if (total === 1) {
+    return pickIconicPose(categoryId, batchIndex);
   }
-  return DEFAULT_POSE;
+
+  // 2) Per-content-type overrides take precedence
+  const overrideTrack = CONTENT_TYPE_OVERRIDES[contentTypeId];
+  if (overrideTrack && overrideTrack.length > 0) {
+    return pickFromTrack(overrideTrack, slideIndex, total);
+  }
+
+  // 3) Category track
+  const track = POSES_BY_CATEGORY[categoryId];
+  if (track && track.length > 0) {
+    return pickFromTrack(track, slideIndex, total);
+  }
+
+  return pickIconicPose(categoryId, batchIndex);
 }
 
-export async function loadPoseDataUrl(categoryId: string, slideIndex: number): Promise<string | null> {
-  const filename = pickPoseFilename(categoryId, slideIndex);
+/**
+ * Pick from a track, distributing beats sensibly for short carousels:
+ *   2 slides → beats [hook, cta]                  = track[0], track[4]
+ *   3 slides → beats [hook, reveal, cta]          = track[0], track[2], track[4]
+ *   4 slides → beats [hook, curiosity, reveal, cta] = track[0..2], track[4]
+ *   5+ slides → cycle through all beats           = track[i % len]
+ */
+function pickFromTrack(track: string[], slideIndex: number, total: number): string {
+  if (total >= track.length) {
+    return track[slideIndex % track.length];
+  }
+  // Distribute slideIndex proportionally across the track.
+  // Ensures slide 0 = track[0] (HOOK) and slide (total-1) = track[track.length-1] (CTA)
+  const ratio = total > 1 ? slideIndex / (total - 1) : 0;
+  const idx = Math.round(ratio * (track.length - 1));
+  return track[idx] ?? track[0];
+}
+
+export async function loadPoseDataUrl(
+  categoryId: string,
+  contentTypeId: string,
+  slideIndex: number,
+  total: number,
+  batchIndex = 0
+): Promise<string | null> {
+  const filename = pickPoseFilename(categoryId, contentTypeId, slideIndex, total, batchIndex);
   if (poseCache.has(filename)) return poseCache.get(filename) ?? null;
   try {
     const buf = await readFile(path.join(process.cwd(), POSES_DIR, filename));
@@ -175,17 +364,6 @@ export async function loadPoseDataUrl(categoryId: string, slideIndex: number): P
   }
 }
 
-/* ---------- All pose filenames (for future "pick a specific pose" UI) ---------- */
+/* ---------- All pose filenames — re-exported from the pure list ---------- */
 
-export const ALL_NAMED_POSES = [
-  "baby-mo-alright.png",
-  "baby-mo-idea.png",
-  "baby-mo-ok.png",
-  "baby-mo-run.png",
-  "baby-mo-thank-you.png",
-  "baby-mo-wow.png",
-  "baby-mo-yes.png",
-  "baby-mo-yeyy.png",
-];
-const ALL_EXTRAS = Array.from({ length: 42 }, (_, i) => `baby-mo-pose-${String(i + 1).padStart(2, "0")}.png`);
-export const ALL_POSES = [...ALL_NAMED_POSES, ...ALL_EXTRAS];
+export { ALL_POSES, ALL_NAMED_POSES } from "./poses-list";

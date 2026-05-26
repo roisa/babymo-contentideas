@@ -880,6 +880,15 @@ function SlideNode(props: SlideRenderProps): React.ReactElement {
   );
 }
 
+/** Derive a stable rotation index from the content id so the same content
+ * always renders the same pose, but different items in a batch land on
+ * different alternates. */
+function hashIdToBatchIndex(id: string): number {
+  let sum = 0;
+  for (let i = 0; i < id.length; i++) sum = (sum + id.charCodeAt(i)) | 0;
+  return sum & 0xff;
+}
+
 export async function renderSlidePng(content: GeneratedContent, slideIndex: number): Promise<Buffer> {
   const fmt = FORMATS.find((f) => f.id === content.format)!;
   const slide = content.slides[slideIndex];
@@ -894,7 +903,7 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
     slide.arabic
       ? renderArabicAsImage(slide.arabic, theme.title, arabicFontSize, arabicMaxWidth)
       : Promise.resolve(null),
-    loadPoseDataUrl(content.categoryId, slideIndex),
+    loadPoseDataUrl(content.categoryId, content.contentTypeId, slideIndex, content.slides.length, hashIdToBatchIndex(content.id)),
   ]);
   const node = SlideNode({
     slide,
@@ -946,6 +955,19 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
 
   const resvg = new Resvg(svg, { fitTo: { mode: "width", value: fmt.width } });
   return resvg.render().asPng();
+}
+
+/** Prime every in-process cache that `renderSlidePng` touches —
+ * fonts (Inter, Fredoka, Arabic), the logo, the Resvg Arabic font buffer.
+ * Subsequent renders skip these multi-hundred-ms loads. Safe to call
+ * concurrently; each underlying loader memoizes itself.
+ *
+ * Call this from /api/warmup on container start to eliminate the
+ * ~3.5s cold-start tax on the user's first render. */
+export async function warmUp(): Promise<{ ok: true; ms: number }> {
+  const t = Date.now();
+  await Promise.all([loadFonts(), loadLogoDataUrl(), getArabicFontBuf()]);
+  return { ok: true, ms: Date.now() - t };
 }
 
 export function summarizeContent(c: GeneratedContent): string {

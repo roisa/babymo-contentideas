@@ -1,0 +1,232 @@
+/*
+ * Animator keyframes. Loaded via the /animate page only.
+ *
+ * Each `.anim-*` class is a CSS class that one of the SCENES references.
+ * Animation durations are deliberately fixed-relative — the scene's
+ * `transitionMs` only controls JS-side timing (when to swap the active
+ * pose), not these CSS durations. Keep them in sync if you tweak.
+ */
+
+/* ============ POSE ENTRANCES ============ */
+@keyframes pose-bounce-in {
+  0%   { opacity: 0; transform: translateY(60px) scale(0.4) rotate(-6deg); }
+  60%  { opacity: 1; transform: translateY(-10px) scale(1.08) rotate(2deg); }
+  80%  { transform: translateY(2px) scale(0.97) rotate(-1deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+.anim-pose-bounce-in {
+  animation: pose-bounce-in 450ms cubic-bezier(.22,1.6,.36,1) both;
+}
+
+@keyframes pose-fade-up {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.anim-pose-fade-up {
+  animation: pose-fade-up 700ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes pose-slide-in {
+  0%   { opacity: 0; transform: translateX(120px) scale(0.92); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+.anim-pose-slide-in {
+  animation: pose-slide-in 500ms cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes pose-fade {
+  0%   { opacity: 0; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.anim-pose-fade {
+  animation: pose-fade 900ms ease both;
+}
+
+@keyframes pose-hop-in {
+  0%   { opacity: 0; transform: translateY(80px) rotate(-12deg) scale(0.6); }
+  50%  { opacity: 1; transform: translateY(-18px) rotate(4deg) scale(1.06); }
+  75%  { transform: translateY(4px) rotate(-2deg) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+.anim-pose-hop-in {
+  animation: pose-hop-in 400ms cubic-bezier(.22,1.6,.36,1) both, pose-wiggle 1.4s ease-in-out 400ms infinite;
+}
+
+@keyframes pose-wiggle {
+  0%, 100% { transform: rotate(0) translateY(0); }
+  25%      { transform: rotate(2deg)  translateY(-4px); }
+  50%      { transform: rotate(0)     translateY(0); }
+  75%      { transform: rotate(-2deg) translateY(-4px); }
+}
+
+/* ============ POSE EXITS ============ */
+@keyframes pose-shrink-out {
+  0%   { opacity: 1; transform: scale(1) rotate(0); }
+  100% { opacity: 0; transform: scale(0.7) translateY(-30px) rotate(8deg); }
+}
+.anim-pose-shrink-out {
+  animation: pose-shrink-out 350ms cubic-bezier(.4,0,.7,.2) both;
+}
+
+@keyframes pose-fade-down {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(40px) scale(0.95); }
+}
+.anim-pose-fade-down {
+  animation: pose-fade-down 600ms ease both;
+}
+
+@keyframes pose-slide-out {
+  0%   { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(-120px) scale(0.92); }
+}
+.anim-pose-slide-out {
+  animation: pose-slide-out 500ms cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes pose-hop-out {
+  0%   { opacity: 1; transform: translateY(0) rotate(0); }
+  100% { opacity: 0; transform: translateY(80px) rotate(8deg) scale(0.7); }
+}
+.anim-pose-hop-out {
+  animation: pose-hop-out 320ms ease-in both;
+}
+
+/* ============ BODY CARD ============ */
+@keyframes card-pop {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.9); }
+  60%  { transform: translateY(-6px) scale(1.04); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.anim-card-pop {
+  animation: card-pop 500ms cubic-bezier(.22,1.6,.36,1) both;
+}
+
+@keyframes card-rise {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.anim-card-rise {
+  animation: card-rise 800ms ease both;
+}
+
+/* ============ TITLE STICKER ============ */
+@keyframes title-sticker {
+  0%   { opacity: 0; transform: scale(0.3) rotate(-12deg); }
+  60%  { opacity: 1; transform: scale(1.15) rotate(4deg); }
+  80%  { transform: scale(0.96) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+.anim-title-sticker {
+  animation: title-sticker 600ms cubic-bezier(.22,1.6,.36,1) both;
+}
+
+@keyframes title-soft {
+  0%   { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.anim-title-soft {
+  animation: title-soft 900ms ease both;
+}
+
+@keyframes title-type {
+  0%   { opacity: 0; letter-spacing: -0.05em; transform: translateY(-8px); }
+  100% { opacity: 1; letter-spacing: 0; transform: translateY(0); }
+}
+.anim-title-type {
+  animation: title-type 700ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+/* ============ BACKGROUND DECOR ============ */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.anim-spinning-stars > * {
+  animation: spin-slow 9s linear infinite;
+  transform-origin: center;
+}
+.anim-spinning-stars > *:nth-child(2n) {
+  animation-direction: reverse;
+  animation-duration: 7s;
+}
+
+@keyframes drift-x {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(20px); }
+}
+@keyframes drift-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+.anim-drifting-clouds > *:nth-child(odd)  { animation: drift-x 6s ease-in-out infinite; }
+.anim-drifting-clouds > *:nth-child(even) { animation: drift-y 5s ease-in-out infinite; }
+
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+.anim-sparkle-burst > * {
+  animation: sparkle-pulse 1.4s ease-in-out infinite;
+}
+.anim-sparkle-burst > *:nth-child(2) { animation-delay: 0.3s; }
+.anim-sparkle-burst > *:nth-child(3) { animation-delay: 0.6s; }
+.anim-sparkle-burst > *:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes heart-rise {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.6) rotate(-8deg); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-260px) scale(1.1) rotate(8deg); }
+}
+.anim-rising-hearts > * {
+  animation: heart-rise 3.4s ease-in infinite;
+}
+.anim-rising-hearts > *:nth-child(1) { animation-delay: 0s;   }
+.anim-rising-hearts > *:nth-child(2) { animation-delay: 0.7s; }
+.anim-rising-hearts > *:nth-child(3) { animation-delay: 1.4s; }
+.anim-rising-hearts > *:nth-child(4) { animation-delay: 2.1s; }
+
+/* ============ COUNTDOWN OVERLAY ============ */
+@keyframes count-pop {
+  0%   { opacity: 0; transform: scale(0.4); }
+  20%  { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+.anim-countdown {
+  animation: count-pop 1s ease-out both;
+}
+
+/* ============ STAGE ============ */
+/* The recording stage uses object-fit logic that maintains the chosen
+ * aspect ratio while filling the largest possible area. The recording
+ * mode goes fullscreen via `position: fixed`. */
+.stage-square   { aspect-ratio: 1 / 1;  }
+.stage-vertical { aspect-ratio: 9 / 16; }
+
+.stage-recording {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage-recording .stage-inner {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+/* Respect prefers-reduced-motion: collapse all animations to instant. */
+@media (prefers-reduced-motion: reduce) {
+  .anim-pose-bounce-in, .anim-pose-fade-up, .anim-pose-slide-in,
+  .anim-pose-fade, .anim-pose-hop-in, .anim-pose-shrink-out,
+  .anim-pose-fade-down, .anim-pose-slide-out, .anim-pose-hop-out,
+  .anim-card-pop, .anim-card-rise, .anim-title-sticker,
+  .anim-title-soft, .anim-title-type {
+    animation-duration: 1ms !important;
+  }
+  .anim-spinning-stars > *, .anim-drifting-clouds > *,
+  .anim-sparkle-burst > *, .anim-rising-hearts > * {
+    animation: none !important;
+  }
+}
