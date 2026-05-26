@@ -3,6 +3,7 @@ import { findContentType, FORMATS, STORY_STYLES, type FormatId } from "./content
 import { getSeedsFor, SEEDS, type SampleSeed } from "./samples";
 import { suggestTheme } from "./themes";
 import { getIslamicContext, type IslamicPhase } from "./hijri";
+import { trackUsage } from "./usage-store";
 import type { GeneratedContent, GenerationRequest, Slide } from "./types";
 
 /** Pick the theme for one item: when autoTheme is on, derive from
@@ -293,12 +294,22 @@ async function aiGenerateOne(client: Anthropic, req: GenerationRequest, index: n
     ],
     messages: [{ role: "user", content: userPrompt(req, slidesCount, seed) }],
   });
+  const u = msg.usage;
   if (process.env.BABYMO_LOG_CACHE === "1") {
-    const u = msg.usage;
     console.log(
       `[cache] item ${index}: write=${u.cache_creation_input_tokens ?? 0} read=${u.cache_read_input_tokens ?? 0} input=${u.input_tokens}`
     );
   }
+  // Fire-and-forget usage telemetry — never blocks the response.
+  trackUsage({
+    inputTokens: u.input_tokens,
+    outputTokens: u.output_tokens,
+    cacheReadTokens: u.cache_read_input_tokens ?? 0,
+    cacheCreationTokens: u.cache_creation_input_tokens ?? 0,
+    cacheHit: (u.cache_read_input_tokens ?? 0) > 0,
+  }).catch(() => {
+    /* never block generation */
+  });
   const text = msg.content
     .map((c) => (c.type === "text" ? c.text : ""))
     .join("\n")

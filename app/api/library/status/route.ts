@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
-import { getAllItems, isLibraryStoreConfigured } from "@/lib/library-store";
+import { getTotalCount, isLibraryStoreConfigured } from "@/lib/library-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * Returns the team library's connection status — used by the Settings
- * page to surface whether Upstash Redis is wired up.
- */
 export async function GET() {
   const configured = isLibraryStoreConfigured();
   if (!configured) {
@@ -20,8 +16,8 @@ export async function GET() {
     });
   }
   try {
-    const items = await getAllItems();
-    return NextResponse.json({ configured: true, reachable: true, itemCount: items.length });
+    const itemCount = await getTotalCount();
+    return NextResponse.json({ configured: true, reachable: true, itemCount });
   } catch (e) {
     return NextResponse.json({
       configured: true,
