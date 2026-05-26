@@ -51,7 +51,8 @@ export type CategoryId =
   | "kids-educational"
   | "interactive"
   | "story"
-  | "reels";
+  | "reels"
+  | "ramadan";
 
 export interface ContentType {
   id: string;
@@ -168,6 +169,22 @@ export const CATEGORIES: Category[] = [
       { id: "soft-islamic-affirmations", label: "Soft Islamic Affirmations", hint: "Gentle, calming affirmations.", suggestedFormat: "reels", tone: "affirming" },
       { id: "five-second-habit", label: "5-Second Islamic Habit", hint: "A tiny habit, fast hook.", suggestedFormat: "reels", tone: "punchy, soft" },
       { id: "cozy-islamic-reels", label: "Cozy Islamic Reels", hint: "Cozy mood reel script.", suggestedFormat: "reels", tone: "cozy, ambient" },
+    ],
+  },
+  {
+    id: "ramadan",
+    name: "Ramadan & Eid",
+    description: "Sahur, iftar, tarawih, Lailatul Qadr, first fast, Eid — for the holiest month.",
+    icon: "moon",
+    pose: { hint: "baby mo · hands raised in dua at iftar", position: "br" },
+    types: [
+      { id: "ramadan-sahur", label: "Sahur Moment", hint: "A cozy pre-dawn meal moment + doa.", suggestedFormat: "single", tone: "intimate, sleepy-warm" },
+      { id: "ramadan-iftar", label: "Iftar Moment", hint: "Breaking the fast with doa berbuka.", suggestedFormat: "single", tone: "joyful, grateful" },
+      { id: "ramadan-tarawih", label: "Tarawih Reminder", hint: "About tarawih, family + mosque scene.", suggestedFormat: "carousel", tone: "warm, communal" },
+      { id: "ramadan-first-fast", label: "First Fast Story", hint: "A kid trying their first fast — emotional arc.", suggestedFormat: "carousel", tone: "tender, encouraging" },
+      { id: "ramadan-fun-facts", label: "Ramadan Fun Facts", hint: "Curious facts about Ramadan for kids.", suggestedFormat: "carousel", tone: "playful, curious" },
+      { id: "lailatul-qadr", label: "Lailatul Qadr Kids", hint: "Night of Power explained kid-friendly.", suggestedFormat: "carousel", tone: "reverent, awe" },
+      { id: "eid-mubarak", label: "Eid Mubarak", hint: "Eid prep, takbir night, joy of meeting again.", suggestedFormat: "carousel", tone: "celebratory, warm" },
     ],
   },
 ];

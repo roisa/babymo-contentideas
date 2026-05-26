@@ -230,6 +230,15 @@ const THEMES_BY_CONTENT_TYPE: Record<string, ThemeId[]> = {
   "soft-islamic-affirmations": ["peach-apricot", "cream-sand"],
   "five-second-habit": ["coral-pink", "sunny-yellow"],
   "cozy-islamic-reels": ["lavender-night", "cream-sand"],
+  // Ramadan — pre-dawn/iftar are warm cream; tarawih/lailatul-qadr lean
+  // toward lavender-night; Eid is celebratory coral-pink + sunny-yellow.
+  "ramadan-sahur": ["lavender-night", "cream-sand"],
+  "ramadan-iftar": ["peach-apricot", "cream-sand"],
+  "ramadan-tarawih": ["lavender-night", "cream-sand"],
+  "ramadan-first-fast": ["peach-apricot", "coral-pink"],
+  "ramadan-fun-facts": ["sunny-yellow", "mint-garden"],
+  "lailatul-qadr": ["lavender-night", "cream-sand"],
+  "eid-mubarak": ["coral-pink", "sunny-yellow"],
 };
 
 /** Fallbacks per category when no per-content-type entry exists. */
@@ -241,6 +250,7 @@ const THEMES_BY_CATEGORY: Record<string, ThemeId[]> = {
   interactive: ["coral-pink", "sunny-yellow", "sky-blue"],
   story: ["sky-blue", "cream-sand", "mint-garden"],
   reels: ["coral-pink", "peach-apricot", "sunny-yellow"],
+  ramadan: ["cream-sand", "lavender-night", "peach-apricot"],
 };
 
 /**
