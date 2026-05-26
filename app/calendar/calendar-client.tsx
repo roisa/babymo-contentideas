@@ -91,14 +91,20 @@ export function CalendarClient() {
         </Button>
       </div>
 
-      {/* Week structure legend */}
-      <div className="grid grid-cols-7 gap-2">
-        {WEEKDAYS.map((w) => (
-          <div key={w} className="rounded-xl bg-white/60 backdrop-blur border p-3 text-center">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{w}</div>
-            <div className="text-sm font-medium mt-0.5">{WEEKDAY_FOCUS[w]}</div>
-          </div>
-        ))}
+      {/* Week structure legend — horizontal scroll on mobile so each chip
+       *  shows its full label; grid layout on desktop. */}
+      <div className="-mx-4 md:mx-0 px-4 md:px-0 overflow-x-auto md:overflow-visible">
+        <div className="flex md:grid md:grid-cols-7 gap-2 min-w-max md:min-w-0 pb-1">
+          {WEEKDAYS.map((w) => (
+            <div
+              key={w}
+              className="shrink-0 md:shrink min-w-[110px] md:min-w-0 rounded-xl bg-white/60 backdrop-blur border p-3 text-center"
+            >
+              <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{w}</div>
+              <div className="text-sm font-medium mt-0.5 whitespace-nowrap">{WEEKDAY_FOCUS[w]}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Calendar grid */}

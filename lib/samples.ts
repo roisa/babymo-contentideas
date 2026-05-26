@@ -2133,6 +2133,62 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       cta: "Tag yang relate!",
       hashtags: ["#BabyMo", "#POVMuslim", "#Nostalgia"],
     },
+    {
+      title: "POV: Subuh Pertama Belajar Sholat",
+      hook: "Tangan Ayah memandu pelan-pelan.",
+      slides: [
+        {
+          heading: "POV: Sholat Pertama",
+          kicker: "POV:",
+          body: "Sajadah kecil di sebelah Ayah. Tangan Ayah pegang tanganku. \"Niat dulu, sayang.\" Subuh pertama yang ngga akan kulupa.",
+        },
+      ],
+      caption: "Momen yang bikin sholat terasa rumah 💚",
+      cta: "Tag Ayah yang mengajari sholat!",
+      hashtags: ["#BabyMo", "#POVSholat", "#AnakMuslim"],
+    },
+    {
+      title: "POV: Naik ke Masjid Bareng Kakek",
+      hook: "Tangan tua yang ngga pernah lepas.",
+      slides: [
+        {
+          heading: "POV: ke Masjid Bareng Kakek",
+          kicker: "POV:",
+          body: "Kakek pegang tanganku. Jalan pelan-pelan. \"Adzan, cucuk. Yuk.\" Suara sandal kakek + suara langkahku. Memori paling syahdu.",
+        },
+      ],
+      caption: "Tangan kakek yang mengajari kita arah qiblat 🕋",
+      cta: "Tag kakek/nenek yang relate!",
+      hashtags: ["#BabyMo", "#POVKakek", "#Masjid"],
+    },
+    {
+      title: "POV: Hafalan Surah Pertama",
+      hook: "Detik-detik 'Aku bisa!' yang ngga terlupa.",
+      slides: [
+        {
+          heading: "POV: Hafalan Pertama",
+          kicker: "POV:",
+          body: "Al-Fatihah, dibaca pelan-pelan. Mama nungguin. \"Alhamdulillaaaahi...\" Pelan, ragu. Tapi sampai akhir tanpa salah. Senyum Mama lebar.",
+        },
+      ],
+      caption: "Hafalan pertama = hadiah terbaik untuk Mama 💛",
+      cta: "Tag siapa yang mengajari kamu Al-Fatihah!",
+      hashtags: ["#BabyMo", "#POVHafalan", "#AlFatihah"],
+    },
+    {
+      title: "POV: Lebaran Tahun Pertama Tanpa Kakek",
+      hook: "Pelukan yang ngga lagi ada.",
+      slides: [
+        {
+          heading: "POV: Lebaran Pertama Tanpa Kakek",
+          kicker: "POV:",
+          body: "Semua sepupu kumpul di rumah nenek. Kursi kakek kosong. Senyum semua orang ada tapi mata ada yang nahan. Nenek bilang: \"Kakek nungguin kita di Jannah.\"",
+        },
+      ],
+      caption: "Kehilangan yang bikin makin rindu Jannah 🤍",
+      cta: "Tag siapa yang kamu kangenin tahun ini.",
+      hashtags: ["#BabyMo", "#POVLebaran", "#JannahReunion"],
+    },
   ],
   "soft-islamic-affirmations": [
     {
@@ -2149,10 +2205,66 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       cta: "Save buat malam ini.",
       hashtags: ["#BabyMo", "#AfirmasiIslami", "#TenangkanHati"],
     },
+    {
+      title: "Afirmasi Pagi yang Berat",
+      hook: "Bisikan halus sebelum mulai hari.",
+      slides: [
+        {
+          heading: "Hari Ini, Aku Cukup.",
+          kicker: "Afirmasi Pagi:",
+          body: "Aku ngga harus sempurna.\nAllah ngga butuh sempurnaku.\nDia hanya butuh hatiku yang menghadap.",
+        },
+      ],
+      caption: "Untuk pagi yang berat — kamu sudah cukup 🌅",
+      cta: "Save buat pagi besok.",
+      hashtags: ["#BabyMo", "#AfirmasiPagi", "#KamuCukup"],
+    },
+    {
+      title: "Afirmasi Saat Lelah",
+      hook: "Pas hati capek banget.",
+      slides: [
+        {
+          heading: "Lelahmu Dilihat Allah.",
+          kicker: "Pesan Hati:",
+          body: "Setiap nafas berat, Allah catat.\nSetiap usaha kecil, Allah hitung.\nLelahmu ngga sia-sia. Allah selalu lihat.",
+        },
+      ],
+      caption: "Untuk hari-hari saat semuanya berat 💚",
+      cta: "Bagikan ke yang lagi capek.",
+      hashtags: ["#BabyMo", "#KamuTidakSendiri", "#Afirmasi"],
+    },
+    {
+      title: "Afirmasi Saat Doamu Lama Dijawab",
+      hook: "Bukan ditolak — masih ditunggu.",
+      slides: [
+        {
+          heading: "Doamu Sedang Dirakit.",
+          kicker: "Pesan Tenang:",
+          body: "Doa yang belum dijawab,\nbukan berarti tidak didengar.\nAllah lagi rakit jawaban yang terbaik untukmu.\nBersabar sebentar lagi.",
+        },
+      ],
+      caption: "Untuk hati yang lelah menunggu jawaban 🌸",
+      cta: "Save & tetap berdoa.",
+      hashtags: ["#BabyMo", "#DoaBelumDijawab", "#Sabar"],
+    },
+    {
+      title: "Afirmasi: Masih Punya Hari Ini",
+      hook: "Hari ini kesempatan baru.",
+      slides: [
+        {
+          heading: "Mulai Lagi, Bisa.",
+          kicker: "Reminder:",
+          body: "Kemarin gagal, hari ini masih bisa.\nMinggu lalu jauh dari Allah, sekarang masih bisa pulang.\nPintu taubat ngga pernah ditutup. Mulai lagi.",
+        },
+      ],
+      caption: "Setiap detik adalah kesempatan kedua 💛",
+      cta: "Bagikan ke yang butuh dorongan.",
+      hashtags: ["#BabyMo", "#MulaiLagi", "#Taubat"],
+    },
   ],
   "five-second-habit": [
     {
-      title: "Sunnah 5 Detik!",
+      title: "Sunnah 5 Detik: Bismillah",
       hook: "Satu nafas, satu pahala.",
       slides: [
         {
@@ -2164,6 +2276,64 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       caption: "Sunnah gampang, pahala melimpah 💚",
       cta: "Save & coba hari ini!",
       hashtags: ["#BabyMo", "#Sunnah5Detik", "#AnakMuslim"],
+    },
+    {
+      title: "Sunnah 5 Detik: Senyum",
+      hook: "Sedekah paling gampang.",
+      slides: [
+        {
+          heading: "Senyum = Sedekah!",
+          kicker: "Sunnah Termudah:",
+          body: "Senyumin orang yang lewat. Itu sedekah. Rasulullah ﷺ bilang: \"Senyummu pada saudaramu adalah sedekah.\"",
+        },
+      ],
+      caption: "Sedekah paling murah & paling besar pahalanya 😊",
+      cta: "Save & senyum ke orang berikutnya!",
+      hashtags: ["#BabyMo", "#SenyumSedekah", "#Sunnah5Detik"],
+    },
+    {
+      title: "Sunnah 5 Detik: Salam",
+      hook: "Doa singkat untuk orang lain.",
+      slides: [
+        {
+          heading: "Ucapkan Salam!",
+          kicker: "Sebelum Ngobrol:",
+          body: "Assalamu'alaikum. Artinya: \"Semoga keselamatan untukmu.\" 3 detik, doa lengkap, pahala besar.",
+        },
+      ],
+      caption: "Salam = doa, bukan sekadar greeting 🤲",
+      cta: "Save & ucap salam ke orang berikutnya!",
+      hashtags: ["#BabyMo", "#Salam", "#Sunnah5Detik"],
+    },
+    {
+      title: "Sunnah 5 Detik: Alhamdulillah",
+      hook: "Reaksi otomatis yang bikin hidup lebih ringan.",
+      slides: [
+        {
+          heading: "Bilang Alhamdulillah!",
+          kicker: "Setiap Hal Kecil:",
+          body: "Selesai makan? Alhamdulillah. Sampai rumah? Alhamdulillah. Bangun tidur? Alhamdulillah. Sederhana, tapi bikin hati berbeda.",
+        },
+      ],
+      caption: "Hati yang sering bersyukur = hati yang ringan 💚",
+      cta: "Save & latihan tiap hari!",
+      hashtags: ["#BabyMo", "#Alhamdulillah", "#Syukur"],
+    },
+    {
+      title: "Sunnah 5 Detik: Doa Naik Kendaraan",
+      hook: "Sebelum jalan, dilindungi Allah.",
+      slides: [
+        {
+          heading: "Doa Naik Kendaraan",
+          kicker: "Yuk, Hafalkan!",
+          body: "Subhaanalladzii sakhkhara lanaa haadzaa wa maa kunnaa lahuu muqriniin.\n\n\"Maha Suci Allah yang telah menundukkan ini untuk kami, sedangkan kami sendiri tidak mampu menguasainya.\"",
+          arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ",
+          attribution: "HR. Muslim 1342",
+        },
+      ],
+      caption: "5 detik doa = lindung sepanjang perjalanan 🚗",
+      cta: "Save buat tiap kali naik mobil!",
+      hashtags: ["#BabyMo", "#DoaKendaraan", "#Sunnah5Detik"],
     },
   ],
   "cozy-islamic-reels": [
@@ -2180,6 +2350,818 @@ export const SEEDS: Record<string, SampleSeed[]> = {
       caption: "Pagi yang bikin hati adem 💛",
       cta: "Save buat besok pagi!",
       hashtags: ["#BabyMo", "#PagiCozy", "#PagiMuslim"],
+    },
+    {
+      title: "Sore Cozy Sebelum Maghrib",
+      hook: "Cahaya emas, dzikir pelan, hati tenang.",
+      slides: [
+        {
+          heading: "Sore yang Tenang",
+          kicker: "POV Sore:",
+          body: "Cahaya jendela jadi keemasan. Dzikir pelan-pelan: subhanallah, alhamdulillah, allahuakbar. Maghrib hampir tiba.",
+        },
+      ],
+      caption: "Sore terbaik buat cooling down 🌅",
+      cta: "Save buat sore besok!",
+      hashtags: ["#BabyMo", "#SoreCozy", "#DzikirSore"],
+    },
+    {
+      title: "Malam Cozy Sebelum Tidur",
+      hook: "Lampu redup, ayat kursi, peluk.",
+      slides: [
+        {
+          heading: "Malam yang Tenang",
+          kicker: "POV Malam:",
+          body: "Lampu dimatikan. Ayat Kursi dibaca pelan. Tangan Mama di kepala. Mata berat. Hati tenang.",
+        },
+      ],
+      caption: "Malam terbaik buat semua Sahabat Mo 🌙",
+      cta: "Save buat malam ini!",
+      hashtags: ["#BabyMo", "#MalamCozy", "#TidurTenang"],
+    },
+    {
+      title: "Hujan Cozy di Rumah",
+      hook: "Hujan turun, secangkir teh, doa hujan.",
+      slides: [
+        {
+          heading: "Hujan yang Berkah",
+          kicker: "POV Hujan:",
+          body: "Suara hujan deras. Secangkir teh hangat di tangan. Berdoa pelan: 'Allahumma shayyiban nafi'an.' Hujan jadi terasa pelukan.",
+        },
+      ],
+      caption: "Hujan = waktu terbaik buat berdoa 🌧️",
+      cta: "Save buat hari hujan!",
+      hashtags: ["#BabyMo", "#HujanBerkah", "#DoaHujan"],
+    },
+    {
+      title: "Jumat Cozy Pagi",
+      hook: "Hari yang istimewa, Al-Kahfi pelan.",
+      slides: [
+        {
+          heading: "Jumat Berkah!",
+          kicker: "POV Jumat:",
+          body: "Bangun pelan, mandi besar, baju paling rapi. Al-Kahfi pelan dari hp. Hari paling tenang seminggu.",
+        },
+      ],
+      caption: "Jumat = reset spiritual mingguan ✨",
+      cta: "Save buat Jumat ini!",
+      hashtags: ["#BabyMo", "#JumatBerkah", "#AlKahfi"],
+    },
+  ],
+
+  /* ============================================================
+   *                    RAMADAN & EID CATEGORY
+   * ============================================================
+   * Authentic hadith/Quran references only. Doa berbuka, sahur,
+   * lailatul qadr, takbir Eid — all well-known sound (sahih) sources.
+   */
+
+  "ramadan-sahur": [
+    {
+      title: "Sahur Bareng Mama",
+      hook: "Jam 3 pagi, dapur hangat, niat puasa.",
+      slides: [
+        {
+          heading: "Yuk, Sahur!",
+          kicker: "Berkahnya Sahur",
+          body: "Nawaitu shauma ghadin 'an adaa-i fardhi syahri Ramadhana hadzihis-sanati lillahi ta'ala.\n\n\"Aku niat puasa besok untuk menunaikan kewajiban Ramadhan tahun ini karena Allah.\"",
+          arabic: "نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ هَذِهِ السَّنَةِ لِلَّهِ تَعَالَى",
+          attribution: "Niat puasa Ramadhan",
+        },
+      ],
+      caption: "Bismillah, semoga lancar puasanya hari ini 🌙✨",
+      cta: "Tag teman buat sahur bareng!",
+      hashtags: ["#BabyMo", "#Sahur", "#Ramadan", "#NiatPuasa"],
+    },
+    {
+      title: "Sahur Jangan Lupa!",
+      hook: "Sahur itu berkah — kata Rasulullah ﷺ.",
+      slides: [
+        {
+          heading: "Sahur = Berkah",
+          kicker: "Tahukah Kamu?",
+          body: "Tasahharuu, fa inna fis-sahuuri barakah.\n\n\"Bersahurlah kalian, karena sesungguhnya pada sahur itu ada keberkahan.\"",
+          arabic: "تَسَحَّرُوا فَإِنَّ فِي السَّحُورِ بَرَكَةً",
+          attribution: "HR. Bukhari 1923 & Muslim 1095",
+        },
+      ],
+      caption: "Sekecil apapun sahurnya, ada berkah di dalamnya 🍽️",
+      cta: "Save & ingatin keluarga!",
+      hashtags: ["#BabyMo", "#Sahur", "#BerkahSahur"],
+    },
+    {
+      title: "Sahur Ringan Tapi Penuh",
+      hook: "Korma + air putih = sunnah lengkap.",
+      slides: [
+        {
+          heading: "Sahur Sederhana",
+          kicker: "Sunnah Sahur:",
+          body: "Rasulullah ﷺ menganjurkan sahur walau hanya seteguk air. 3 butir kurma + segelas air sudah cukup buat memulai hari yang penuh.",
+          attribution: "HR. Ahmad 11086",
+        },
+      ],
+      caption: "Sahur ngga harus mewah — yang penting niatnya 💛",
+      cta: "Save resep sahur kamu!",
+      hashtags: ["#BabyMo", "#SahurSederhana", "#Ramadan"],
+    },
+    {
+      title: "Bangun Sahur, Susah Banget",
+      hook: "Tapi pahalanya beda kalo bangun untuk Allah.",
+      slides: [
+        {
+          heading: "Susah Bangun?",
+          kicker: "Tapi…",
+          body: "Setiap kali kamu mengalahkan kantuk demi sahur, malaikat catat sebagai 'usaha karena Allah.' Itu jauh lebih besar dari sekadar makan.",
+        },
+      ],
+      caption: "Pejuang sahur, kamu hebat 💪🌙",
+      cta: "Tag pejuang sahur di rumahmu!",
+      hashtags: ["#BabyMo", "#PejuangSahur", "#Ramadan"],
+    },
+  ],
+
+  "ramadan-iftar": [
+    {
+      title: "Doa Berbuka Puasa",
+      hook: "Saat paling ditunggu seharian.",
+      slides: [
+        {
+          heading: "Doa Berbuka",
+          kicker: "Yuk, Hafalkan!",
+          body: "Allahumma laka shumtu wa 'ala rizqika afthartu.\n\n\"Ya Allah, untuk-Mu aku berpuasa, dan dengan rezeki dari-Mu aku berbuka.\"",
+          arabic: "اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ",
+          attribution: "HR. Abu Dawud 2358",
+        },
+      ],
+      caption: "Doa kecil sebelum nyebrang ke Maghrib 🌅",
+      cta: "Save & baca tiap berbuka!",
+      hashtags: ["#BabyMo", "#DoaBerbuka", "#Ramadan", "#Iftar"],
+    },
+    {
+      title: "Buka dengan Kurma & Air",
+      hook: "Cara Rasulullah ﷺ berbuka.",
+      slides: [
+        {
+          heading: "Sunnah Berbuka",
+          kicker: "Tahukah Kamu?",
+          body: "Rasulullah ﷺ berbuka dengan ruthab (kurma basah) sebelum sholat. Kalau tidak ada, dengan tamr (kurma kering). Kalau tidak ada, dengan beberapa teguk air.",
+          attribution: "HR. Abu Dawud 2356",
+        },
+      ],
+      caption: "Sunnah kecil yang bikin iftar makin berkah 🌴",
+      cta: "Save & ikuti sunnah hari ini!",
+      hashtags: ["#BabyMo", "#SunnahBerbuka", "#Kurma"],
+    },
+    {
+      title: "Berbuka = Saat Doa Dikabulkan",
+      hook: "Jangan lewatkan momen ini.",
+      slides: [
+        {
+          heading: "Doa Cepat Ijabah",
+          kicker: "Wow, Tahukah Kamu?",
+          body: "Tiga doa yang tidak ditolak: doa orang yang puasa sampai dia berbuka, doa pemimpin yang adil, dan doa orang yang dizalimi.",
+          attribution: "HR. Tirmidzi 3598",
+        },
+      ],
+      caption: "Sebelum suap pertama, ucapkan doamu 💚",
+      cta: "Tag siapa yang mau didoakan!",
+      hashtags: ["#BabyMo", "#DoaBerbuka", "#WaktuMustajab"],
+    },
+    {
+      title: "Bahagianya Orang Puasa",
+      hook: "Dua kebahagiaan: saat berbuka dan saat bertemu Allah.",
+      slides: [
+        {
+          heading: "Dua Bahagia",
+          kicker: "Pesan Rasulullah ﷺ:",
+          body: "Lish-shaa-imi farhataani: farhatun 'inda fithrihi, wa farhatun 'inda liqaa-i rabbihi.\n\n\"Orang yang puasa punya dua kebahagiaan: saat berbuka dan saat bertemu Tuhannya.\"",
+          arabic: "لِلصَّائِمِ فَرْحَتَانِ: فَرْحَةٌ عِنْدَ فِطْرِهِ، وَفَرْحَةٌ عِنْدَ لِقَاءِ رَبِّهِ",
+          attribution: "HR. Bukhari 1904",
+        },
+      ],
+      caption: "Bahagiamu hari ini = bahagiamu di akhirat nanti ✨",
+      cta: "Save buat reminder iftar!",
+      hashtags: ["#BabyMo", "#BahagiaIftar", "#Ramadan"],
+    },
+    {
+      title: "Iftar Bareng Keluarga",
+      hook: "Tradisi paling hangat di rumah.",
+      slides: [
+        {
+          heading: "Iftar = Hangat",
+          kicker: "Momen Keluarga:",
+          body: "Adzan Maghrib. Semua duduk. Tangan menggenggam doa. Suara takbir kecil di hati. Inilah momen paling dicari seharian.",
+        },
+      ],
+      caption: "Iftar = waktu paling bikin rindu 🍽️💛",
+      cta: "Tag keluarga yang selalu iftar bareng!",
+      hashtags: ["#BabyMo", "#IftarKeluarga", "#Ramadan"],
+    },
+  ],
+
+  "ramadan-tarawih": [
+    {
+      title: "Tarawih: Sholat Khusus Ramadhan",
+      hook: "Cuma ada sebulan setahun.",
+      slides: [
+        {
+          heading: "Apa itu Tarawih?",
+          kicker: "Yuk, Belajar!",
+          body: "Tarawih = sholat sunnah khusus malam Ramadhan. Dilakukan setelah sholat Isya. Bisa di rumah, lebih baik di masjid.",
+        },
+        {
+          heading: "Berapa Rakaat?",
+          kicker: "Pilihan:",
+          body: "8 rakaat + 3 witir (cara Rasulullah ﷺ) atau 20 rakaat + 3 witir (cara umumnya di banyak masjid). Yang penting istiqomah!",
+          attribution: "HR. Bukhari 1147",
+        },
+        {
+          heading: "Pahala Tarawih",
+          kicker: "Wow!",
+          body: "Man qaama Ramadhaana iimaanan wahtisaaban ghufira lahu maa taqaddama min dzanbihi.\n\n\"Siapa yang sholat malam di Ramadhan karena iman dan mengharap pahala, diampuni dosa-dosanya yang lalu.\"",
+          arabic: "مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ",
+          attribution: "HR. Bukhari 37 & Muslim 759",
+        },
+        {
+          heading: "Yuk Coba Malam Ini",
+          kicker: "Mulai Pelan:",
+          body: "Tahun ini, mulai dengan 2 rakaat dulu. Nambah pelan-pelan. Yang penting konsisten sampai akhir Ramadhan.",
+        },
+        {
+          heading: "Save & Ajak Keluarga!",
+          kicker: "CTA",
+          body: "Tag siapa yang mau tarawih bareng kamu malam ini. Niatkan karena Allah.",
+        },
+      ],
+      caption: "Tarawih = malam yang dirindukan setahun sekali 🌙",
+      cta: "Save & tag teman tarawih!",
+      hashtags: ["#BabyMo", "#Tarawih", "#Ramadan", "#SholatMalam"],
+    },
+    {
+      title: "Tarawih di Rumah Juga Boleh",
+      hook: "Yang penting niat dan istiqomah.",
+      slides: [
+        {
+          heading: "Di Rumah Boleh?",
+          kicker: "Tentu!",
+          body: "Rasulullah ﷺ sendiri sebagian besar tarawih di rumah, biar keluarga juga ikut. Yang penting bukan tempatnya, tapi kualitasnya.",
+          attribution: "HR. Bukhari 1129",
+        },
+        {
+          heading: "Jangan Buru-Buru",
+          kicker: "Pesan:",
+          body: "Tarawih artinya 'istirahat.' Pelan-pelan, nikmati setiap rukuk, setiap sujud. 4 rakaat pelan > 20 rakaat buru-buru.",
+        },
+        {
+          heading: "Anak-Anak Ikut?",
+          kicker: "Boleh banget!",
+          body: "Ajari mereka pelan-pelan. 1-2 rakaat dulu. Yang penting mereka senang dan terbiasa dengan suasana ibadah.",
+        },
+        {
+          heading: "Save & Mulai!",
+          kicker: "CTA",
+          body: "Tag mama-ayah yang lagi cari motivasi tarawih bareng anak. Yuk semangat!",
+        },
+      ],
+      caption: "Tarawih di rumah = quality time + ibadah 💚",
+      cta: "Save & ajak anak!",
+      hashtags: ["#BabyMo", "#TarawihRumah", "#Ramadan"],
+    },
+    {
+      title: "Kenapa Pas Tarawih Bisa Khusyuk?",
+      hook: "Karena Ramadhan punya energi khusus.",
+      slides: [
+        {
+          heading: "Khusyuknya Beda",
+          kicker: "Pernah Ngga?",
+          body: "Pas Ramadhan, rasanya bacaan imam masuk ke hati. Itu bukan kebetulan — itu rahmat khusus dari Allah.",
+        },
+        {
+          heading: "Energinya Khusus",
+          kicker: "Wow!",
+          body: "Di bulan ini, setan-setan dibelenggu. Pintu surga dibuka. Pintu neraka ditutup. Wajar kalau hati jadi lebih ringan untuk taat.",
+          attribution: "HR. Bukhari 1899 & Muslim 1079",
+        },
+        {
+          heading: "Manfaatkan Momentum",
+          kicker: "Pesan:",
+          body: "Kalau bulan-bulan biasa kamu malas sholat malam, bulan ini coba lagi. Hati yang lembut menanti kamu.",
+        },
+        {
+          heading: "Save Reminder Ini!",
+          kicker: "CTA",
+          body: "Tag siapa yang lagi butuh dorongan tarawih malam ini.",
+        },
+      ],
+      caption: "Hati yang khusyuk di Ramadhan = nikmat dari Allah ✨",
+      cta: "Save & ingatkan teman!",
+      hashtags: ["#BabyMo", "#KhusyukRamadhan", "#Tarawih"],
+    },
+    {
+      title: "Setelah Tarawih, Jangan Langsung Pulang",
+      hook: "Ada sunnah kecil yang sering kelewat.",
+      slides: [
+        {
+          heading: "Tunggu Sebentar",
+          kicker: "Tahukah Kamu?",
+          body: "Setelah tarawih, sebelum witir, ada jeda. Manfaatkan untuk dzikir pendek atau membaca Quran sebentar.",
+        },
+        {
+          heading: "Witir = Penutup Manis",
+          kicker: "Sunnah Witir:",
+          body: "Witir = ganjil (1, 3, 5...). Rasulullah ﷺ tidak pernah meninggalkan witir, baik mukim maupun safar.",
+          attribution: "HR. Abu Dawud 1418",
+        },
+        {
+          heading: "Doa Setelah Witir",
+          kicker: "Coba Yuk!",
+          body: "Subhaanal malikil quddus. (3x, yang ke-3 dipanjangkan)\n\n\"Maha Suci Raja Yang Maha Suci.\"",
+          arabic: "سُبْحَانَ الْمَلِكِ الْقُدُّوسِ",
+          attribution: "HR. Nasa'i 1733",
+        },
+        {
+          heading: "Save Doa Ini!",
+          kicker: "CTA",
+          body: "Tag teman yang sering tarawih bareng kamu di masjid.",
+        },
+      ],
+      caption: "Sunnah-sunnah kecil yang bikin Ramadhan beda 🌙",
+      cta: "Save buat malam ini!",
+      hashtags: ["#BabyMo", "#SunnahWitir", "#Ramadan"],
+    },
+  ],
+
+  "ramadan-first-fast": [
+    {
+      title: "Puasa Pertama Sahabat Mo",
+      hook: "Hari paling lama, tapi paling membanggakan.",
+      slides: [
+        {
+          heading: "Hari Pertama Puasa",
+          kicker: "Cerita:",
+          body: "Sahur tadi rasanya kayak makan malam. 'Aku kuat ngga ya?' Pikiran itu muncul terus.",
+        },
+        {
+          heading: "Tengah Hari…",
+          kicker: "Cobaan Besar:",
+          body: "Lapar mulai terasa. Teman-teman makan siang. Hati gembur tapi tetap bilang: 'Aku puasa karena Allah.'",
+        },
+        {
+          heading: "Sore Datang!",
+          kicker: "Tinggal Sedikit:",
+          body: "Bayang-bayang berbuka. Mama nyiapin kurma di meja. Adzan Maghrib makin dekat.",
+        },
+        {
+          heading: "Adzan Maghrib!",
+          kicker: "Akhirnya!",
+          body: "Bismillah. Kurma masuk mulut. Senyum lebar Mama. 'Selamat ya, kamu hebat!' Hari ini, Sahabat Mo jadi pejuang puasa.",
+        },
+        {
+          heading: "Pejuang Puasa Hari Ini!",
+          kicker: "CTA",
+          body: "Tag anak yang lagi belajar puasa atau yang selesai puasa pertamanya. Beri semangat!",
+        },
+      ],
+      caption: "Anak-anak yang puasa pertama, kalian luar biasa 💚🌙",
+      cta: "Tag pejuang puasa di rumahmu!",
+      hashtags: ["#BabyMo", "#PuasaPertama", "#AnakMuslim", "#Ramadan"],
+    },
+    {
+      title: "Anak Belum Kuat Puasa Penuh? OK!",
+      hook: "Latihan dulu, bertahap.",
+      slides: [
+        {
+          heading: "Ga Apa-Apa, Sayang",
+          kicker: "Pesan Mama:",
+          body: "Belum kuat sampai Maghrib? Coba sampai Dzuhur dulu. Belum kuat juga? Sampai jam 10 dulu. Yang penting niat.",
+        },
+        {
+          heading: "Allah Tahu Usahamu",
+          kicker: "Reminder:",
+          body: "Setiap menit kamu menahan, malaikat catat. Setiap niat baik, dihitung pahala. Anak-anak yang masih belajar, kamu juara.",
+        },
+        {
+          heading: "Bertahap, Sahabat Mo",
+          kicker: "Tips:",
+          body: "Tahun pertama: ½ hari. Tahun kedua: ¾ hari. Tahun ketiga: insyaAllah full. Pelan-pelan, ya.",
+        },
+        {
+          heading: "Tag Anak yang Lagi Belajar Puasa!",
+          kicker: "CTA",
+          body: "Beri mereka semangat. Setiap kemajuan kecil itu besar di mata Allah.",
+        },
+      ],
+      caption: "Puasa anak = perjalanan, bukan tujuan 💛",
+      cta: "Save buat anak yang lagi latihan!",
+      hashtags: ["#BabyMo", "#PuasaAnak", "#Bertahap"],
+    },
+    {
+      title: "Tips Survive Puasa untuk Anak",
+      hook: "Biar kuat sampai Maghrib!",
+      slides: [
+        {
+          heading: "5 Tips Puasa Anak",
+          kicker: "Yuk, Catat!",
+          body: "Tips dari Mama Mo biar puasa lancar:",
+        },
+        {
+          heading: "1. Sahur Penuh Nutrisi",
+          kicker: "Tips 1:",
+          body: "Nasi + telur + buah + segelas susu. Hindari yang terlalu manis (bikin haus). Penuhi air sampai sahur terakhir.",
+        },
+        {
+          heading: "2. Sibukkan Diri Pas Lapar",
+          kicker: "Tips 2:",
+          body: "Main, baca buku, gambar, tidur siang sebentar. Jangan duduk diam — pikiran ngga ke makanan.",
+        },
+        {
+          heading: "3. Hitung Mundur Bareng Mama",
+          kicker: "Tips 3:",
+          body: "'Tinggal 2 jam!' 'Tinggal 1 jam!' Ini bikin anak excited menunggu Maghrib, bukan tertekan.",
+        },
+        {
+          heading: "Save Tips Ini!",
+          kicker: "CTA",
+          body: "Tag mama-mama yang lagi nyemangati anak puasa. Yuk semangat bareng!",
+        },
+      ],
+      caption: "Puasa anak = tantangan keluarga 💪",
+      cta: "Save buat besok!",
+      hashtags: ["#BabyMo", "#TipsPuasa", "#PuasaAnak"],
+    },
+  ],
+
+  "ramadan-fun-facts": [
+    {
+      title: "5 Fakta Ramadhan untuk Anak",
+      hook: "Tahukah kamu? Ramadhan itu spesial banget!",
+      slides: [
+        {
+          heading: "Tahukah Kamu?",
+          kicker: "Fakta Ramadhan:",
+          body: "Ada 5 fakta seru tentang bulan paling istimewa ini!",
+        },
+        {
+          heading: "Fakta 1: Setan Dibelenggu",
+          kicker: "Wow!",
+          body: "Pas Ramadhan, setan-setan jahat diikat. Makanya hati lebih mudah untuk taat. Pintu surga juga dibuka lebar-lebar!",
+          attribution: "HR. Bukhari 1899",
+        },
+        {
+          heading: "Fakta 2: Quran Turun di Ramadhan",
+          kicker: "Tahukah Kamu?",
+          body: "Pertama kali Quran turun ke bumi, itu di bulan Ramadhan. Ayatnya: 'Iqra!' — yang berarti 'Bacalah!'",
+          attribution: "QS. Al-Baqarah: 185",
+        },
+        {
+          heading: "Fakta 3: Pintu Khusus 'Ar-Rayyan'",
+          kicker: "Keren!",
+          body: "Di surga, ada pintu bernama Ar-Rayyan. Hanya orang yang puasa yang boleh masuk lewat sana!",
+          attribution: "HR. Bukhari 1896",
+        },
+        {
+          heading: "Fakta 4: Pahala Dilipatgandakan",
+          kicker: "Subhanallah!",
+          body: "Setiap kebaikan di bulan biasa pahalanya 10. Di Ramadhan, dikalikan minimal 10x. Beda banget!",
+        },
+        {
+          heading: "Fakta 5: Lailatul Qadr!",
+          kicker: "Yang Paling Spesial:",
+          body: "Ada 1 malam di Ramadhan yang lebih baik dari 1000 bulan. Itu Lailatul Qadr. Cari dia di 10 malam terakhir!",
+          attribution: "QS. Al-Qadr: 3",
+        },
+        {
+          heading: "Save & Bagikan!",
+          kicker: "CTA",
+          body: "Tag Sahabat Mo yang harus tau fakta-fakta seru ini!",
+        },
+      ],
+      caption: "Ramadhan = bulan paling spesial dalam setahun 🌙✨",
+      cta: "Save & bagikan ke teman!",
+      hashtags: ["#BabyMo", "#FaktaRamadhan", "#AnakMuslim"],
+    },
+    {
+      title: "Kenapa Kita Puasa Ramadhan?",
+      hook: "Alasan utama yang anak harus tahu.",
+      slides: [
+        {
+          heading: "Kenapa Sih Puasa?",
+          kicker: "Pertanyaan Sering Ditanya:",
+          body: "Bukan cuma menahan lapar — puasa itu latihan banyak hal. Yuk kupas bareng!",
+        },
+        {
+          heading: "1. Perintah Allah",
+          kicker: "Alasan Utama:",
+          body: "Yaa ayyuhalladziina aamanuu kutiba 'alaikumush-shiyaamu...\n\n\"Wahai orang beriman, telah diwajibkan atas kalian puasa...\"",
+          arabic: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ",
+          attribution: "QS. Al-Baqarah: 183",
+        },
+        {
+          heading: "2. Latihan Sabar",
+          kicker: "Manfaat:",
+          body: "Pas puasa, kita belajar menahan diri. Dari makan, minum, marah, dan kata-kata jelek. Ini latihan jadi orang yang lebih baik.",
+        },
+        {
+          heading: "3. Merasakan Lapar Orang Lain",
+          kicker: "Empati:",
+          body: "Ada banyak orang yang tiap hari lapar. Pas kita puasa, kita ngerti rasanya. Jadi lebih semangat berbagi.",
+        },
+        {
+          heading: "4. Hati Jadi Lembut",
+          kicker: "Akhir Cerita:",
+          body: "Setelah sebulan latihan, hati kita jadi lebih dekat sama Allah. Itu hadiah terbesar dari puasa.",
+        },
+        {
+          heading: "Save & Jelaskan ke Adik!",
+          kicker: "CTA",
+          body: "Tag siapa yang masih bingung kenapa kita puasa. Yuk jelasin pelan-pelan.",
+        },
+      ],
+      caption: "Puasa = sekolah karakter 30 hari 💚",
+      cta: "Save & ajarkan!",
+      hashtags: ["#BabyMo", "#KenapaPuasa", "#Ramadan"],
+    },
+    {
+      title: "Apa Aja yang Membatalkan Puasa?",
+      hook: "Anak harus tau, biar puasa lancar!",
+      slides: [
+        {
+          heading: "Pembatal Puasa",
+          kicker: "Yuk, Belajar!",
+          body: "5 hal utama yang bikin puasa batal:",
+        },
+        {
+          heading: "1. Makan & Minum Sengaja",
+          kicker: "Pembatal #1:",
+          body: "Kalau lupa, ga apa-apa — puasanya lanjut. Tapi kalau sengaja, batal. Jadi inget terus ya: 'Aku puasa!'",
+          attribution: "HR. Bukhari 6669",
+        },
+        {
+          heading: "2. Muntah Sengaja",
+          kicker: "Pembatal #2:",
+          body: "Kalau muntahnya ngga sengaja (mual), ga batal. Kalau sengaja dipaksa keluar, batal.",
+        },
+        {
+          heading: "3. Haid (Buat Perempuan)",
+          kicker: "Pembatal #3:",
+          body: "Anak perempuan yang udah haid, ga puasa dulu. Nanti diganti hari lain setelah Ramadhan.",
+        },
+        {
+          heading: "Yang Ngga Batal!",
+          kicker: "Tenang…",
+          body: "Sikat gigi (asal ga ditelan pastanya), berenang, lupa makan, mimpi makan — semua ga batal!",
+        },
+        {
+          heading: "Save & Belajar Bareng!",
+          kicker: "CTA",
+          body: "Tag teman yang masih bingung soal puasa. Yuk belajar bareng!",
+        },
+      ],
+      caption: "Tau aturannya, puasa jadi lebih tenang ✨",
+      cta: "Save buat panduan!",
+      hashtags: ["#BabyMo", "#PembatalPuasa", "#Ramadan"],
+    },
+  ],
+
+  "lailatul-qadr": [
+    {
+      title: "Lailatul Qadr: Malam Paling Spesial",
+      hook: "1 malam = lebih baik dari 1000 bulan.",
+      slides: [
+        {
+          heading: "Apa itu Lailatul Qadr?",
+          kicker: "Yuk, Belajar!",
+          body: "Lailatul Qadr = Malam Penentuan / Malam Mulia. Ini malam saat Quran pertama kali turun ke Nabi Muhammad ﷺ.",
+        },
+        {
+          heading: "Kekuatannya Luar Biasa",
+          kicker: "Wow!",
+          body: "Lailatul-qadri khairum-min alfi syahr.\n\n\"Malam Lailatul Qadr lebih baik dari 1000 bulan.\"",
+          arabic: "لَيْلَةُ الْقَدْرِ خَيْرٌ مِنْ أَلْفِ شَهْرٍ",
+          attribution: "QS. Al-Qadr: 3",
+        },
+        {
+          heading: "Hitung Yuk!",
+          kicker: "Maths Time:",
+          body: "1000 bulan = 83 tahun. Ibadah 1 malam ini = ibadah satu hidup! Allah kasih kesempatan kita 'lompat' ribuan tahun pahala.",
+        },
+        {
+          heading: "Kapan Sih?",
+          kicker: "Cari di…",
+          body: "Di 10 malam terakhir Ramadhan, terutama malam-malam ganjil (21, 23, 25, 27, 29). Yang paling kuat: malam ke-27.",
+          attribution: "HR. Bukhari 2017",
+        },
+        {
+          heading: "Doa Khusus Malam Itu",
+          kicker: "Hafalkan!",
+          body: "Allahumma innaka 'afuwwun, tuhibbul 'afwa, fa'fu 'annii.\n\n\"Ya Allah, Engkau Maha Pemaaf, suka memaafkan, maafkanlah aku.\"",
+          arabic: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
+          attribution: "HR. Tirmidzi 3513",
+        },
+        {
+          heading: "Save & Tunggu Malamnya!",
+          kicker: "CTA",
+          body: "Tag teman-teman yang mau berburu Lailatul Qadr bareng tahun ini.",
+        },
+      ],
+      caption: "Malam yang ga boleh dilewatin — sekali setahun! 🌙✨",
+      cta: "Save buat malam ke-27!",
+      hashtags: ["#BabyMo", "#LailatulQadr", "#Ramadan", "#MalamMulia"],
+    },
+    {
+      title: "Cara Anak Berburu Lailatul Qadr",
+      hook: "Kecil-kecil juga bisa dapat pahalanya!",
+      slides: [
+        {
+          heading: "Anak Juga Bisa!",
+          kicker: "Tips:",
+          body: "Lailatul Qadr bukan cuma buat orang dewasa. Anak-anak juga bisa dapat pahala besar dengan cara mereka.",
+        },
+        {
+          heading: "1. Sholat Isya + Tarawih",
+          kicker: "Cara 1:",
+          body: "Sholat malam = ibadah utama Lailatul Qadr. Sholat sekali pun pas malam itu, pahalanya 1000+ bulan.",
+        },
+        {
+          heading: "2. Baca Quran",
+          kicker: "Cara 2:",
+          body: "Quran turun di malam ini. Baca walau 1 ayat, atau dengerin orang baca, sama-sama dihitung berkah.",
+        },
+        {
+          heading: "3. Banyak Doa & Istighfar",
+          kicker: "Cara 3:",
+          body: "Yang paling penting: doa permohonan ampun. 'Allahumma 'afwun, fa'fu 'annii.' Ucapkan 100x malam itu!",
+        },
+        {
+          heading: "4. Tidur dengan Niat Bangun",
+          kicker: "Cara 4:",
+          body: "Sebelum tidur, niat bangun pas 2/3 malam untuk witir. Walaupun kebablasan, niatnya dapat pahala.",
+        },
+        {
+          heading: "Save & Praktikkan!",
+          kicker: "CTA",
+          body: "Tag mama-ayah yang mau ajak anak-anaknya tahun ini.",
+        },
+      ],
+      caption: "Anak kecil juga bisa raih malam terbaik 💚",
+      cta: "Save buat 10 malam terakhir!",
+      hashtags: ["#BabyMo", "#LailatulQadrAnak", "#Ramadan"],
+    },
+    {
+      title: "Tanda-Tanda Lailatul Qadr",
+      hook: "Allah kasih hint biar kita tau.",
+      slides: [
+        {
+          heading: "Tanda-Tandanya?",
+          kicker: "Yuk Hafal:",
+          body: "Rasulullah ﷺ kasih 4 tanda fisik Lailatul Qadr — bisa kamu rasakan sendiri!",
+        },
+        {
+          heading: "1. Malamnya Tenang",
+          kicker: "Tanda 1:",
+          body: "Malamnya sangat tenang. Ngga panas, ngga dingin. Anginnya kalem. Hawa terasa damai.",
+          attribution: "HR. Muslim 762",
+        },
+        {
+          heading: "2. Bulan Cerah",
+          kicker: "Tanda 2:",
+          body: "Bulannya kelihatan jernih, kayak setengah baki. Langit cerah tanpa awan.",
+          attribution: "HR. Muslim 762",
+        },
+        {
+          heading: "3. Matahari Pagi Lembut",
+          kicker: "Tanda 3:",
+          body: "Pagi harinya, matahari terbit tapi sinarnya ngga menyilaukan. Kayak bulan, cerah tapi lembut.",
+          attribution: "HR. Muslim 762",
+        },
+        {
+          heading: "4. Hati Terasa Tenang",
+          kicker: "Tanda 4 (Spesial):",
+          body: "Hati jadi luar biasa tenang. Pengen nangis pas berdoa. Ada perasaan 'ada sesuatu yang istimewa malam ini.'",
+        },
+        {
+          heading: "Tag Sahabat Mo!",
+          kicker: "CTA",
+          body: "Save tanda-tanda ini buat malam ke-21, 23, 25, 27, 29!",
+        },
+      ],
+      caption: "Allah ngasih tanda — kita tinggal jeli ✨",
+      cta: "Save buat 10 malam terakhir!",
+      hashtags: ["#BabyMo", "#TandaLailatulQadr", "#Ramadan"],
+    },
+  ],
+
+  "eid-mubarak": [
+    {
+      title: "Malam Takbir: Suara Paling Indah",
+      hook: "Tradisi 1400 tahun yang ngga pernah berhenti.",
+      slides: [
+        {
+          heading: "Malam Takbir!",
+          kicker: "Yang Ditunggu:",
+          body: "Setelah 30 hari puasa, malamnya kita takbir. Suara takbir berkumandang dari rumah ke rumah, masjid ke masjid.",
+        },
+        {
+          heading: "Takbir Lengkap",
+          kicker: "Hafalkan!",
+          body: "Allahu akbar, Allahu akbar, Allahu akbar. Laa ilaaha illallahu wallahu akbar. Allahu akbar wa lillahil hamd.",
+          arabic: "اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ لاَ إِلَهَ إِلاَّ اللَّهُ وَاللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ وَلِلَّهِ الْحَمْدُ",
+          attribution: "Takbir Hari Raya",
+        },
+        {
+          heading: "Artinya?",
+          kicker: "Terjemahan:",
+          body: "\"Allah Maha Besar (3x). Tiada Tuhan selain Allah dan Allah Maha Besar. Allah Maha Besar dan segala puji bagi-Nya.\"",
+        },
+        {
+          heading: "Kapan Takbirnya?",
+          kicker: "Mulai Dari:",
+          body: "Mulai Maghrib akhir Ramadhan, lanjut sampai sebelum sholat Eid esok pagi. Kumandangkan dengan suara dan hati!",
+        },
+        {
+          heading: "Tag Keluarga!",
+          kicker: "CTA",
+          body: "Tag siapa yang biasa takbir bareng kamu malam Eid. Save lirik takbirnya!",
+        },
+      ],
+      caption: "Malam takbir = malam paling syahdu tahun ini 🌙✨",
+      cta: "Save & takbiran bareng!",
+      hashtags: ["#BabyMo", "#TakbirEid", "#EidMubarak", "#HariRaya"],
+    },
+    {
+      title: "Adab Sholat Eid",
+      hook: "Sunnah yang sering kelewat.",
+      slides: [
+        {
+          heading: "Sebelum Sholat Eid",
+          kicker: "Sunnah-Sunnah:",
+          body: "Ada beberapa sunnah Rasulullah ﷺ yang bikin Eid kita lebih berkah.",
+        },
+        {
+          heading: "1. Mandi Besar",
+          kicker: "Pagi-Pagi:",
+          body: "Bangun pagi, mandi besar (mandi sunnah). Pakai baju paling rapi (ngga harus baru).",
+        },
+        {
+          heading: "2. Makan Dulu (Khusus Eid Fitri)",
+          kicker: "Sunnah Unik:",
+          body: "Kalau hari biasa, kita ngga makan sebelum sholat. Tapi Eid Fitri, sunnah makan 3 butir kurma dulu. Tandanya: puasanya udah selesai!",
+          attribution: "HR. Bukhari 953",
+        },
+        {
+          heading: "3. Pulang Lewat Jalan Beda",
+          kicker: "Sunnah Aneh:",
+          body: "Rasulullah ﷺ ke masjid lewat jalan A, pulangnya lewat jalan B. Biar ketemu lebih banyak orang, sapa lebih banyak orang.",
+          attribution: "HR. Bukhari 986",
+        },
+        {
+          heading: "4. Ucapkan Selamat",
+          kicker: "Greeting:",
+          body: "\"Taqabbalallahu minna wa minkum\" — Semoga Allah terima dari kami dan darimu. Atau singkat: \"Selamat Hari Raya, Mohon Maaf Lahir Batin!\"",
+        },
+        {
+          heading: "Save & Praktikkan!",
+          kicker: "CTA",
+          body: "Tag siapa yang mau sholat Eid bareng kamu pagi besok.",
+        },
+      ],
+      caption: "Eid bukan cuma baju baru — ada sunnah-sunnahnya 💚",
+      cta: "Save buat pagi Eid!",
+      hashtags: ["#BabyMo", "#AdabEid", "#EidMubarak"],
+    },
+    {
+      title: "Eid Bukan Akhir, Tapi Awal",
+      hook: "Setelah Ramadhan, jangan balik ke kebiasaan lama.",
+      slides: [
+        {
+          heading: "Ramadhan Selesai…",
+          kicker: "Sedih?",
+          body: "Banyak orang sedih pas Ramadhan selesai. Wajar, soalnya bulan paling berkah.",
+        },
+        {
+          heading: "Tapi Ini Bukan Akhir!",
+          kicker: "Justru…",
+          body: "Eid = wisudaan dari 'sekolah Ramadhan.' Yang sudah kita pelajari (sabar, sholat malam, dekat sama Quran), kita bawa terus.",
+        },
+        {
+          heading: "Tanda Diterima",
+          kicker: "Tahukah Kamu?",
+          body: "Tanda Ramadhan kita diterima Allah = setelah Ramadhan, kita lebih baik dari sebelumnya. Lebih sabar, lebih dekat, lebih berbagi.",
+        },
+        {
+          heading: "Komitmen Pasca-Ramadhan",
+          kicker: "Yuk Pilih 1:",
+          body: "Ambil 1 kebiasaan baik Ramadhan yang mau kamu lanjutkan setahun ke depan. Sholat malam? Baca Quran tiap hari? Pilih satu!",
+        },
+        {
+          heading: "Komitmen Pertama!",
+          kicker: "CTA",
+          body: "Komen di bawah: kebiasaan apa yang mau kamu bawa pulang dari Ramadhan tahun ini?",
+        },
+      ],
+      caption: "Eid = bukan finish line, tapi starting point ✨",
+      cta: "Komen komitmenmu!",
+      hashtags: ["#BabyMo", "#PascaRamadhan", "#EidMubarak", "#KomitmenBaik"],
     },
   ],
 };

@@ -66,6 +66,15 @@ export const POSES_BY_CATEGORY: Record<string, string[]> = {
     "baby-mo-pose-42.png",
     "baby-mo-run.png",
   ],
+
+  // Ramadan — arc moves from gentle anticipation → reverent dua → joyful celebration
+  ramadan: [
+    "baby-mo-pose-05.png",       // 1. HOOK — hopeful clasped, anticipating sahur/iftar
+    "baby-mo-pose-12.png",       // 2. CURIOSITY — sit-dua reflective
+    "baby-mo-thank-you.png",     // 3. REVEAL — hands in dua (the moment)
+    "baby-mo-pose-17.png",       // 4. FAQ — SUJUD (Lailatul Qadr / Tarawih)
+    "baby-mo-yeyy.png",          // 5. CTA — celebration (Eid joy)
+  ],
 };
 
 /**
@@ -81,6 +90,11 @@ export const ICONIC_POSES: Record<string, string[]> = {
   interactive: ["baby-mo-yeyy.png", "baby-mo-pose-35.png", "baby-mo-pose-37.png"],
   story: ["baby-mo-pose-11.png", "baby-mo-pose-06.png", "baby-mo-pose-18.png"],
   reels: ["baby-mo-run.png", "baby-mo-pose-32.png", "baby-mo-pose-42.png"],
+  ramadan: [
+    "baby-mo-thank-you.png",     // praying hands (canonical for Ramadan)
+    "baby-mo-pose-12.png",       // sit-dua reflective
+    "baby-mo-pose-17.png",       // sujud
+  ],
 };
 
 /** Back-compat: callers that just want the canonical iconic pose. */
@@ -121,6 +135,60 @@ export const CONTENT_TYPE_OVERRIDES: Record<string, string[]> = {
     "baby-mo-pose-39.png", "baby-mo-pose-38.png", "baby-mo-thank-you.png", "baby-mo-pose-28.png", "baby-mo-pose-21.png",
   ],
   "mama-reflection": ["baby-mo-pose-21.png", "baby-mo-pose-07.png", "baby-mo-thank-you.png"],
+
+  /* ===== Ramadan ===== */
+  // Sahur — quiet, sleepy-warm, building to readiness
+  "ramadan-sahur": [
+    "baby-mo-pose-06.png",       // sit cross-legged, calm
+    "baby-mo-pose-12.png",       // sit-dua reflective
+    "baby-mo-thank-you.png",     // praying hands (niat)
+  ],
+  // Iftar — anticipation → reveal → joy
+  "ramadan-iftar": [
+    "baby-mo-pose-05.png",       // hopeful clasped (waiting)
+    "baby-mo-thank-you.png",     // dua before suap pertama
+    "baby-mo-yeyy.png",          // joy of breaking fast
+  ],
+  // Tarawih — communal, building to sujud
+  "ramadan-tarawih": [
+    "baby-mo-pose-11.png",       // sit-wave (come pray)
+    "baby-mo-pose-12.png",       // sit-dua
+    "baby-mo-thank-you.png",     // standing prayer
+    "baby-mo-pose-17.png",       // SUJUD
+    "baby-mo-pose-21.png",       // gentle thumbs (CTA)
+  ],
+  // First Fast — full emotional arc (anxious → tired → triumphant)
+  "ramadan-first-fast": [
+    "baby-mo-pose-22.png",       // thinking-chin (worried)
+    "baby-mo-pose-39.png",       // sad-down (hungry, struggling)
+    "baby-mo-pose-05.png",       // hopeful clasped (counting down)
+    "baby-mo-yeyy.png",          // celebration (made it!)
+    "baby-mo-pose-21.png",       // gentle thumbs (CTA: support others)
+  ],
+  // Fun Facts — curious + wonder
+  "ramadan-fun-facts": [
+    "baby-mo-idea.png",          // pointing up (did you know!)
+    "baby-mo-pose-22.png",       // thinking-chin
+    "baby-mo-wow.png",           // WOW!
+    "baby-mo-pose-08.png",       // present-pointing (explaining)
+    "baby-mo-pose-35.png",       // peace signs (save & share)
+  ],
+  // Lailatul Qadr — reverent, building to praying hands + sujud
+  "lailatul-qadr": [
+    "baby-mo-pose-18.png",       // contemplative
+    "baby-mo-pose-28.png",       // dreamy looking up (the night)
+    "baby-mo-thank-you.png",     // praying hands (the doa)
+    "baby-mo-pose-17.png",       // SUJUD (the moment)
+    "baby-mo-pose-12.png",       // sit-dua (witir)
+  ],
+  // Eid Mubarak — full celebration arc
+  "eid-mubarak": [
+    "baby-mo-pose-11.png",       // sit-wave (greeting)
+    "baby-mo-thank-you.png",     // takbir / praying
+    "baby-mo-yeyy.png",          // CELEBRATE
+    "baby-mo-pose-35.png",       // peace signs
+    "baby-mo-pose-37.png",       // cheer fists
+  ],
 };
 
 /** Used when a category isn't found (shouldn't happen). */
