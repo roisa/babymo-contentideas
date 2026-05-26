@@ -12,7 +12,7 @@
  * live in animator.css — these are class-name references.
  */
 
-export type SceneId = "energetic" | "cozy" | "quiz" | "prayer" | "playful";
+export type SceneId = "slideshow" | "energetic" | "cozy" | "quiz" | "prayer" | "playful";
 
 export interface Scene {
   id: SceneId;
@@ -37,6 +37,19 @@ export interface Scene {
 }
 
 export const SCENES: Scene[] = [
+  {
+    id: "slideshow",
+    name: "Slideshow",
+    description: "Smooth slow crossfades. Default for carousels-as-reel.",
+    poseHoldMs: 3800,
+    transitionMs: 800,
+    poseEnter: "anim-pose-zoom-fade-in",
+    poseExit: "anim-pose-zoom-fade-out",
+    cardAnim: "anim-card-rise",
+    titleAnim: "anim-title-soft",
+    decor: "drifting-clouds",
+    perBeatBody: true,
+  },
   {
     id: "energetic",
     name: "Energetic",
