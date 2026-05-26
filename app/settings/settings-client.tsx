@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Circle, ExternalLink, AlertCircle, Copy, Check } from "lucide-react";
+import { CheckCircle2, Circle, ExternalLink, AlertCircle, Copy, Check, Cloud, CloudOff, RefreshCw } from "lucide-react";
 
 interface Status {
   clientId: boolean;
@@ -97,6 +97,9 @@ export function SettingsClient() {
         </CardContent>
       </Card>
 
+      {/* Team library card */}
+      <LibraryCard />
+
       {/* Quickstart card */}
       <Card>
         <CardContent className="p-6">
@@ -161,5 +164,118 @@ function CodeCopy({ value, onCopy, copied, k }: { value: string; onCopy: (v: str
         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
       </button>
     </span>
+  );
+}
+
+interface LibraryStatus {
+  configured: boolean;
+  reachable?: boolean;
+  itemCount?: number;
+  error?: string;
+  envHints?: { upstashUrl: boolean; upstashToken: boolean };
+}
+
+function LibraryCard() {
+  const [status, setStatus] = useState<LibraryStatus | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function refresh() {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/library/status", { cache: "no-store" });
+      setStatus((await r.json()) as LibraryStatus);
+    } catch (e) {
+      setStatus({ configured: false, error: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-2xl bg-babymo-green/10 flex items-center justify-center">
+              <Cloud className="h-6 w-6 text-babymo-green" />
+            </div>
+            <div>
+              <div className="font-bold text-base">Team library sync</div>
+              <div className="text-xs text-muted-foreground">Share generated content across everyone on the team via Upstash Redis.</div>
+            </div>
+          </div>
+          {status ? (
+            status.configured && status.reachable ? (
+              <Badge variant="green" className="text-[11px]">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Connected
+              </Badge>
+            ) : status.configured ? (
+              <Badge variant="accent" className="text-[11px]">Unreachable</Badge>
+            ) : (
+              <Badge variant="accent" className="text-[11px]">
+                <CloudOff className="h-3 w-3 mr-1" /> Local-only
+              </Badge>
+            )
+          ) : null}
+        </div>
+
+        {status?.error && (
+          <div className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-[12px] text-destructive mb-3 flex items-start gap-2">
+            <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span className="min-w-0 break-all">{status.error}</span>
+          </div>
+        )}
+
+        {status && (
+          <div className="space-y-3">
+            <div className="rounded-2xl bg-secondary/50 border border-border/40 p-4">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">Environment variables</div>
+              <ul className="space-y-1.5 text-[13px]">
+                <EnvRow
+                  label="UPSTASH_REDIS_REST_URL  (or KV_REST_API_URL)"
+                  ok={Boolean(status.envHints?.upstashUrl) || (status.configured ?? false)}
+                />
+                <EnvRow
+                  label="UPSTASH_REDIS_REST_TOKEN  (or KV_REST_API_TOKEN)"
+                  ok={Boolean(status.envHints?.upstashToken) || (status.configured ?? false)}
+                />
+              </ul>
+              {status.configured && status.reachable && (
+                <div className="text-[12px] text-muted-foreground mt-3">
+                  {status.itemCount ?? 0} item{(status.itemCount ?? 0) === 1 ? "" : "s"} in the team library.
+                </div>
+              )}
+            </div>
+
+            {!status.configured && (
+              <div className="text-[12px] text-muted-foreground leading-relaxed">
+                Without these vars, the library lives in each browser&apos;s localStorage — no sharing between teammates. Provision an Upstash Redis or Vercel KV database (both free tiers work) and add the two env vars on Vercel.
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-2 pt-1">
+              <Button onClick={refresh} disabled={loading} variant="soft" size="sm">
+                <RefreshCw className={`h-3.5 w-3.5 mr-2 ${loading ? "animate-spin" : ""}`} />
+                Re-check
+              </Button>
+              <Button asChild variant="glass" size="sm">
+                <a href="https://upstash.com/docs/redis/overall/getstarted" target="_blank" rel="noopener noreferrer">
+                  Upstash docs
+                </a>
+              </Button>
+              <Button asChild variant="glass" size="sm">
+                <a href="https://vercel.com/docs/storage/vercel-kv" target="_blank" rel="noopener noreferrer">
+                  Vercel KV docs
+                </a>
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
