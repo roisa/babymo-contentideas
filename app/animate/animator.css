@@ -222,6 +222,8 @@
 .stage-recording {
   position: fixed;
   inset: 0;
+  /* iPhone Safari: dynamic viewport height tracks URL-bar collapse. */
+  height: 100dvh;
   z-index: 100;
   background: #000;
   display: flex;
@@ -230,7 +232,7 @@
 }
 .stage-recording .stage-inner {
   max-width: 100vw;
-  max-height: 100vh;
+  max-height: 100dvh;
 }
 
 /* Respect prefers-reduced-motion: collapse all animations to instant. */

@@ -42,23 +42,20 @@ const H = 1920;
  *  y=200   -> y=1340  : SAFE CONTENT AREA (≈60% of canvas)
  *  y=1340  -> y=1920  : UNSAFE BOTTOM (IG sound, like/share, caption)
  *
- * Every text-bearing element (logo, title, body card) is positioned
- * inside the safe band. The pose extends down to the canvas bottom
- * intentionally — its feet getting covered by IG chrome is OK because
- * the head/torso are still in the safe zone and that's the expressive
- * part. The static renderer (lib/render.tsx) has its own composition
- * tuned for non-Reels exports and is independent of these values.
+ * Text-bearing elements (logo, title, body card) live inside the safe
+ * band. The pose deliberately anchors to the canvas BOTTOM and fills
+ * the lower half — its feet getting covered by IG chrome is fine and
+ * visually expected (matches the static renderer). The body card sits
+ * ABOVE the pose's head so the character's face is always visible.
  */
 const SAFE_TOP = 200;
 const SAFE_BOTTOM = 1340;
 
-/* Element anchors inside the safe band: */
-const LOGO_TOP   = 240;   // logo y=240..400, height 160
-const TITLE_TOP  = 440;   // title y=440 down, height varies by length
-const POSE_TOP   = 620;   // pose y=620..1340, size 720 — exactly fills the
-                          // lower half of the safe zone
-const POSE_SIZE  = 720;
-const CARD_TOP   = 900;   // body card y=900..1300 — overlays pose torso
+const LOGO_TOP   = 200;
+const LOGO_SIZE  = 160;
+const TITLE_TOP  = 410;
+const CARD_TOP   = 680;   // sits above pose head (which lands at y≈1020)
+const POSE_SIZE  = 900;   // anchored to canvas bottom — head at y=1020
 
 /**
  * Vertical (1080×1920) animated stage rendered as DOM with CSS keyframes.
@@ -111,7 +108,7 @@ export function AnimatedScene({
       {logoSrc && (
         <div className="absolute z-20 flex justify-center" style={{ top: LOGO_TOP, left: 0, right: 0 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} width={170} height={170} alt="" style={{ objectFit: "contain" }} />
+          <img src={logoSrc} width={LOGO_SIZE} height={LOGO_SIZE} alt="" style={{ objectFit: "contain" }} />
         </div>
       )}
 
@@ -134,12 +131,10 @@ export function AnimatedScene({
         </div>
       )}
 
-      {/* Pose layer — sits in lower half of safe zone. Head/torso visible
-       *  above the body card; lower legs covered by the card. */}
-      <div
-        className="absolute z-10 flex justify-center"
-        style={{ top: POSE_TOP, height: POSE_SIZE, left: 0, right: 0 }}
-      >
+      {/* Pose layer — anchored to canvas bottom so the character fills
+       *  the lower half. Head lands at y≈1020 (just below the body card).
+       *  Feet at the canvas edge get covered by IG chrome — intentional. */}
+      <div className="absolute inset-0 z-10 flex items-end justify-center">
         {beats.map((b, i) => {
           const isActive = i === active;
           const animClass = isActive ? scene.poseEnter : scene.poseExit;
@@ -150,7 +145,7 @@ export function AnimatedScene({
               key={`pose-${i}-${loopKey}-${isActive ? "in" : "out"}-${active}`}
               src={`/api/pose/${b.pose}`}
               alt=""
-              className={cn("absolute top-0", animClass)}
+              className={cn("absolute bottom-0", animClass)}
               style={{
                 width: POSE_SIZE,
                 height: POSE_SIZE,
@@ -239,11 +234,11 @@ export function AnimatedScene({
 }
 
 /** Title size shrinks as length grows so longer headings still fit
- *  inside the ~180px between LOGO_TOP+height and POSE_TOP. */
+ *  in the ~270px window between the logo and the body card. */
 function titleSizeFor(text: string): number {
-  if (text.length > 60) return 56;
-  if (text.length > 40) return 72;
-  if (text.length > 24) return 88;
+  if (text.length > 50) return 56;
+  if (text.length > 32) return 72;
+  if (text.length > 18) return 88;
   return 100;
 }
 
