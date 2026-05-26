@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -627,38 +627,51 @@ function PosePicker({ selected, onToggle }: { selected: string[]; onToggle: (nam
  * Stage preview & recording overlay
  * ============================================================ */
 
+/**
+ * Preview the stage at a size that fits the parent column. Uses
+ * CSS `aspect-ratio` to lock the 9:16 proportions and a JS-measured
+ * scale to shrink the internal 1080-wide canvas to the actual width.
+ *
+ * Renders nothing until the first measurement comes back, so we never
+ * paint at a stale scale (which on mobile would clip the stage and
+ * leave a black void on the right).
+ */
 function StagePreview(props: Omit<React.ComponentProps<typeof AnimatedScene>, "className">) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [scale, setScale] = useState(0.34);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [scale, setScale] = useState(0);
 
-  useEffect(() => {
-    const el = containerRef.current;
+  useLayoutEffect(() => {
+    const el = wrapRef.current;
     if (!el) return;
-    function measure() {
-      const w = el!.clientWidth;
-      const internalW = 1080;
-      // Cap at 0.45 so it doesn't dominate the layout on a wide desktop.
-      const s = Math.min(w / internalW, 0.45);
-      setScale(s);
-    }
-    measure();
-    const ro = new ResizeObserver(measure);
+    const update = () => {
+      const w = el.clientWidth;
+      if (w > 0) setScale(w / 1080);
+    };
+    update();
+    const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  const cssW = 1080 * scale;
-  const cssH = 1920 * scale;
-
   return (
-    <div ref={containerRef} className="w-full flex items-center justify-center">
+    <div className="w-full max-w-[360px] mx-auto">
       <div
-        className="relative rounded-3xl overflow-hidden bg-muted/30"
-        style={{ width: cssW, height: cssH }}
+        ref={wrapRef}
+        className="relative w-full overflow-hidden rounded-3xl bg-muted/30"
+        style={{ aspectRatio: "9 / 16" }}
       >
-        <div style={{ transform: `scale(${scale})`, transformOrigin: "top left" }}>
-          <AnimatedScene {...props} />
-        </div>
+        {scale > 0 && (
+          <div
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: "top left",
+              width: 1080,
+              height: 1920,
+            }}
+          >
+            <AnimatedScene {...props} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -672,12 +685,14 @@ function RecordingOverlay({
   countdown: number | null;
   onExit: () => void;
 }) {
-  const [scale, setScale] = useState(0.5);
-  useEffect(() => {
+  const [scale, setScale] = useState(0);
+  useLayoutEffect(() => {
     function measure() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      setScale(Math.min(vw / 1080, vh / 1920));
+      if (vw > 0 && vh > 0) {
+        setScale(Math.min(vw / 1080, vh / 1920));
+      }
     }
     measure();
     window.addEventListener("resize", measure);
@@ -697,9 +712,11 @@ function RecordingOverlay({
       </button>
 
       <div className="relative" style={{ width: cssW, height: cssH }}>
-        <div style={{ transform: `scale(${scale})`, transformOrigin: "top left" }}>
-          <AnimatedScene {...sceneProps} />
-        </div>
+        {scale > 0 && (
+          <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: 1080, height: 1920 }}>
+            <AnimatedScene {...sceneProps} />
+          </div>
+        )}
 
         {countdown !== null && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none z-[105]">

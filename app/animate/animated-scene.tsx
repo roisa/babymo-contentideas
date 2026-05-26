@@ -36,6 +36,31 @@ const W = 1080;
 const H = 1920;
 
 /**
+ * IG Reels / TikTok safe zone (1080×1920 canvas coordinates).
+ *
+ *  y=0     -> y=200   : UNSAFE TOP (IG status bar + caption username)
+ *  y=200   -> y=1340  : SAFE CONTENT AREA (≈60% of canvas)
+ *  y=1340  -> y=1920  : UNSAFE BOTTOM (IG sound, like/share, caption)
+ *
+ * Every text-bearing element (logo, title, body card) is positioned
+ * inside the safe band. The pose extends down to the canvas bottom
+ * intentionally — its feet getting covered by IG chrome is OK because
+ * the head/torso are still in the safe zone and that's the expressive
+ * part. The static renderer (lib/render.tsx) has its own composition
+ * tuned for non-Reels exports and is independent of these values.
+ */
+const SAFE_TOP = 200;
+const SAFE_BOTTOM = 1340;
+
+/* Element anchors inside the safe band: */
+const LOGO_TOP   = 240;   // logo y=240..400, height 160
+const TITLE_TOP  = 440;   // title y=440 down, height varies by length
+const POSE_TOP   = 620;   // pose y=620..1340, size 720 — exactly fills the
+                          // lower half of the safe zone
+const POSE_SIZE  = 720;
+const CARD_TOP   = 900;   // body card y=900..1300 — overlays pose torso
+
+/**
  * Vertical (1080×1920) animated stage rendered as DOM with CSS keyframes.
  * Each beat carries its own text + pose; advancing the active beat
  * re-mounts those elements so the enter/exit animations re-fire cleanly.
@@ -82,21 +107,21 @@ export function AnimatedScene({
       {/* Decoration layer (behind everything) */}
       <DecorLayer scene={scene} theme={theme} />
 
-      {/* Logo top-center */}
+      {/* Logo top-center — inside safe zone top */}
       {logoSrc && (
-        <div className="absolute z-20 flex justify-center" style={{ top: 100, left: 0, right: 0 }}>
+        <div className="absolute z-20 flex justify-center" style={{ top: LOGO_TOP, left: 0, right: 0 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} width={200} height={200} alt="" style={{ objectFit: "contain" }} />
+          <img src={logoSrc} width={170} height={170} alt="" style={{ objectFit: "contain" }} />
         </div>
       )}
 
-      {/* Title sticker */}
+      {/* Title sticker — below logo, still in safe zone */}
       {beat.title && (
         <div
           key={`title-${loopKey}-${active}`}
           className={cn("absolute z-20 text-center px-12 left-0 right-0", scene.titleAnim)}
           style={{
-            top: 340,
+            top: TITLE_TOP,
             fontFamily: "var(--font-display), system-ui, sans-serif",
             fontWeight: 700,
             fontSize: titleSizeFor(beat.title),
@@ -109,8 +134,12 @@ export function AnimatedScene({
         </div>
       )}
 
-      {/* Pose layer — render every pose, toggle enter/exit per active beat */}
-      <div className="absolute inset-0 z-10 flex items-end justify-center">
+      {/* Pose layer — sits in lower half of safe zone. Head/torso visible
+       *  above the body card; lower legs covered by the card. */}
+      <div
+        className="absolute z-10 flex justify-center"
+        style={{ top: POSE_TOP, height: POSE_SIZE, left: 0, right: 0 }}
+      >
         {beats.map((b, i) => {
           const isActive = i === active;
           const animClass = isActive ? scene.poseEnter : scene.poseExit;
@@ -121,12 +150,12 @@ export function AnimatedScene({
               key={`pose-${i}-${loopKey}-${isActive ? "in" : "out"}-${active}`}
               src={`/api/pose/${b.pose}`}
               alt=""
-              className={cn("absolute bottom-0", animClass)}
+              className={cn("absolute top-0", animClass)}
               style={{
-                width: 900,
-                height: 900,
+                width: POSE_SIZE,
+                height: POSE_SIZE,
                 left: "50%",
-                marginLeft: -450,
+                marginLeft: -POSE_SIZE / 2,
                 objectFit: "contain",
                 opacity: isActive ? 1 : 0,
                 pointerEvents: "none",
@@ -137,13 +166,15 @@ export function AnimatedScene({
         })}
       </div>
 
-      {/* Body card */}
+      {/* Body card — anchored to a fixed top inside safe zone (not bottom),
+       *  so it stays clear of IG/TikTok chrome. Card bottom stays under
+       *  SAFE_BOTTOM as long as content fits in ~440px. */}
       {(beat.body || beat.arabic || beat.attribution) && (
         <div
           key={`body-${loopKey}-${active}`}
           className={cn("absolute z-30 left-12 right-12", scene.cardAnim)}
           style={{
-            bottom: 140,
+            top: CARD_TOP,
             background: t.cardBody ?? t.card,
             border: `3px solid ${t.titleStroke}`,
             borderRadius: 36,
@@ -189,18 +220,17 @@ export function AnimatedScene({
         </div>
       )}
 
-      {/* Safe-zone overlay — IG/TikTok chrome reserves the top ~12% (status
-       * + caption) and bottom ~20% (sound name, buttons, caption). Anything
-       * inside the dashed boxes is at risk of being covered. */}
+      {/* Safe-zone overlay — visualizes the IG/TikTok chrome zones.
+       * Anything inside the dashed red bands risks being covered. */}
       {showSafeZones && (
         <>
           <div
-            className="absolute z-40 pointer-events-none border-2 border-dashed border-red-400/80"
-            style={{ top: 0, left: 0, right: 0, height: H * 0.12 }}
+            className="absolute z-40 pointer-events-none border-2 border-dashed border-red-400/80 bg-red-400/10"
+            style={{ top: 0, left: 0, right: 0, height: SAFE_TOP }}
           />
           <div
-            className="absolute z-40 pointer-events-none border-2 border-dashed border-red-400/80"
-            style={{ bottom: 0, left: 0, right: 0, height: H * 0.2 }}
+            className="absolute z-40 pointer-events-none border-2 border-dashed border-red-400/80 bg-red-400/10"
+            style={{ top: SAFE_BOTTOM, left: 0, right: 0, bottom: 0 }}
           />
         </>
       )}
@@ -208,11 +238,13 @@ export function AnimatedScene({
   );
 }
 
-/** Title size shrinks as length grows so longer headings still fit. */
+/** Title size shrinks as length grows so longer headings still fit
+ *  inside the ~180px between LOGO_TOP+height and POSE_TOP. */
 function titleSizeFor(text: string): number {
-  if (text.length > 60) return 70;
-  if (text.length > 40) return 88;
-  return 110;
+  if (text.length > 60) return 56;
+  if (text.length > 40) return 72;
+  if (text.length > 24) return 88;
+  return 100;
 }
 
 /** Multi-direction text-shadow that fakes a stroke around glyphs. */
