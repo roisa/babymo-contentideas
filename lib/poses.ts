@@ -364,17 +364,6 @@ export async function loadPoseDataUrl(
   }
 }
 
-/* ---------- All pose filenames (for future "pick a specific pose" UI) ---------- */
+/* ---------- All pose filenames — re-exported from the pure list ---------- */
 
-export const ALL_NAMED_POSES = [
-  "baby-mo-alright.png",
-  "baby-mo-idea.png",
-  "baby-mo-ok.png",
-  "baby-mo-run.png",
-  "baby-mo-thank-you.png",
-  "baby-mo-wow.png",
-  "baby-mo-yes.png",
-  "baby-mo-yeyy.png",
-];
-const ALL_EXTRAS = Array.from({ length: 42 }, (_, i) => `baby-mo-pose-${String(i + 1).padStart(2, "0")}.png`);
-export const ALL_POSES = [...ALL_NAMED_POSES, ...ALL_EXTRAS];
+export { ALL_POSES, ALL_NAMED_POSES } from "./poses-list";

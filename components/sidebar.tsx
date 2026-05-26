@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star, Settings } from "lucide-react";
+import { Sparkles, LayoutGrid, Calendar, Palette, Library, Heart, Star, Settings, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Studio", icon: LayoutGrid, color: "babymo-green" },
   { href: "/generate", label: "Generate", icon: Sparkles, color: "babymo-coral" },
+  { href: "/animate", label: "Animate", icon: Video, color: "babymo-coral" },
   { href: "/library", label: "Library", icon: Library, color: "babymo-yellow" },
   { href: "/calendar", label: "Calendar", icon: Calendar, color: "babymo-sky" },
   { href: "/themes", label: "Themes", icon: Palette, color: "babymo-orange" },
