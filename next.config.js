@@ -9,6 +9,7 @@ const nextConfig = {
     outputFileTracingIncludes: {
       "/api/render": [".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
       "/api/export-zip": [".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
+      "/api/warmup": [".fonts/**/*", "public/babymo-logo.png"],
       "/api/generate": [".fonts/**/*", ".emoji/**/*"],
       "/api/calendar": [".fonts/**/*", ".emoji/**/*"],
     },

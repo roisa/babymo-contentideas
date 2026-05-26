@@ -132,19 +132,66 @@ export const POSES_BY_CATEGORY: Record<string, string[]> = {
 };
 
 /**
- * The single most-iconic pose per category — used for single-slide
- * posts and as the FIRST slide of any carousel where this category
- * has a strong visual identity.
+ * Iconic poses per category — used for single-slide posts. The FIRST
+ * entry is the canonical iconic pose for the category; the rest are
+ * mood-matched alternates that rotate through a batch so 10 Daily Dua
+ * singles don't all look identical. See pickIconicPose() for rotation.
  */
-export const ICONIC_POSE: Record<string, string> = {
-  "daily-islamic": "baby-mo-thank-you.png",      // prayer hands
-  "emotional-childhood": "baby-mo-alright.png",  // warm wink
-  parenting: "baby-mo-ok.png",                   // calm firm
-  "kids-educational": "baby-mo-idea.png",        // pointing up
-  interactive: "baby-mo-yeyy.png",               // celebrating
-  story: "baby-mo-pose-11.png",                  // sit-wave inviting
-  reels: "baby-mo-run.png",                      // dynamic action
+export const ICONIC_POSES: Record<string, string[]> = {
+  "daily-islamic": [
+    "baby-mo-thank-you.png",     // prayer hands (canonical)
+    "baby-mo-pose-12.png",       // sit-dua reflective
+    "baby-mo-pose-17.png",       // sujud prostration
+  ],
+  "emotional-childhood": [
+    "baby-mo-alright.png",       // warm wink (canonical)
+    "baby-mo-pose-07.png",       // shy-blush warmth
+    "baby-mo-pose-28.png",       // dreamy looking up
+  ],
+  parenting: [
+    "baby-mo-ok.png",            // calm firm (canonical)
+    "baby-mo-pose-21.png",       // gentle thumbs
+    "baby-mo-pose-25.png",       // confident wink
+  ],
+  "kids-educational": [
+    "baby-mo-idea.png",          // pointing up (canonical)
+    "baby-mo-pose-22.png",       // thinking-chin
+    "baby-mo-wow.png",           // amazed cheeks
+  ],
+  interactive: [
+    "baby-mo-yeyy.png",          // celebrating (canonical)
+    "baby-mo-pose-35.png",       // peace signs
+    "baby-mo-pose-37.png",       // cheer fists
+  ],
+  story: [
+    "baby-mo-pose-11.png",       // sit-wave inviting (canonical)
+    "baby-mo-pose-06.png",       // sit cross-legged calm
+    "baby-mo-pose-18.png",       // contemplative
+  ],
+  reels: [
+    "baby-mo-run.png",           // dynamic action (canonical)
+    "baby-mo-pose-32.png",       // wave-walk
+    "baby-mo-pose-42.png",       // walking step
+  ],
 };
+
+/** Back-compat: callers that just want the canonical iconic pose. */
+export const ICONIC_POSE: Record<string, string> = Object.fromEntries(
+  Object.entries(ICONIC_POSES).map(([k, v]) => [k, v[0]])
+);
+
+/**
+ * Pick an iconic pose for a single-slide post, rotating across a batch.
+ * `batchIndex` is the index of this content within the current generation
+ * batch — passed through from /api/generate. Different batch positions
+ * land on different alternates so the team's grid feels alive instead
+ * of cloned. Falls back to the canonical pose when categoryId is missing.
+ */
+function pickIconicPose(categoryId: string, batchIndex: number): string {
+  const alternates = ICONIC_POSES[categoryId];
+  if (!alternates || alternates.length === 0) return DEFAULT_POSE;
+  return alternates[batchIndex % alternates.length];
+}
 
 /**
  * Per-content-type overrides — when a specific content type has a
@@ -249,16 +296,19 @@ const poseCache = new Map<string, string | null>();
  * @param contentTypeId   e.g. "pov-muslim-childhood" — used for type-specific overrides
  * @param slideIndex      0-based slide index
  * @param total           total slides in this content piece
+ * @param batchIndex      position in the current generation batch (for variety
+ *                        across single-post batches). Defaults to 0.
  */
 export function pickPoseFilename(
   categoryId: string,
   contentTypeId: string,
   slideIndex: number,
-  total: number
+  total: number,
+  batchIndex = 0
 ): string {
-  // 1) Single-slide posts always use the iconic pose for the category
+  // 1) Single-slide posts rotate through iconic alternates per batch position
   if (total === 1) {
-    return ICONIC_POSE[categoryId] ?? DEFAULT_POSE;
+    return pickIconicPose(categoryId, batchIndex);
   }
 
   // 2) Per-content-type overrides take precedence
@@ -273,7 +323,7 @@ export function pickPoseFilename(
     return pickFromTrack(track, slideIndex, total);
   }
 
-  return ICONIC_POSE[categoryId] ?? DEFAULT_POSE;
+  return pickIconicPose(categoryId, batchIndex);
 }
 
 /**
@@ -298,9 +348,10 @@ export async function loadPoseDataUrl(
   categoryId: string,
   contentTypeId: string,
   slideIndex: number,
-  total: number
+  total: number,
+  batchIndex = 0
 ): Promise<string | null> {
-  const filename = pickPoseFilename(categoryId, contentTypeId, slideIndex, total);
+  const filename = pickPoseFilename(categoryId, contentTypeId, slideIndex, total, batchIndex);
   if (poseCache.has(filename)) return poseCache.get(filename) ?? null;
   try {
     const buf = await readFile(path.join(process.cwd(), POSES_DIR, filename));
