@@ -43,10 +43,23 @@ export function AnimatorClient() {
   const fromId = search.get("from");
 
   const items = useLibrary((s) => s.items);
-  const sourceContent = useMemo(
-    () => (fromId ? items.find((i) => i.id === fromId) ?? null : null),
-    [fromId, items]
-  );
+  const sourceContent = useMemo(() => {
+    if (!fromId) return null;
+    // First check the persistent Library store.
+    const fromLib = items.find((i) => i.id === fromId);
+    if (fromLib) return fromLib;
+    // Fallback to sessionStorage — Calendar pieces and fresh Generate
+    // results live there because they aren't in the Library yet.
+    if (typeof window !== "undefined") {
+      try {
+        const cached = sessionStorage.getItem(`babymo-animate-${fromId}`);
+        if (cached) return JSON.parse(cached) as import("@/lib/types").GeneratedContent;
+      } catch {
+        /* fall through */
+      }
+    }
+    return null;
+  }, [fromId, items]);
   const isFromContent = Boolean(sourceContent);
 
   // ---- Shared state ----

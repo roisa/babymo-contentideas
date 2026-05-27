@@ -96,19 +96,21 @@ export const ARABIC_LOOKUP: Record<string, string> = {
   "hr. nasa'i 1733": "سُبْحَانَ الْمَلِكِ الْقُدُّوسِ",
   "hr. nasai 1733": "سُبْحَانَ الْمَلِكِ الْقُدُّوسِ",
   "hr. abu dawud 1418": "إِنَّ اللَّهَ زَادَكُمْ صَلَاةً وَهِيَ الْوِتْرُ",
+  "hr. abu dawud 5096": "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا",
   "hr. ibnu sunni": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
 };
 
 /**
  * Normalize an attribution string for lookup. Strips parens, trims
- * whitespace, lowercases. So `"(QS. Al-Inshirah: 5-6)"` →
- * `"qs. al-inshirah: 5-6"`.
+ * whitespace, lowercases, and canonicalizes the "Abu Daud" / "Abu Dawud"
+ * spelling so seeds using either form resolve to the same key.
  */
 function normalizeAttribution(attr: string): string {
   return attr
     .replace(/[()]/g, "")
     .trim()
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/\bdaud\b/g, "dawud");
 }
 
 /**

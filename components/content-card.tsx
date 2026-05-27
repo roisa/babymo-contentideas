@@ -45,7 +45,18 @@ export function ContentCard({ content, onRemove }: Props) {
           <Button size="sm" variant="soft" className="flex-1" onClick={() => setOpen(true)}>
             <Eye className="h-3.5 w-3.5 mr-1.5" /> View
           </Button>
-          <Button asChild size="icon" variant="soft" className="h-8 w-8" title="Animate as reel">
+          <Button
+            asChild
+            size="icon"
+            variant="soft"
+            className="h-8 w-8"
+            title="Animate as reel"
+            onClick={() => {
+              try {
+                sessionStorage.setItem(`babymo-animate-${content.id}`, JSON.stringify(content));
+              } catch { /* swallow */ }
+            }}
+          >
             <Link href={`/animate?from=${encodeURIComponent(content.id)}`}>
               <Video className="h-3.5 w-3.5" />
             </Link>
@@ -157,7 +168,26 @@ export function ContentDetailDialog({
               <div className="text-xs text-muted-foreground leading-relaxed">{content.hashtags.join("  ")}</div>
             </div>
             <ExportButton content={content} variant="full" />
-            <Button asChild variant="soft" className="w-full">
+            <Button
+              asChild
+              variant="soft"
+              className="w-full"
+              onClick={() => {
+                // Stash the content in sessionStorage so the Animator can
+                // find it even when the source isn't in the library store
+                // yet (Calendar pieces, fresh Generate results). Animator
+                // falls back to this if items.find() returns undefined.
+                try {
+                  sessionStorage.setItem(
+                    `babymo-animate-${content.id}`,
+                    JSON.stringify(content)
+                  );
+                } catch {
+                  /* sessionStorage disabled / full — Animator will fall
+                   * back to manual mode, which is the previous behavior. */
+                }
+              }}
+            >
               <Link href={`/animate?from=${encodeURIComponent(content.id)}`}>
                 <Video className="h-4 w-4 mr-2" /> Animate as Reel
               </Link>
