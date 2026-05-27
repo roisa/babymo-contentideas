@@ -294,5 +294,317 @@
     "width": 860,
     "height": 156,
     "bytes": 14162
+  },
+  "hr-al-hakim-3392": {
+    "attribution": "hr. al-hakim 3392",
+    "arabic": "مَنْ قَرَأَ سُورَةَ الْكَهْفِ يَوْمَ الْجُمُعَةِ أَضَاءَ لَهُ مِنَ النُّورِ مَا بَيْنَ الْجُمُعَتَيْنِ",
+    "file": "hr-al-hakim-3392.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 22246
+  },
+  "qs-al-anbiya-87": {
+    "attribution": "qs. al-anbiya: 87",
+    "arabic": "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+    "file": "qs-al-anbiya-87.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 14955
+  },
+  "qs-al-ankabut-45": {
+    "attribution": "qs. al-ankabut: 45",
+    "arabic": "إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنْكَرِ",
+    "file": "qs-al-ankabut-45.png",
+    "width": 860,
+    "height": 138,
+    "bytes": 14473
+  },
+  "qs-al-baqarah-201": {
+    "attribution": "qs. al-baqarah: 201",
+    "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+    "file": "qs-al-baqarah-201.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 17868
+  },
+  "qs-al-isra-24": {
+    "attribution": "qs. al-isra: 24",
+    "arabic": "وَاخْفِضْ لَهُمَا جَنَاحَ الذُّلِّ مِنَ الرَّحْمَةِ وَقُلْ رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
+    "file": "qs-al-isra-24.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 22599
+  },
+  "qs-al-imran-190": {
+    "attribution": "qs. al-imran: 190",
+    "arabic": "إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِأُولِي الْأَلْبَابِ",
+    "file": "qs-al-imran-190.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 25012
+  },
+  "qs-an-naba-9": {
+    "attribution": "qs. an-naba: 9",
+    "arabic": "وَجَعَلْنَا نَوْمَكُمْ سُبَاتًا",
+    "file": "qs-an-naba-9.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 12117
+  },
+  "qs-ar-rum-24": {
+    "attribution": "qs. ar-rum: 24",
+    "arabic": "وَمِنْ آيَاتِهِ يُرِيكُمُ الْبَرْقَ خَوْفًا وَطَمَعًا",
+    "file": "qs-ar-rum-24.png",
+    "width": 860,
+    "height": 156,
+    "bytes": 16049
+  },
+  "qs-at-talaq-2-3": {
+    "attribution": "qs. at-talaq: 2-3",
+    "arabic": "وَمَنْ يَتَّقِ اللَّهَ يَجْعَلْ لَهُ مَخْرَجًا * وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ",
+    "file": "qs-at-talaq-2-3.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 18313
+  },
+  "qs-at-talaq-3": {
+    "attribution": "qs. at-talaq: 3",
+    "arabic": "وَمَنْ يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
+    "file": "qs-at-talaq-3.png",
+    "width": 860,
+    "height": 174,
+    "bytes": 15453
+  },
+  "qs-az-zumar-53": {
+    "attribution": "qs. az-zumar: 53",
+    "arabic": "قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنْفُسِهِمْ لَا تَقْنَطُوا مِنْ رَحْمَةِ اللَّهِ",
+    "file": "qs-az-zumar-53.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 20179
+  },
+  "qs-ibrahim-7": {
+    "attribution": "qs. ibrahim: 7",
+    "arabic": "لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ",
+    "file": "qs-ibrahim-7.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 14445
+  },
+  "qs-ibrahim-34": {
+    "attribution": "qs. ibrahim: 34",
+    "arabic": "وَإِنْ تَعُدُّوا نِعْمَتَ اللَّهِ لَا تُحْصُوهَا",
+    "file": "qs-ibrahim-34.png",
+    "width": 860,
+    "height": 156,
+    "bytes": 13549
+  },
+  "qs-thaha-114": {
+    "attribution": "qs. thaha: 114",
+    "arabic": "رَبِّ زِدْنِي عِلْمًا",
+    "file": "qs-thaha-114.png",
+    "width": 860,
+    "height": 92,
+    "bytes": 7561
+  },
+  "qs-yusuf-90": {
+    "attribution": "qs. yusuf: 90",
+    "arabic": "إِنَّهُ مَنْ يَتَّقِ وَيَصْبِرْ فَإِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ",
+    "file": "qs-yusuf-90.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 17327
+  },
+  "hr-bukhari-1129": {
+    "attribution": "hr. bukhari 1129",
+    "arabic": "صَلَاةُ اللَّيْلِ مَثْنَى مَثْنَى",
+    "file": "hr-bukhari-1129.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 13079
+  },
+  "hr-bukhari-1147": {
+    "attribution": "hr. bukhari 1147",
+    "arabic": "صَلَاةُ اللَّيْلِ مَثْنَى مَثْنَى",
+    "file": "hr-bukhari-1147.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 13079
+  },
+  "hr-bukhari-1899": {
+    "attribution": "hr. bukhari 1899",
+    "arabic": "إِذَا جَاءَ رَمَضَانُ فُتِّحَتْ أَبْوَابُ الْجَنَّةِ وَغُلِّقَتْ أَبْوَابُ النَّارِ وَصُفِّدَتِ الشَّيَاطِينُ",
+    "file": "hr-bukhari-1899.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 23826
+  },
+  "hr-bukhari-6669": {
+    "attribution": "hr. bukhari 6669",
+    "arabic": "إِذَا نَسِيَ أَحَدُكُمْ فَأَكَلَ وَشَرِبَ فَلْيُتِمَّ صَوْمَهُ فَإِنَّمَا أَطْعَمَهُ اللَّهُ وَسَقَاهُ",
+    "file": "hr-bukhari-6669.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 21701
+  },
+  "hr-bukhari-953": {
+    "attribution": "hr. bukhari 953",
+    "arabic": "كَانَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ لَا يَغْدُو يَوْمَ الْفِطْرِ حَتَّى يَأْكُلَ تَمَرَاتٍ",
+    "file": "hr-bukhari-953.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 21980
+  },
+  "hr-bukhari-986": {
+    "attribution": "hr. bukhari 986",
+    "arabic": "كَانَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ إِذَا كَانَ يَوْمُ عِيدٍ خَالَفَ الطَّرِيقَ",
+    "file": "hr-bukhari-986.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 19730
+  },
+  "hr-bukhari-2017": {
+    "attribution": "hr. bukhari 2017",
+    "arabic": "تَحَرَّوْا لَيْلَةَ الْقَدْرِ فِي الْوِتْرِ مِنَ الْعَشْرِ الْأَوَاخِرِ مِنْ رَمَضَانَ",
+    "file": "hr-bukhari-2017.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 17824
+  },
+  "hr-bukhari-5376": {
+    "attribution": "hr. bukhari 5376",
+    "arabic": "كُلْ بِيَمِينِكَ وَكُلْ مِمَّا يَلِيكَ",
+    "file": "hr-bukhari-5376.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 14830
+  },
+  "hr-bukhari-6038": {
+    "attribution": "hr. bukhari 6038",
+    "arabic": "أَحَبُّ الدِّينِ إِلَى اللَّهِ الْحَنِيفِيَّةُ السَّمْحَةُ",
+    "file": "hr-bukhari-6038.png",
+    "width": 860,
+    "height": 138,
+    "bytes": 14372
+  },
+  "hr-bukhari-37": {
+    "attribution": "hr. bukhari 37",
+    "arabic": "مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ",
+    "file": "hr-bukhari-37.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 17078
+  },
+  "hr-muslim-234": {
+    "attribution": "hr. muslim 234",
+    "arabic": "مَنْ تَوَضَّأَ فَأَحْسَنَ الْوُضُوءَ خَرَجَتْ خَطَايَاهُ مِنْ جَسَدِهِ",
+    "file": "hr-muslim-234.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 14856
+  },
+  "hr-muslim-408": {
+    "attribution": "hr. muslim 408",
+    "arabic": "أَقْرَبُ مَا يَكُونُ الْعَبْدُ مِنْ رَبِّهِ وَهُوَ سَاجِدٌ",
+    "file": "hr-muslim-408.png",
+    "width": 860,
+    "height": 138,
+    "bytes": 13973
+  },
+  "hr-muslim-759": {
+    "attribution": "hr. muslim 759",
+    "arabic": "مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ",
+    "file": "hr-muslim-759.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 17078
+  },
+  "hr-muslim-762": {
+    "attribution": "hr. muslim 762",
+    "arabic": "لَيْلَةُ الْقَدْرِ لَيْلَةٌ طَلْقَةٌ بَلْجَةٌ لَا حَارَّةٌ وَلَا بَارِدَةٌ",
+    "file": "hr-muslim-762.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 15780
+  },
+  "hr-muslim-1342": {
+    "attribution": "hr. muslim 1342",
+    "arabic": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ",
+    "file": "hr-muslim-1342.png",
+    "width": 860,
+    "height": 120,
+    "bytes": 13399
+  },
+  "hr-muslim-223": {
+    "attribution": "hr. muslim 223",
+    "arabic": "الطَّهُورُ شَطْرُ الْإِيمَانِ",
+    "file": "hr-muslim-223.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 12836
+  },
+  "hr-muslim-1907": {
+    "attribution": "hr. muslim 1907",
+    "arabic": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+    "file": "hr-muslim-1907.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 13128
+  },
+  "hr-tirmidzi-1905": {
+    "attribution": "hr. tirmidzi 1905",
+    "arabic": "رِضَا الرَّبِّ فِي رِضَا الْوَالِدِ وَسَخَطُ الرَّبِّ فِي سَخَطِ الْوَالِدِ",
+    "file": "hr-tirmidzi-1905.png",
+    "width": 860,
+    "height": 182,
+    "bytes": 15610
+  },
+  "hr-tirmidzi-1956": {
+    "attribution": "hr. tirmidzi 1956",
+    "arabic": "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ",
+    "file": "hr-tirmidzi-1956.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 17261
+  },
+  "hr-tirmidzi-3464": {
+    "attribution": "hr. tirmidzi 3464",
+    "arabic": "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+    "file": "hr-tirmidzi-3464.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 23964
+  },
+  "hr-nasa-i-1733": {
+    "attribution": "hr. nasa'i 1733",
+    "arabic": "سُبْحَانَ الْمَلِكِ الْقُدُّوسِ",
+    "file": "hr-nasa-i-1733.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 13345
+  },
+  "hr-nasai-1733": {
+    "attribution": "hr. nasai 1733",
+    "arabic": "سُبْحَانَ الْمَلِكِ الْقُدُّوسِ",
+    "file": "hr-nasai-1733.png",
+    "width": 860,
+    "height": 191,
+    "bytes": 13345
+  },
+  "hr-abu-dawud-1418": {
+    "attribution": "hr. abu dawud 1418",
+    "arabic": "إِنَّ اللَّهَ زَادَكُمْ صَلَاةً وَهِيَ الْوِتْرُ",
+    "file": "hr-abu-dawud-1418.png",
+    "width": 860,
+    "height": 174,
+    "bytes": 16099
+  },
+  "hr-ibnu-sunni": {
+    "attribution": "hr. ibnu sunni",
+    "arabic": "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+    "file": "hr-ibnu-sunni.png",
+    "width": 860,
+    "height": 244,
+    "bytes": 25133
   }
 }

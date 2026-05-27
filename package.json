@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "pregenerate-arabic": "tsx scripts/pregenerate-arabic.ts"
+    "pregenerate-arabic": "npx tsx scripts/pregenerate-arabic.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",

@@ -11,6 +11,7 @@
  */
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { findLookupKey } from "./arabic-lookup";
 
 const CACHE_DIR = path.join(process.cwd(), "public", "arabic-cache");
 
@@ -64,7 +65,19 @@ export async function getCachedArabicByAttribution(
   attribution: string | undefined
 ): Promise<CachedArabic | null> {
   if (!attribution) return null;
-  const slug = slugAttribution(attribution);
+  // Resolve via the lookup's matcher first — handles joined attributions
+  // like "HR. Bukhari 1923 & HR. Muslim 1095" by finding the first
+  // recognizable part. Falls back to the raw normalized form so the
+  // cache also catches direct matches that haven't been re-pregenerated yet.
+  const canonicalKey = findLookupKey(attribution);
+  const slug = canonicalKey
+    ? canonicalKey
+        .replace(/[()]/g, "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+    : slugAttribution(attribution);
   if (!slug) return null;
 
   const cached = pngCache.get(slug);
