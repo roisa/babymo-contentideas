@@ -703,42 +703,61 @@ function RecordingOverlay({
   countdown: number | null;
   onExit: () => void;
 }) {
-  // Sizing notes (iPhone Safari):
-  // - position:fixed + inset:0 covers the viewport, BUT the URL bar
-  //   collapses on scroll, so the container's reported dimensions
-  //   shift mid-transition. ResizeObserver on the container caught
-  //   most cases but missed the initial "URL bar visible" state on
-  //   first paint — stage rendered tiny in the top-left (user bug).
-  // - visualViewport gives the *actually visible* width+height in
-  //   real-time on iOS, accounting for URL bar position and zoom.
-  // We layer: visualViewport (best) → innerWidth/Height (fallback) →
-  // container getBoundingClientRect (last resort).
+  // iPhone Safari sizing strategy. Earlier attempts measured ONE
+  // source (visualViewport, then innerWidth) — both returned
+  // mid-transition values when the URL bar collapse animation was
+  // in flight, leaving the stage tiny in the top-left.
+  //
+  // Now we take the MAX across every available source:
+  //   - window.visualViewport.{width,height} (iOS truthiest source)
+  //   - window.{innerWidth,innerHeight}
+  //   - document.documentElement.{clientWidth,clientHeight}
+  //   - containerRef.getBoundingClientRect()
+  // Whichever has the largest value is the most-likely-correct full
+  // viewport size. We also lock body scroll (via body.is-recording
+  // class) so URL bar can't reappear from a stray scroll mid-record.
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
 
   useLayoutEffect(() => {
+    document.body.classList.add("is-recording");
+    return () => {
+      document.body.classList.remove("is-recording");
+    };
+  }, []);
+
+  useLayoutEffect(() => {
     const update = () => {
       const vv = typeof window !== "undefined" ? window.visualViewport : null;
-      const vw = vv?.width ?? window.innerWidth;
-      const vh = vv?.height ?? window.innerHeight;
-      if (vw > 0 && vh > 0) {
-        setSize({ w: vw, h: vh });
-        return;
-      }
-      // Last resort — measure the container itself.
+      const sources = {
+        vvW: vv?.width ?? 0,
+        vvH: vv?.height ?? 0,
+        innerW: window.innerWidth ?? 0,
+        innerH: window.innerHeight ?? 0,
+        docW: document.documentElement?.clientWidth ?? 0,
+        docH: document.documentElement?.clientHeight ?? 0,
+      };
       const el = containerRef.current;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) setSize({ w: rect.width, h: rect.height });
-      }
+      const rect = el?.getBoundingClientRect();
+      const w = Math.max(sources.vvW, sources.innerW, sources.docW, rect?.width ?? 0);
+      const h = Math.max(sources.vvH, sources.innerH, sources.docH, rect?.height ?? 0);
+      if (w > 0 && h > 0) setSize({ w, h });
     };
     update();
+    // Multiple delayed re-measurements catch the URL-bar-collapsed state
+    // even when the initial paint happens before it settles.
+    const t1 = setTimeout(update, 100);
+    const t2 = setTimeout(update, 400);
+    const t3 = setTimeout(update, 900);
     window.addEventListener("resize", update);
     window.visualViewport?.addEventListener("resize", update);
     window.visualViewport?.addEventListener("scroll", update);
     const ro = new ResizeObserver(update);
     if (containerRef.current) ro.observe(containerRef.current);
     return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
       window.removeEventListener("resize", update);
       window.visualViewport?.removeEventListener("resize", update);
       window.visualViewport?.removeEventListener("scroll", update);
