@@ -380,17 +380,29 @@ export async function renderArabicAsImage(
       fitTo: { mode: "width", value: maxWidth },
     });
     const png = resvg.render().asPng();
-    // Sanity check: a real Arabic render of ≥1 word at 64-80pt produces a
-    // PNG well over 1KB. Anything tiny here means Resvg silently produced
-    // a transparent canvas (font shaping failed, glyph missing, etc.) —
-    // returning null tells the caller to skip the Arabic slot entirely
-    // instead of reserving a 180px gap for an invisible image.
-    if (png.length < 800) return null;
+    // Server-side diagnostic — shows up in Vercel function logs so we
+    // can verify the Arabic pipeline is reaching here and producing
+    // reasonable-sized PNGs. If you ever see "fontFound: true" with a
+    // tiny PNG size (<500 bytes), Resvg is shaping to blank.
+    if (process.env.BABYMO_LOG_ARABIC === "1" || process.env.NODE_ENV !== "production") {
+      console.log("[arabic-render]", {
+        textLen: text.length,
+        textHead: text.slice(0, 30),
+        fontFound: true,
+        pngLen: png.length,
+        height,
+        lines: lines.length,
+      });
+    }
+    // No size filter — even a small valid render is better than no
+    // Arabic. The previous < 800 byte threshold was speculative and
+    // filtered out legitimate short-Arabic renders.
     return {
       dataUrl: `data:image/png;base64,${png.toString("base64")}`,
       height,
     };
-  } catch {
+  } catch (e) {
+    console.warn("[arabic-render] Resvg threw:", e);
     return null;
   }
 }

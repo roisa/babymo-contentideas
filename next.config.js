@@ -19,6 +19,7 @@ const nextConfig = {
       "/api/warmup": [".fonts/**/*", "public/babymo-logo.png"],
       "/api/pose/[name]": ["baby-mo-poses/**/*"],
       "/api/arabic": [".fonts/**/*"],
+      "/api/arabic/debug": [".fonts/**/*"],
       "/api/generate": [".fonts/**/*", ".emoji/**/*"],
       "/api/calendar": [".fonts/**/*", ".emoji/**/*"],
     },
