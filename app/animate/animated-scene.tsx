@@ -236,9 +236,7 @@ export function AnimatedScene({
               {beat.kicker}
             </div>
           )}
-          {arabic && (
-            <ArabicLine text={arabic} color={t.title} loopKey={`${loopKey}-${arabic}`} />
-          )}
+          {arabic && <ArabicLine text={arabic} color={t.title} />}
           {beat.body && (
             <BodyText body={beat.body} ink={t.ink} accent={t.title} />
           )}
@@ -301,54 +299,43 @@ function stickerStroke(color: string, w: number): string {
 
 /* ---------- Arabic via /api/arabic (Resvg + harfbuzz shaping) ---------- */
 
-function ArabicLine({ text, color, loopKey }: { text: string; color: string; loopKey: string }) {
-  const [src, setSrc] = useState<string | null>(null);
-  const [height, setHeight] = useState<number>(180);
-  const lastRequested = useRef<string | null>(null);
-
-  useEffect(() => {
-    const cacheKey = `${text}|${color}`;
-    if (lastRequested.current === cacheKey) return;
-    lastRequested.current = cacheKey;
-    let aborted = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/arabic", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, color, fontSize: 80, maxWidth: 860 }),
-        });
-        if (!res.ok) return;
-        const h = res.headers.get("X-Arabic-Height");
-        if (h && !aborted) setHeight(parseInt(h, 10));
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        if (!aborted) setSrc(url);
-      } catch {
-        /* swallow */
-      }
-    })();
-    return () => {
-      aborted = true;
-    };
-  }, [text, color]);
-
-  if (!src) {
-    // Fallback while loading — plain Arabic in system font (won't shape well
-    // but at least shows something during the brief fetch).
-    return (
-      <div
-        dir="rtl"
-        style={{ fontSize: 64, fontFamily: '"Noto Naskh Arabic", "Cairo", serif', color, marginBottom: 16, textAlign: "center" }}
-      >
-        {text}
-      </div>
-    );
-  }
+/**
+ * Render Arabic text in the body card.
+ *
+ * Modern browsers (iOS Safari, Chrome, Firefox) all shape Arabic
+ * correctly via system fonts when `dir="rtl"` is set. We used to fetch
+ * a pre-shaped PNG from /api/arabic, but that round-trip introduced a
+ * flash-and-disappear bug: the system-font fallback rendered first,
+ * then the PNG (sometimes blank when Resvg shaping failed) replaced
+ * it — user saw the Arabic appear and vanish.
+ *
+ * Native rendering is more reliable on the client. The static renderer
+ * in lib/render.tsx still uses Resvg+PNG because Satori (its layout
+ * engine) can't shape Arabic — but here in the DOM, the browser
+ * handles it natively.
+ */
+function ArabicLine({ text, color }: { text: string; color: string; loopKey?: string }) {
   return (
-    <div style={{ display: "flex", justifyContent: "center", width: "100%", marginBottom: 16 }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img key={loopKey} src={src} alt="" width={860} height={height} />
+    <div
+      dir="rtl"
+      style={{
+        // Font stack: prefer Naskh / Amiri / Scheherazade for traditional
+        // shaping, then Cairo (which we bundle for the static renderer),
+        // then iOS system Arabic (Geeza Pro), then generic serif.
+        fontFamily:
+          '"Noto Naskh Arabic", "Amiri", "Scheherazade New", "Cairo", "Geeza Pro", serif',
+        fontSize: 80,
+        lineHeight: 1.55,
+        color,
+        marginBottom: 16,
+        marginTop: 4,
+        fontWeight: 700,
+        textAlign: "center",
+        letterSpacing: -1,
+        width: "100%",
+      }}
+    >
+      {text}
     </div>
   );
 }
