@@ -368,14 +368,18 @@ export async function renderArabicAsImage(
   const topPad = Math.round(activeSize * 0.85);
   const height = topPad + lineHeight * (lines.length - 1) + Math.round(activeSize * 0.6);
 
-  // tspan inside an RTL <text> renders incorrectly in resvg — use one
-  // <text> element per line, stacked vertically.
+  // Use font-family="sans-serif" (a CSS generic) and alias EVERY family
+  // bucket to point at the same Cairo buffer in Resvg's font options.
+  // Reason: Vercel's resvg-js was producing tofu when the SVG asked for
+  // "Cairo" by name — the TTF's internal family name doesn't match
+  // literally so Resvg fell back to a glyphless default. Generic names
+  // route through the family-alias config below, which always resolves.
   const textElements = lines
     .map(
       (line, i) =>
         `<text x="${maxWidth / 2}" y="${topPad + i * lineHeight}"
         text-anchor="middle"
-        font-family="Cairo"
+        font-family="sans-serif"
         font-size="${activeSize}"
         font-weight="700"
         fill="${color}"
@@ -391,7 +395,19 @@ export async function renderArabicAsImage(
 
   try {
     const resvg = new Resvg(svg, {
-      font: { fontBuffers: [fontBuf], loadSystemFonts: false, defaultFontFamily: "Cairo" } as any,
+      font: {
+        fontBuffers: [fontBuf],
+        loadSystemFonts: false,
+        // Alias every CSS generic family + default to the same buffer so
+        // resvg always resolves to the Arabic font regardless of how the
+        // <text> element spells out its family.
+        defaultFontFamily: "sans-serif",
+        serifFamily: "sans-serif",
+        sansSerifFamily: "sans-serif",
+        cursiveFamily: "sans-serif",
+        fantasyFamily: "sans-serif",
+        monospaceFamily: "sans-serif",
+      } as any,
       fitTo: { mode: "width", value: maxWidth },
     });
     const png = resvg.render().asPng();
