@@ -247,10 +247,16 @@
 .stage-vertical { aspect-ratio: 9 / 16; }
 
 .stage-recording {
+  /* top:0 + bottom:0 + left:0 + right:0 makes this fill the viewport
+   * without needing 100vh/100dvh — Safari handles the URL-bar collapse
+   * by adjusting bottom inset automatically. We measure with
+   * visualViewport in JS for the actual sizing math (see
+   * RecordingOverlay). */
   position: fixed;
-  inset: 0;
-  /* iPhone Safari: dynamic viewport height tracks URL-bar collapse. */
-  height: 100dvh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 100;
   background: #000;
   display: flex;

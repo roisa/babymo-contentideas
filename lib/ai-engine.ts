@@ -4,6 +4,7 @@ import { getSeedsFor, SEEDS, type SampleSeed } from "./samples";
 import { suggestTheme } from "./themes";
 import { getIslamicContext, type IslamicPhase } from "./hijri";
 import { trackUsage } from "./usage-store";
+import { lookupArabicByAttribution } from "./arabic-lookup";
 import type { GeneratedContent, GenerationRequest, Slide } from "./types";
 
 /** Pick the theme for one item: when autoTheme is on, derive from
@@ -136,7 +137,21 @@ function userPrompt(req: GenerationRequest, slidesCount: number, seed?: SampleSe
     parts.push(`Extra direction from the team: ${req.customPrompt}`);
   }
   if (seed) {
-    parts.push(`Reference an internal seed for VOICE only (do NOT copy): "${seed.title}" — ${seed.hook}`);
+    // Expose seed as VOICE reference + authentic Arabic source. The AI
+    // can either reuse the seed's exact hadith/ayah (copying its arabic
+    // and attribution verbatim — these are pre-verified by the team) OR
+    // pick a different well-known reference where it knows the exact
+    // arabic. Inventing arabic is forbidden by the system prompt.
+    parts.push(`Reference seed for VOICE (vary the framing, but feel free to reuse the canonical arabic/attribution verbatim — these are pre-verified):`);
+    parts.push(`  title: "${seed.title}"`);
+    parts.push(`  hook: "${seed.hook}"`);
+    const seedFirstSlideWithArabic = seed.slides.find((s) => s.arabic);
+    if (seedFirstSlideWithArabic) {
+      parts.push(`  authentic arabic example: "${seedFirstSlideWithArabic.arabic}"`);
+      if (seedFirstSlideWithArabic.attribution) {
+        parts.push(`  attribution: "${seedFirstSlideWithArabic.attribution}"`);
+      }
+    }
   }
   return parts.join("\n");
 }
@@ -184,14 +199,25 @@ function normalize(raw: RawContent, fallback: SampleSeed | undefined, req: Gener
   const meta = findContentType(req.contentTypeId);
   const labelFooter = `Baby Mo · ${meta?.type.label ?? "Content"}`;
   const slidesRaw = (raw.slides ?? []).slice(0, slidesCount);
-  const slides: Slide[] = slidesRaw.map((s, i) => ({
-    heading: (s.heading ?? "").trim() || (fallback?.slides[i]?.heading ?? `Slide ${i + 1}`),
-    body: (s.body ?? "").trim() || (fallback?.slides[i]?.body ?? "Soft Islam in small daily moments."),
-    footer: (s.footer ?? "").trim() || labelFooter,
-    arabic: s.arabic?.trim() || fallback?.slides[i]?.arabic,
-    kicker: s.kicker?.trim() || fallback?.slides[i]?.kicker,
-    attribution: s.attribution?.trim() || fallback?.slides[i]?.attribution,
-  }));
+  const slides: Slide[] = slidesRaw.map((s, i) => {
+    const attribution = s.attribution?.trim() || fallback?.slides[i]?.attribution;
+    // Arabic priority: AI output → seed slide → curated lookup by attribution.
+    // The lookup catches the most-common-omission case where the AI gives
+    // us a slide with "(QS. Al-Inshirah: 5-6)" but forgets the Arabic.
+    const arabic =
+      s.arabic?.trim() ||
+      fallback?.slides[i]?.arabic ||
+      lookupArabicByAttribution(attribution) ||
+      undefined;
+    return {
+      heading: (s.heading ?? "").trim() || (fallback?.slides[i]?.heading ?? `Slide ${i + 1}`),
+      body: (s.body ?? "").trim() || (fallback?.slides[i]?.body ?? "Soft Islam in small daily moments."),
+      footer: (s.footer ?? "").trim() || labelFooter,
+      arabic,
+      kicker: s.kicker?.trim() || fallback?.slides[i]?.kicker,
+      attribution,
+    };
+  });
   while (slides.length < slidesCount) {
     const i = slides.length;
     slides.push({

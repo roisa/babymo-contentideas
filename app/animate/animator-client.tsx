@@ -703,24 +703,47 @@ function RecordingOverlay({
   countdown: number | null;
   onExit: () => void;
 }) {
-  // Measure the container (which has position:fixed; inset:0) instead of
-  // window.innerWidth/Height. Safari mid-transition (URL bar collapsing)
-  // returns stale window dims; ResizeObserver re-fires once the actual
-  // visual viewport settles.
+  // Sizing notes (iPhone Safari):
+  // - position:fixed + inset:0 covers the viewport, BUT the URL bar
+  //   collapses on scroll, so the container's reported dimensions
+  //   shift mid-transition. ResizeObserver on the container caught
+  //   most cases but missed the initial "URL bar visible" state on
+  //   first paint — stage rendered tiny in the top-left (user bug).
+  // - visualViewport gives the *actually visible* width+height in
+  //   real-time on iOS, accounting for URL bar position and zoom.
+  // We layer: visualViewport (best) → innerWidth/Height (fallback) →
+  // container getBoundingClientRect (last resort).
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
 
   useLayoutEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
     const update = () => {
-      const rect = el.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) setSize({ w: rect.width, h: rect.height });
+      const vv = typeof window !== "undefined" ? window.visualViewport : null;
+      const vw = vv?.width ?? window.innerWidth;
+      const vh = vv?.height ?? window.innerHeight;
+      if (vw > 0 && vh > 0) {
+        setSize({ w: vw, h: vh });
+        return;
+      }
+      // Last resort — measure the container itself.
+      const el = containerRef.current;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) setSize({ w: rect.width, h: rect.height });
+      }
     };
     update();
+    window.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("scroll", update);
     const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
   }, []);
 
   const scale = size ? Math.min(size.w / 1080, size.h / 1920) : 0;
