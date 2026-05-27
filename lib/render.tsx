@@ -6,6 +6,7 @@ import { FORMATS, CATEGORIES, findContentType } from "./content-types";
 import { getTheme, type Theme } from "./themes";
 import type { GeneratedContent, Slide } from "./types";
 import { loadPoseDataUrl } from "./poses";
+import { getCachedArabicByAttribution } from "./arabic-cache";
 import React from "react";
 
 let cachedFonts: {
@@ -955,11 +956,22 @@ export async function renderSlidePng(content: GeneratedContent, slideIndex: numb
   const arabicText = slide.arabic && slide.arabic.trim().length > 0 ? slide.arabic.trim() : null;
   const arabicMaxWidth = fmt.width - 220; // body card inner width
   const arabicFontSize = 64;
+  // Arabic resolution order:
+  //   1) Pre-rendered PNG from public/arabic-cache/ (committed to repo,
+  //      rendered locally where Resvg's harfbuzz works). Bypasses the
+  //      Vercel runtime Resvg bug entirely.
+  //   2) Runtime renderArabicAsImage — fallback for AI-generated Arabic
+  //      not in the curated cache. Works locally but produces tofu on
+  //      Vercel (until we swap to harfbuzzjs).
   const [fonts, logoDataUrl, arabicResult, poseDataUrl] = await Promise.all([
     loadFonts(),
     loadLogoDataUrl(),
     arabicText
-      ? renderArabicAsImage(arabicText, theme.title, arabicFontSize, arabicMaxWidth)
+      ? (async () => {
+          const cached = await getCachedArabicByAttribution(slide.attribution);
+          if (cached) return cached;
+          return renderArabicAsImage(arabicText, theme.title, arabicFontSize, arabicMaxWidth);
+        })()
       : Promise.resolve(null),
     loadPoseDataUrl(content.categoryId, content.contentTypeId, slideIndex, content.slides.length, hashIdToBatchIndex(content.id)),
   ]);
