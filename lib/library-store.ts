@@ -180,6 +180,26 @@ export async function clearAll(): Promise<void> {
   migrated = false;
 }
 
+/**
+ * Update existing items in place (preserves createdAt — the sorted-set
+ * entry stays unchanged). Used by /api/library/backfill-arabic to
+ * inject the curated Arabic into pieces that were generated before the
+ * lookup existed.
+ */
+export async function updateItems(items: GeneratedContent[]): Promise<void> {
+  const r = getRedis();
+  if (!r) throw new Error("Library store not configured");
+  await migrateIfNeeded(r);
+  if (items.length === 0) return;
+  const pipeline = r.pipeline();
+  for (const it of items) {
+    pipeline.set(ITEM_PREFIX + it.id, it);
+    // Re-add to sorted set with the SAME score so ordering is preserved.
+    pipeline.zadd(INDEX_KEY, { score: it.createdAt, member: it.id });
+  }
+  await pipeline.exec();
+}
+
 /** Total item count — useful for the Settings card. */
 export async function getTotalCount(): Promise<number> {
   const r = getRedis();
