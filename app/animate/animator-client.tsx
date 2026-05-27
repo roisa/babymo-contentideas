@@ -703,21 +703,17 @@ function RecordingOverlay({
   countdown: number | null;
   onExit: () => void;
 }) {
-  // iPhone Safari sizing strategy. Earlier attempts measured ONE
-  // source (visualViewport, then innerWidth) — both returned
-  // mid-transition values when the URL bar collapse animation was
-  // in flight, leaving the stage tiny in the top-left.
+  // NEW sizing strategy: kill the JS-side viewport measurement entirely.
+  // CSS aspect-ratio + min(100vw, 100lvh × 9/16) lets the browser size
+  // .stage-recording-box to the largest 9:16 area that fits the
+  // viewport, even mid-URL-bar-transition. JS just measures the
+  // wrapper's actual rendered width via ResizeObserver and applies
+  // the matching scale to the 1080-wide internal canvas.
   //
-  // Now we take the MAX across every available source:
-  //   - window.visualViewport.{width,height} (iOS truthiest source)
-  //   - window.{innerWidth,innerHeight}
-  //   - document.documentElement.{clientWidth,clientHeight}
-  //   - containerRef.getBoundingClientRect()
-  // Whichever has the largest value is the most-likely-correct full
-  // viewport size. We also lock body scroll (via body.is-recording
-  // class) so URL bar can't reappear from a stray scroll mid-record.
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  // Body scroll lock prevents URL bar from re-appearing mid-record
+  // (which used to shrink the viewport and re-trigger sizing bugs).
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  const [scale, setScale] = useState(0);
 
   useLayoutEffect(() => {
     document.body.classList.add("is-recording");
@@ -727,50 +723,20 @@ function RecordingOverlay({
   }, []);
 
   useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
     const update = () => {
-      const vv = typeof window !== "undefined" ? window.visualViewport : null;
-      const sources = {
-        vvW: vv?.width ?? 0,
-        vvH: vv?.height ?? 0,
-        innerW: window.innerWidth ?? 0,
-        innerH: window.innerHeight ?? 0,
-        docW: document.documentElement?.clientWidth ?? 0,
-        docH: document.documentElement?.clientHeight ?? 0,
-      };
-      const el = containerRef.current;
-      const rect = el?.getBoundingClientRect();
-      const w = Math.max(sources.vvW, sources.innerW, sources.docW, rect?.width ?? 0);
-      const h = Math.max(sources.vvH, sources.innerH, sources.docH, rect?.height ?? 0);
-      if (w > 0 && h > 0) setSize({ w, h });
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0) setScale(rect.width / 1080);
     };
     update();
-    // Multiple delayed re-measurements catch the URL-bar-collapsed state
-    // even when the initial paint happens before it settles.
-    const t1 = setTimeout(update, 100);
-    const t2 = setTimeout(update, 400);
-    const t3 = setTimeout(update, 900);
-    window.addEventListener("resize", update);
-    window.visualViewport?.addEventListener("resize", update);
-    window.visualViewport?.addEventListener("scroll", update);
     const ro = new ResizeObserver(update);
-    if (containerRef.current) ro.observe(containerRef.current);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      window.removeEventListener("resize", update);
-      window.visualViewport?.removeEventListener("resize", update);
-      window.visualViewport?.removeEventListener("scroll", update);
-      ro.disconnect();
-    };
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
-  const scale = size ? Math.min(size.w / 1080, size.h / 1920) : 0;
-  const cssW = 1080 * scale;
-  const cssH = 1920 * scale;
-
   return (
-    <div ref={containerRef} className="stage-recording">
+    <div className="stage-recording">
       <button
         onClick={onExit}
         className="absolute top-4 right-4 z-[110] inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3 py-1.5 text-xs text-white hover:bg-white/25"
@@ -778,9 +744,9 @@ function RecordingOverlay({
         <X className="h-3.5 w-3.5" /> Exit (ESC)
       </button>
 
-      <div className="relative" style={{ width: cssW, height: cssH }}>
+      <div ref={boxRef} className="stage-recording-box">
         {scale > 0 && (
-          <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: 1080, height: 1920 }}>
+          <div className="stage-recording-scaler" style={{ transform: `scale(${scale})` }}>
             <AnimatedScene {...sceneProps} />
           </div>
         )}
