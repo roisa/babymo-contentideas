@@ -5,10 +5,13 @@ import { useLibrary } from "@/lib/store";
 import { ContentCard } from "@/components/content-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CATEGORIES } from "@/lib/content-types";
-import { Library as LibraryIcon, Trash2, Cloud, CloudOff, RefreshCw, AlertCircle } from "lucide-react";
+import { Library as LibraryIcon, Trash2, Cloud, CloudOff, RefreshCw, AlertCircle, Wand2 } from "lucide-react";
 import Link from "next/link";
+import { lookupArabicByAttribution } from "@/lib/arabic-lookup";
+import type { GeneratedContent } from "@/lib/types";
 
 export function LibraryClient() {
   const items = useLibrary((s) => s.items);
@@ -18,12 +21,61 @@ export function LibraryClient() {
   const syncError = useLibrary((s) => s.syncError);
   const serverEnabled = useLibrary((s) => s.serverEnabled);
   const hydrate = useLibrary((s) => s.hydrate);
+  const replaceItems = useLibrary((s) => s.replaceItems);
   const [filter, setFilter] = useState<string>("all");
   const [mounted, setMounted] = useState(false);
+  const [fixing, setFixing] = useState(false);
+  const [fixToast, setFixToast] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Count items that have at least one slide where the curated Arabic
+  // lookup would inject something (attribution matches AND no arabic
+  // currently). The "Fix Arabic" button only shows when this is > 0.
+  const fixableCount = useMemo(() => {
+    let n = 0;
+    for (const it of items) {
+      const hasFixable = it.slides.some(
+        (s) => (!s.arabic || !s.arabic.trim()) && lookupArabicByAttribution(s.attribution)
+      );
+      if (hasFixable) n++;
+    }
+    return n;
+  }, [items]);
+
+  async function backfillArabic() {
+    setFixing(true);
+    setFixToast(null);
+    try {
+      const res = await fetch("/api/library/backfill-arabic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // When the server isn't configured, send our local items up and
+        // let the endpoint do the lookup work (keeps the logic in one
+        // place — no duplicating it on the client).
+        body: JSON.stringify({ items }),
+      });
+      const data = (await res.json()) as {
+        configured: boolean;
+        fixedCount: number;
+        items: GeneratedContent[];
+      };
+      replaceItems(data.items);
+      setFixToast(
+        data.fixedCount === 0
+          ? "Nothing to fix — all eligible Arabic already in place."
+          : `Updated ${data.fixedCount} piece${data.fixedCount === 1 ? "" : "s"} with canonical Arabic.`
+      );
+      setTimeout(() => setFixToast(null), 4000);
+    } catch (e) {
+      setFixToast(`Backfill failed: ${e instanceof Error ? e.message : String(e)}`);
+      setTimeout(() => setFixToast(null), 5000);
+    } finally {
+      setFixing(false);
+    }
+  }
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -71,12 +123,25 @@ export function LibraryClient() {
             />
           ) : null
         )}
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          {fixableCount > 0 && (
+            <Button variant="soft" size="sm" onClick={backfillArabic} disabled={fixing} title="Inject canonical Arabic into pieces that are missing it">
+              <Wand2 className={cn("h-3.5 w-3.5 mr-1.5", fixing && "animate-spin")} />
+              {fixing ? "Fixing…" : `Fix Arabic (${fixableCount})`}
+            </Button>
+          )}
           <Button variant="ghost" size="sm" onClick={() => confirm("Clear all generated content?") && clear()}>
             <Trash2 className="h-3.5 w-3.5 mr-1.5" /> Clear all
           </Button>
         </div>
       </div>
+
+      {fixToast && (
+        <div className="rounded-2xl border border-babymo-green/30 bg-babymo-green-soft/60 px-3 py-2 text-[12px] text-foreground inline-flex items-center gap-2">
+          <Wand2 className="h-3.5 w-3.5 text-babymo-green" />
+          {fixToast}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((c) => (

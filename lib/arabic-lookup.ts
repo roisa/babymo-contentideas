@@ -77,3 +77,51 @@ export function lookupArabicByAttribution(attr: string | undefined): string | un
   if (!attr) return undefined;
   return ARABIC_LOOKUP[normalizeAttribution(attr)];
 }
+
+/* ============================================================
+ * Backfill helpers — used by the Library page's "Fix Arabic"
+ * button to retroactively repair pieces generated before the
+ * curated lookup existed.
+ * ============================================================ */
+
+/**
+ * Backfill missing Arabic on a single content piece. Returns the new
+ * item (or the same reference if nothing changed) and a flag.
+ *
+ * Generic on T = any object with `.slides[].arabic` + `.slides[].attribution`
+ * — so this works with the real `GeneratedContent` type without us
+ * having to import it here (keeps this file dep-free for client bundles).
+ */
+export function backfillArabicInContent<
+  S extends { arabic?: string; attribution?: string },
+  T extends { slides: S[] }
+>(item: T): { item: T; changed: boolean } {
+  let changed = false;
+  const newSlides = item.slides.map((s): S => {
+    const hasArabic = typeof s.arabic === "string" && s.arabic.trim().length > 0;
+    if (hasArabic) return s;
+    const lookedUp = lookupArabicByAttribution(s.attribution);
+    if (!lookedUp) return s;
+    changed = true;
+    return { ...s, arabic: lookedUp };
+  });
+  if (!changed) return { item, changed: false };
+  return { item: { ...item, slides: newSlides }, changed: true };
+}
+
+/**
+ * Sweep an array of items, returning the new array and the count of
+ * items that received an Arabic backfill.
+ */
+export function backfillArabicInItems<
+  S extends { arabic?: string; attribution?: string },
+  T extends { slides: S[] }
+>(items: T[]): { items: T[]; fixedCount: number } {
+  let fixedCount = 0;
+  const next = items.map((it): T => {
+    const { item, changed } = backfillArabicInContent<S, T>(it);
+    if (changed) fixedCount++;
+    return item;
+  });
+  return { items: next, fixedCount };
+}

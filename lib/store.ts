@@ -18,6 +18,9 @@ interface LibraryState {
   remove: (id: string) => void;
   clear: () => void;
   hydrate: () => Promise<void>;
+  /** Replace the items array wholesale — used by backfill flows after
+   *  the server returns the updated set. Doesn't touch the server. */
+  replaceItems: (items: GeneratedContent[]) => void;
 }
 
 const MAX = 200;
@@ -88,6 +91,10 @@ export const useLibrary = create<LibraryState>()(
           .catch((e) => {
             set({ sync: "error", syncError: e instanceof Error ? e.message : String(e) });
           });
+      },
+
+      replaceItems: (items) => {
+        set({ items });
       },
 
       hydrate: async () => {
