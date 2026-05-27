@@ -19,10 +19,14 @@ export default function HomePage() {
     <div className="px-4 md:px-10 lg:px-12 py-8 md:py-12 max-w-6xl mx-auto animate-fade-in">
       {/* Hero */}
       <div className="flex flex-col gap-6 mb-10 md:mb-14">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <BrandMark size={36} />
-          <Badge variant="green">Internal v1</Badge>
-          <Badge variant="accent">iOS Refresh</Badge>
+          <Badge variant="green" className="font-mono">
+            {/* SHA + build time = "is this the version I expect?" at a glance.
+             *  Falls back to "local" when not running on Vercel. */}
+            build {process.env.NEXT_PUBLIC_BUILD_SHA ?? "local"} ·{" "}
+            {process.env.NEXT_PUBLIC_BUILD_TIME ?? ""}
+          </Badge>
         </div>
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-[1.02]">
           Konten Baby Mo, <span className="text-babymo-green">dalam menit.</span>
