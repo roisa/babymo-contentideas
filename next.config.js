@@ -14,14 +14,19 @@ const nextConfig = {
     // and emoji files (referenced via fs.readFile at runtime — not tracked
     // by Webpack on its own).
     outputFileTracingIncludes: {
-      "/api/render": [".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
-      "/api/export-zip": [".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
-      "/api/warmup": [".fonts/**/*", "public/babymo-logo.png"],
-      "/api/pose/[name]": ["baby-mo-poses/**/*"],
-      "/api/arabic": [".fonts/**/*"],
-      "/api/arabic/debug": [".fonts/**/*"],
-      "/api/generate": [".fonts/**/*", ".emoji/**/*"],
-      "/api/calendar": [".fonts/**/*", ".emoji/**/*"],
+      // public/fonts/** is the canonical location (always bundled by
+      // Vercel for /api/* routes since public/ is treated specially).
+      // .fonts/** is kept as a fallback for legacy code paths — dotfile
+      // dirs are inconsistently picked up by outputFileTracingIncludes
+      // across Vercel runtime versions, which is exactly the bug we hit.
+      "/api/render":         ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
+      "/api/export-zip":     ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
+      "/api/warmup":         ["public/fonts/**/*", ".fonts/**/*", "public/babymo-logo.png"],
+      "/api/pose/[name]":    ["baby-mo-poses/**/*"],
+      "/api/arabic":         ["public/fonts/**/*", ".fonts/**/*"],
+      "/api/arabic/debug":   ["public/fonts/**/*", ".fonts/**/*"],
+      "/api/generate":       ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*"],
+      "/api/calendar":       ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*"],
     },
   },
 };
