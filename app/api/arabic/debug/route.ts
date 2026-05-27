@@ -22,7 +22,8 @@ export const dynamic = "force-dynamic";
  * fontFamily lookup mismatches.
  */
 export async function GET() {
-  const fontDir = path.join(process.cwd(), ".fonts");
+  const publicFontDir = path.join(process.cwd(), "public", "fonts");
+  const dotFontDir = path.join(process.cwd(), ".fonts");
   const candidates = [
     "arabic-cairo-bold.ttf",
     "arabic-reemkufi.ttf",
@@ -30,15 +31,25 @@ export async function GET() {
     "noto-arabic.ttf",
   ];
 
-  // Probe which font files actually exist on disk in the Vercel function.
-  const fonts: Record<string, { present: boolean; size?: number }> = {};
+  // Probe BOTH possible locations on the Vercel serverless filesystem.
+  // public/fonts/ is the new canonical location (always bundled).
+  // .fonts/ is the legacy location (might be skipped if outputFileTracingIncludes
+  // drops dotfile dirs on this Vercel version).
+  const fonts: Record<string, { publicCopy: { present: boolean; size?: number }; dotCopy: { present: boolean; size?: number } }> = {};
   for (const name of candidates) {
+    const entry = {
+      publicCopy: { present: false } as { present: boolean; size?: number },
+      dotCopy: { present: false } as { present: boolean; size?: number },
+    };
     try {
-      const buf = await readFile(path.join(fontDir, name));
-      fonts[name] = { present: true, size: buf.length };
-    } catch {
-      fonts[name] = { present: false };
-    }
+      const buf = await readFile(path.join(publicFontDir, name));
+      entry.publicCopy = { present: true, size: buf.length };
+    } catch { /* fall through */ }
+    try {
+      const buf = await readFile(path.join(dotFontDir, name));
+      entry.dotCopy = { present: true, size: buf.length };
+    } catch { /* fall through */ }
+    fonts[name] = entry;
   }
 
   // Now exercise the actual render path with a known authentic Arabic
@@ -48,7 +59,8 @@ export async function GET() {
 
   return NextResponse.json({
     cwd: process.cwd(),
-    fontDirChecked: fontDir,
+    publicFontDir,
+    dotFontDir,
     fonts,
     testRender: result
       ? {

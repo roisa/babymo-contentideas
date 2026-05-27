@@ -27,22 +27,36 @@ async function fetchFont(url: string): Promise<ArrayBuffer> {
   return await res.arrayBuffer();
 }
 
+/**
+ * Read a font file, checking the canonical public/fonts/ location first
+ * (always bundled by Vercel for serverless functions) then falling back
+ * to .fonts/ (legacy — dotfile dirs are sometimes skipped by output
+ * file tracing). Both copies of the fonts live in the repo; the public/
+ * path is the source of truth going forward.
+ */
+async function readFont(name: string): Promise<Buffer> {
+  try {
+    return await readFile(path.join(process.cwd(), "public", "fonts", name));
+  } catch {
+    return await readFile(path.join(process.cwd(), ".fonts", name));
+  }
+}
+
 async function loadFonts() {
   if (cachedFonts) return cachedFonts;
-  const dir = path.join(process.cwd(), ".fonts");
   try {
     const [sans, sansBold, sansItalic, display, displayBold, arabic] = await Promise.all([
-      readFile(path.join(dir, "inter.ttf")),
-      readFile(path.join(dir, "fraunces.ttf")), // Inter SemiBold legacy
-      readFile(path.join(dir, "inter-italic.ttf")).catch(() => null),
-      readFile(path.join(dir, "fredoka-medium.ttf")),
-      readFile(path.join(dir, "fredoka-bold.ttf")),
+      readFont("inter.ttf"),
+      readFont("fraunces.ttf"), // Inter SemiBold legacy
+      readFont("inter-italic.ttf").catch(() => null),
+      readFont("fredoka-medium.ttf"),
+      readFont("fredoka-bold.ttf"),
       // Arabic font: Cairo Bold renders shaped Arabic in Satori; Reem Kufi
       // and Noto Sans Arabic are kept as fallbacks if Cairo is missing.
-      readFile(path.join(dir, "arabic-cairo-bold.ttf"))
-        .catch(() => readFile(path.join(dir, "arabic-reemkufi.ttf")))
-        .catch(() => readFile(path.join(dir, "arabic-noto-sans.ttf")))
-        .catch(() => readFile(path.join(dir, "noto-arabic.ttf")))
+      readFont("arabic-cairo-bold.ttf")
+        .catch(() => readFont("arabic-reemkufi.ttf"))
+        .catch(() => readFont("arabic-noto-sans.ttf"))
+        .catch(() => readFont("noto-arabic.ttf"))
         .catch(() => null),
     ]);
     cachedFonts = {
@@ -278,10 +292,11 @@ let cachedArabicFontBuf: Buffer | null | undefined;
 
 async function getArabicFontBuf(): Promise<Buffer | null> {
   if (cachedArabicFontBuf !== undefined) return cachedArabicFontBuf;
-  const dir = path.join(process.cwd(), ".fonts");
+  // Prefer public/fonts/ (always bundled by Vercel) over .fonts/
+  // (dotfile dirs are sometimes skipped by outputFileTracingIncludes).
   for (const name of ["arabic-cairo-bold.ttf", "arabic-reemkufi.ttf", "arabic-noto-sans.ttf", "noto-arabic.ttf"]) {
     try {
-      cachedArabicFontBuf = await readFile(path.join(dir, name));
+      cachedArabicFontBuf = await readFont(name);
       return cachedArabicFontBuf;
     } catch {
       /* try next */
