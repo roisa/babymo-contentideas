@@ -19,8 +19,11 @@ const nextConfig = {
       // .fonts/** is kept as a fallback for legacy code paths — dotfile
       // dirs are inconsistently picked up by outputFileTracingIncludes
       // across Vercel runtime versions, which is exactly the bug we hit.
-      "/api/render":         ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
-      "/api/export-zip":     ["public/fonts/**/*", ".fonts/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
+      // public/arabic-cache/** = pre-rendered Arabic PNGs + manifest,
+      // committed to repo. Read by the static renderer to bypass
+      // Vercel's broken runtime Arabic shaping.
+      "/api/render":         ["public/fonts/**/*", ".fonts/**/*", "public/arabic-cache/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
+      "/api/export-zip":     ["public/fonts/**/*", ".fonts/**/*", "public/arabic-cache/**/*", ".emoji/**/*", "baby-mo-poses/**/*", "public/babymo-logo.png"],
       "/api/warmup":         ["public/fonts/**/*", ".fonts/**/*", "public/babymo-logo.png"],
       "/api/pose/[name]":    ["baby-mo-poses/**/*"],
       "/api/arabic":         ["public/fonts/**/*", ".fonts/**/*"],
