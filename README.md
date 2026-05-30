@@ -1,118 +1,52 @@
 # Baby Mo · Content Studio
 
-An internal AI-powered social media content engine for **Baby Mo** — a modern
-Islamic childhood & parenting brand.
+Internal tool for the @babymo.official team to generate on-brand Islamic
+Instagram content in minutes — single posts, carousels, reels, and a full
+30-day calendar.
 
-This is a **content production system**, not a Canva clone. The goal is to
-generate ~20 decent, on-brand Instagram contents in minutes. The design team
-can refine outputs later manually.
+**Live app:** https://babymo-contentideas.vercel.app
 
-## One-click deploy
+## What it does
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Froisa%2Fbabymo-contentideas&project-name=babymo-content-studio&repository-name=babymo-content-studio&env=ANTHROPIC_API_KEY&envDescription=Optional.%20Enables%20live%20Claude%20AI%20generation.%20Leave%20blank%20to%20use%20the%20curated%20Baby%20Mo%20seed%20library.&envLink=https%3A%2F%2Fconsole.anthropic.com%2Fsettings%2Fkeys)
+- **Generate** — AI-written content across 8 categories (Daily Dua, Quran Ayah,
+  Hadith, Parenting, Ramadan, Eid, Jumuah, Bedtime)
+- **Calendar** — auto-built 30-day plan, Hijri-aware (knows when Ramadan / Eid
+  is coming and shifts the mix)
+- **Animate as Reel** — pick any piece and turn it into a screen-recordable
+  9:16 Reel with smooth pose transitions for Baby Mo
+- **Library** — every generated piece is saved (shared across the team via
+  Upstash Redis)
+- **Export** — PNG, JPG, or a ZIP with captions and metadata
 
-Click the button → Vercel will fork the repo into your account, ask for an
-optional `ANTHROPIC_API_KEY`, and deploy to a `*.vercel.app` URL in ~60s.
+## How to use it
 
-## What it makes
+1. Open https://babymo-contentideas.vercel.app
+2. Hit **Generate**, pick a category + theme, get 4 fresh pieces
+3. Tap any piece → **Animate as Reel** → press **Record**, then start your
+   iPhone screen recording
+4. Export from the Library when you're happy
 
-- **Single posts** (1080×1080)
-- **Carousel slides** (1080×1080, multi-slide storytelling)
-- **Reels slides** (1080×1920, subtitle-safe)
-- **30-day content calendar** (Mon=dua · Tue=parenting · Wed=fact · Thu=story · Fri=Jumuah · Sat=nostalgia · Sun=bedtime)
-- **JPG / PNG / ZIP** exports rendered server-side
+That's it. No setup, no install.
 
-## Stack
-
-- Next.js 14 (App Router) · React 18 · TypeScript
-- Tailwind CSS · shadcn-style UI components (hand-rolled, Radix-powered)
-- Anthropic SDK for live AI generation (optional)
-- Satori + @resvg/resvg-js for server-side image rendering
-- JSZip for carousel ZIP exports
-- Zustand (persisted) for local library
-
-## Getting started
+## Run it locally (only if you're editing the code)
 
 ```bash
 npm install
-npm run dev      # → http://localhost:3000
+npm run dev          # → http://localhost:3000
 ```
 
-### Optional: live AI generation
-
-By default the app uses a **curated Baby Mo content library** that ships with
-the repo (see `lib/samples.ts`). No API key needed.
-
-To enable live AI generation via Claude, set:
+Optional env vars in `.env.local`:
 
 ```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-npm run dev
+ANTHROPIC_API_KEY=sk-ant-...           # live AI generation (falls back to seeds)
+UPSTASH_REDIS_REST_URL=...             # shared library across devices
+UPSTASH_REDIS_REST_TOKEN=...
 ```
 
-The generator will fall back to the curated library per item if any AI call fails.
+Without these, the app uses curated seeds and localStorage — still works, just
+single-device.
 
-## Project structure
+## Stack
 
-```
-app/
-  page.tsx                 dashboard
-  generate/                content generator (the main workflow)
-  library/                 generated content history (persisted in localStorage)
-  calendar/                30-day content plan
-  themes/                  visual theme gallery
-  api/
-    generate/              POST → batch of GeneratedContent
-    render/                POST → PNG bytes for a single slide
-    export-zip/            POST → ZIP of all slides + caption.txt + content.json
-    calendar/              POST → 30 GeneratedContent items
-components/
-  ui/                      Button, Card, Tabs, Dialog, Select, ... (shadcn-style)
-  sidebar.tsx              left nav
-  slide-preview.tsx        CSS preview (mirrors the rendered PNG)
-  content-card.tsx         card + detail dialog + export buttons
-lib/
-  themes.ts                8 hand-tuned palettes
-  content-types.ts         7 categories · 30+ content types · 3 storytelling styles
-  samples.ts               curated Baby Mo seeds per content type
-  ai-engine.ts             offline + Anthropic generation, batching, calendar
-  render.tsx               Satori + Resvg slide rendering
-  store.ts                 Zustand library (localStorage)
-.fonts/                    bundled Inter (Latin) + Cairo (Arabic)
-```
-
-## Brand & content philosophy
-
-- **soft · emotional · calming · meaningful · aesthetic · cozy · modern · wholesome**
-- avoid: harsh dakwah tone · overcrowded visuals · loud Islamic template style · preachy
-- Focus on *Islam in small daily moments*: bedtime duas, tiny sunnah habits,
-  helping parents, gratitude moments, gentle parenting, cozy Muslim home life
-
-## Templates & art
-
-Every slide reserves space for:
-
-- a **mascot circle** (top right) — currently a dashed placeholder
-- a **footer brand chip** (top left)
-- an **illustration zone** (the middle area opposite the text)
-
-The design team can drop Baby Mo characters, illustrations, stickers, or
-hand-drawn details into the exported PNG / ZIP in **Canva**. The studio gives
-80% of the finished feeling; designers polish the last 20%.
-
-## Caveats
-
-- The Arabic font (Cairo) renders correctly with Satori but ligature shaping is
-  approximate — full Arabic shaping is not supported by Satori. Diacritics
-  render. For a final hero asset, designers can swap the Arabic in Canva.
-- Live AI generation requires `ANTHROPIC_API_KEY`. Without it, content is drawn
-  from the curated seed library — variations look identical across batches of
-  the same type.
-- Library is stored in browser localStorage — clearing the browser clears it.
-
-## Future work (not in v1)
-
-- Mascot artwork & sticker overlays
-- Hand-drawn illustration assets per category
-- Pinterest-style export presets
-- Scheduled publishing integration
+Next.js 14 · React 18 · TypeScript · Tailwind · Anthropic SDK ·
+Satori + Resvg · Framer Motion · Zustand · Upstash Redis
